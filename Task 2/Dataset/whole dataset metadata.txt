@@ -1,0 +1,55 @@
+{
+  "column": {
+    "Name": {
+      "DescriptionKey": "Defines the name of a country",
+      "type": "String",
+      "Source": "United States Census Bureau"
+    },
+    "Year": {
+      "DescriptionKey": "Defines the year of the data retrieval",
+      "type": "Numeric",
+      "Source": "United States Census Bureau"
+    },
+    "Population": {
+      "DescriptionKey": "Population at midyear",
+      "type": "Numeric",
+      "Source": "United States Census Bureau"
+    },
+    "GR": {
+      "titleLong": "Growth rate",
+      "DescriptionKey": "Change in population from births, deaths, and net migration, divided by the population at midyear, and multiplied by 100",
+      "type": "Numeric",
+      "Source": "United States Census Bureau"
+    },
+    "FertilityR": {
+      "titleLong": "Fertility rate",
+      "DescriptionKey": "Average number of children females would have by age 49",
+      "type": "Numeric",
+      "Source": "United States Census Bureau"
+    },
+    "LifeExpectacyB": {
+      "titleLong": "Life expectacy at birth",
+      "DescriptionKey": "Average number of years newborns would live if the year's age-specific mortality rates remained constant",
+      "type": "Numeric",
+      "Source": "United States Census Bureau"
+    },
+    "U5MortalityR": {
+      "titleLong": "Under 5 mortality rate",
+      "DescriptionKey": "Number of deaths before reaching age 5 per 1.000 lives",
+      "type": "Numeric",
+      "Source": "United States Census Bureau"
+    },
+    "GiniC": {
+      "titleLong": "Gini coefficient",
+      "DescriptionKey": "Measures economic inequality on a scale from 0 to 1 shown in a country during a specific year, per capita. 'Per capita' means that the income of each household is attributed equally to each member of the household (including children). Higher values of the coefficient indicate higher inequality",
+      "type": "Numeric",
+      "Source": "Our World in Data"
+    },
+    "GDP": {
+      "titleLong": "Gross domestic product – In constant US$",
+      "DescriptionKey": "Total economic output of a country per year.",
+      "type": "Numeric",
+      "Source": "Our World in Data"
+    }
+  }
+}

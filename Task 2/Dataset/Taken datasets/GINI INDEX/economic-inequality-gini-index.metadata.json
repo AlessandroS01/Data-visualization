@@ -1,0 +1,49 @@
+{
+  "chart": {
+    "title": "Income inequality: Gini coefficient",
+    "subtitle": "The [Gini coefficient](#dod:gini) measures inequality on a scale from 0 to 1. Higher values indicate higher inequality. Depending on the country and year, the data relates to income measured after taxes and benefits, or to consumption, [per capita](#dod:per-capita).",
+    "citation": "World Bank Poverty and Inequality Platform (2024)",
+    "originalChartUrl": "https://ourworldindata.org/grapher/economic-inequality-gini-index?v=1&csvType=full&useColumnShortNames=false",
+    "selection": [
+      "Chile",
+      "Brazil",
+      "South Africa",
+      "United States",
+      "France",
+      "China"
+    ]
+  },
+  "columns": {
+    "Gini coefficient": {
+      "titleShort": "Gini Coefficient",
+      "titleLong": "Gini Coefficient - World Bank",
+      "descriptionShort": "The [Gini coefficient](#dod:gini) measures inequality on a scale from 0 to 1. Higher values indicate higher inequality.",
+      "descriptionKey": [
+        "Depending on the country and year, the data relates to income measured after taxes and benefits, or to consumption, per capita. 'Per capita' means that the income of each household is attributed equally to each member of the household (including children).",
+        "Non-market sources of income, including food grown by subsistence farmers for their own consumption, are taken into account."
+      ],
+      "descriptionProcessing": "For most countries in the PIP dataset, estimates relate to _either_ disposable income or consumption, for all available years. A number of countries, however, have a mix of income and consumption data points, with both data types sometimes available for particular years.\n\nIn most of our charts, we present the data with some data points dropped in order to present single series for each country. This allows us to make readable visualizations that combine multiple countries and metrics. In choosing which data points to drop, we try to strike a balance between maintaining comparability over time and showing as long a time series as possible. As such, the exact approach varies somewhat across countries.\n\nIf you would like to see the original data with _all_ available income and consumption data points shown separately, you can do so in our [Poverty Data Explorer](https://ourworldindata.org/explorers/poverty-explorer?Indicator=Share+in+poverty&Poverty+line=%2410+per+day&Household+survey+data+type=Show+data+from+both+income+and+consumption+surveys&Show+breaks+between+less+comparable+surveys=true&country=ROU~CHN~BLR~PER). You can also download this data in our [complete dataset](https://github.com/owid/poverty-data#a-global-dataset-of-poverty-and-inequality-measures-prepared-by-our-world-in-data-from-the-world-banks-poverty-and-inequality-platform-pip-database) of the World Bank PIP data.",
+      "shortUnit": "",
+      "unit": "",
+      "timespan": "1963-2023",
+      "type": "Numeric",
+      "owidVariableId": 990179,
+      "shortName": "gini",
+      "lastUpdated": "2024-10-07",
+      "nextUpdate": "2025-05-30",
+      "citationShort": "World Bank Poverty and Inequality Platform (2024) – with major processing by Our World in Data",
+      "citationLong": "World Bank Poverty and Inequality Platform (2024) – with major processing by Our World in Data. “Gini Coefficient – World Bank” [dataset]. World Bank Poverty and Inequality Platform, “World Bank Poverty and Inequality Platform (PIP) 20240627_2017, 20240627_2011” [original data].",
+      "fullMetadata": "https://api.ourworldindata.org/v1/indicators/990179.metadata.json"
+    },
+    "990179-annotations": {
+      "titleShort": "990179-annotations",
+      "titleLong": "990179-annotations",
+      "type": "SeriesAnnotation",
+      "citationShort": " – processed by Our World in Data",
+      "citationLong": " – processed by Our World in Data. “990179-annotations” [dataset].",
+      "fullMetadata": "https://api.ourworldindata.org/v1/indicators/undefined.metadata.json"
+    }
+  },
+  "dateDownloaded": "2025-04-30",
+  "activeFilters": {}
+}

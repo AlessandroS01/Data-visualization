@@ -14,4 +14,6 @@ Divided into 3 directories:
         2. Instructions
 
     - Task 2:
-        1. TO DEFINE STILL
+        1. Dataset
+            a. data.csv 
+            b. metadata dataset.txt 
