@@ -63,12 +63,17 @@ function init() {
 
         let reader = new FileReader();
         reader.onloadend = function () {
-            console.log("data loaded: ");
-            console.log(reader.result);
+
+            let parsedData = d3.csvParse(reader.result);
+
+            parsedData.forEach(function(d){
+                console.log(d)
+            })
+
 
             // TODO: parse reader.result data and call the init functions with the parsed data!
             initVis(null);
-            CreateDataTable(null);
+            //CreateDataTable(data);
             // TODO: possible place to call the dashboard file for Part 2
             initDashboard(null);
         };
@@ -177,12 +182,47 @@ function clear(){
 }
 
 //Create Table
-function CreateDataTable(_data) {
+function CreateDataTable(dataRetrieved) {
+    /*for (let i = 0; i < dataRetrieved.length; i++) {
+        console.log(dataRetrieved[i]);
+    }
+    */
+    // table creation
+    let table = dataTable.append("table")
+        .attr("class", "dataTableClass");
 
-    // TODO: create table and add class
+    let headerData = dataRetrieved[0].split(",");
+    console.log(headerData)
 
-    // TODO: add headers, row & columns
+    // table header creation
+    let tableHeader = table.append("thead")
+        .attr("class", "tableHeaderClass");
 
+    tableHeader.append("tr")
+        .selectAll("th")
+        .data(headerData)
+        .enter()
+        .append("th")
+        .text(d => d);
+
+    // table body creation
+    let tbody = table.append("tbody")
+        .attr("class", "tableBodyClass");
+
+    for (let i = 1; i < dataRetrieved.length; i++) {
+        let rowData = dataRetrieved[i].split(",");
+
+        // Append a row for each data entry
+        let row = tbody.append("tr")
+            .attr("class", "tableRowClass");
+
+        // Append a cell for each column
+        row.selectAll("td")
+            .data(rowData)
+            .enter()
+            .append("td")
+            .text(d => d);
+    }
     // TODO: add mouseover event
 
 }
