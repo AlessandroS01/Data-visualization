@@ -65,9 +65,8 @@ function init() {
         reader.onloadend = function () {
 
             let parsedData = d3.csvParse(reader.result);
-
-            parsedData.forEach(function(d){
-                console.log(d)
+            parsedData.forEach(function (d) {
+                console.log(d);
             })
 
 
@@ -129,8 +128,8 @@ function initVis(_data){
     let axisRadius = d3.scaleLinear()
         .range([0, radius]);
     let maxAxisRadius = 0.75,
-        textRadius = 0.8;
-    gridRadius = 0.1;
+        textRadius = 0.8,
+        gridRadius = 0.1;
 
     // radar axes
     radarAxes = radar.selectAll(".axis")
