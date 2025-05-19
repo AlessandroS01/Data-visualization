@@ -91,7 +91,7 @@ function initVis(parsedData){
     // TODO: set y domain for each dimension
     let y = d3.scaleLinear()
         .range([height - margin.bottom - margin.top, margin.top]);
-    let datasetDomains = new Map(); // used to retrieve the domain of each single dimension
+    let datasetDomainsScales = new Map(); // used to retrieve the domain scale of each single dimension
     header.forEach(col => {
         // + converts a string to a number
         if (!isNaN(+parsedData[0][col])) { // take first row and defines the domain for each numeric attribute
@@ -102,21 +102,17 @@ function initVis(parsedData){
             console.log("Domain range: " + domain + " for " + col);
 
             numericHeader.push(col);
-            datasetDomains.set(col, domain);
+            datasetDomainsScales.set(col, domain);
         }
     });
     dimensions = numericHeader;
+    let xChosenDomain = datasetDomainsScales.get(header[0]);
+    let yChosenDomain = datasetDomainsScales.get(header[1]);
 
     // x scalings for scatter plot
     // TODO: set x domain for each dimension
     let x = d3.scaleLinear()
         .range([margin.left, width - margin.left - margin.right]);
-
-    // defines initial domains
-    let xChosenDomain = numericHeader[0];
-    let yChosenDomain = numericHeader[1];
-    x.domain(datasetDomains.get(xChosenDomain));
-    y.domain(datasetDomains.get(yChosenDomain));
 
     // radius scalings for radar chart
     // TODO: set radius domain for each dimension
@@ -167,7 +163,7 @@ function initVis(parsedData){
         .attr("class", "line")
         .style("stroke", "black");
 
-    // TODO: render grid lines in gray
+    // TODO: render grid lines in gray redoit since not working properly
     for (let i = 1; i <= dimensions.length; i++) {
         let points = [];
         for (let j = 0; j < dimensions.length; j++) {
