@@ -67,7 +67,7 @@ function init() {
 
             // TODO: parse reader.result data and call the init functions with the parsed data!
             initVis(parsedData);
-            CreateDataTable(parsedData);
+            createDataTable(parsedData);
             // TODO: possible place to call the dashboard file for Part 2
             initDashboard(null);
         };
@@ -82,41 +82,77 @@ function init() {
  * @param parsedData DSVRowArray<string> that contains the list of parsed objects
  */
 function initVis(parsedData){
-
+    dimensions = [];
     let header = parsedData.columns;  // header of csv dataset
-    let numericHeader = []; // keeps track of all numeric attributes
 
-    // y scalings for scatter plot
-    // TODO: set y domain for each dimension
-    let y = d3.scaleLinear()
-        .range([height - margin.bottom - margin.top, margin.top]);
     let datasetDomainsScales = new Map(); // used to retrieve the domain scale of each single dimension
     header.forEach(col => {
         // + converts a string to a number
         if (!isNaN(+parsedData[0][col])) { // take first row and defines the domain for each numeric attribute
             const domain = d3.extent(
                 parsedData,
-                    d => +d[col]
+                d => +d[col]
             ); // returns min and max value of the converted domain
             console.log("Domain range: " + domain + " for " + col);
 
-            numericHeader.push(col);
+            dimensions.push(col); // adds only numeric attributes
             datasetDomainsScales.set(col, domain);
         }
     });
-    dimensions = numericHeader;
-    let xChosenDomain = datasetDomainsScales.get(header[0]);
-    let yChosenDomain = datasetDomainsScales.get(header[1]);
+
+    // y scalings for scatter plot
+    // TODO: set y domain for each dimension
+    let y = d3.scaleLinear()
+        .range([height - margin.bottom - margin.top, margin.top]);
+    let yScales = new Map();
 
     // x scalings for scatter plot
     // TODO: set x domain for each dimension
     let x = d3.scaleLinear()
         .range([margin.left, width - margin.left - margin.right]);
+    let xScales = new Map();
 
     // radius scalings for radar chart
     // TODO: set radius domain for each dimension
     let r = d3.scaleLinear()
         .range([0, radius]);
+    let rScales = new Map();
+
+
+    // defines domain for x, y, and r
+    dimensions.forEach(col => {
+        const domain = datasetDomainsScales.get(col);
+
+        // Create a linear scale for x dimension
+        const xScale = d3.scaleLinear()
+            .domain(domain)
+            .range(x.range()); // reuse the range you set earlier
+
+        // Create a linear scale for y dimension
+        const yScale = d3.scaleLinear()
+            .domain(domain)
+            .range(y.range());  // reuse the range you set earlier
+
+        // Create a linear scale for radius
+        const rScale = d3.scaleLinear()
+            .domain(domain)
+            .range(r.range());  // reuse the range you set earlier
+
+
+        yScales.set(col, yScale);
+        xScales.set(col, xScale);
+        rScales.set(col, rScale);
+    });
+
+    yScales.forEach(function(scale, key) {
+        console.log("yScale for " + key + ": " + scale);
+    });
+    xScales.forEach(function(scale, key) {
+        console.log("xScale for " + key + ": " + scale);
+    });
+    rScales.forEach(function(scale, key) {
+        console.log("rScale for " + key + ": " + scale);
+    });
 
     // scatterplot axes
     yAxis = scatter.append("g")
@@ -127,7 +163,7 @@ function initVis(parsedData){
     yAxisLabel = yAxis.append("text")
         .style("text-anchor", "middle")
         .attr("y", margin.top / 2)
-        .text(yChosenDomain);
+        .text("y");
 
     xAxis = scatter.append("g")
         .attr("class", "axis")
@@ -137,7 +173,7 @@ function initVis(parsedData){
     xAxisLabel = xAxis.append("text")
         .style("text-anchor", "middle")
         .attr("x", width - margin.right)
-        .text(xChosenDomain);
+        .text("x");
 
     // radar chart axes
     radarAxesAngle = Math.PI * 2 / dimensions.length;
@@ -162,17 +198,18 @@ function initVis(parsedData){
         .attr("class", "line")
         .style("stroke", "black");
 
-    // TODO: render grid lines in gray redoit since not working properly
-    for (let i = 1; i <= dimensions.length; i++) {
-        let points = [];
-        for (let j = 0; j < dimensions.length; j++) {
-            points.push({
-                x: radarX(radius * gridRadius * i, j),
-                y: radarY(radius * gridRadius * i, j)
-            });
-        }
+    // TODO: render grid lines in gray
+    const axisLength = radius * maxAxisRadius;
 
-        let lineFunction = d3.line()
+    for (let i = 1; i <= dimensions.length; i++) {
+        const rLevel = axisLength * (i / dimensions.length); // evenly spaced radius steps
+
+        const points = dimensions.map((_, j) => ({
+            x: radarX(rLevel, j),
+            y: radarY(rLevel, j)
+        }));
+
+        const lineFunction = d3.line()
             .x(d => d.x)
             .y(d => d.y)
             .curve(d3.curveLinearClosed);
@@ -191,11 +228,11 @@ function initVis(parsedData){
         .data(dimensions)
         .enter()
         .append("text")
-        .attr("text-anchor", "middle")
-        .attr("dy", "0.35em")
-        .attr("x", function(d, i){ return radarX(axisRadius(textRadius), i); })
-        .attr("y", function(d, i){ return radarY(axisRadius(textRadius), i); })
-        .text(d => d);
+            .attr("text-anchor", "middle")
+            .attr("dy", "0.35em")
+            .attr("x", function(d, i){ return radarX(axisRadius(textRadius), i); })
+            .attr("y", function(d, i){ return radarY(axisRadius(textRadius), i); })
+            .text(d => d);
 
 
     // init menu for the visual channels
@@ -220,7 +257,7 @@ function clear(){
 }
 
 //Create Table
-function CreateDataTable(dataRetrieved) {
+function createDataTable(dataRetrieved) {
     let table = dataTable.append("table") // creation of the table
         .attr("class", "dataTableClass");
 
@@ -240,10 +277,12 @@ function CreateDataTable(dataRetrieved) {
 
     for (let i = 1; i < dataRetrieved.length; i++) {
         let rowData = dataRetrieved[i];
-        console.log(rowData);
+        /*
+        console.log("Table row data: " + rowData);
         Object.values(rowData).forEach(function(d){
-            console.log(d);
+            console.log("Value of row data item: " + d);
         })
+         */
 
         let row = tbody.append("tr") // Append a row for each data entry
             .attr("class", "tableRowClass");

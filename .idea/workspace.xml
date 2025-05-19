@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Bugs for gray lines as well as domains">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Table creation complete. Hovering effect done as well">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 1/Framework/dataVis.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 1/Framework/dataVis.js" afterDir="false" />
     </list>
@@ -88,7 +88,7 @@
       <workItem from="1747590294754" duration="333000" />
       <workItem from="1747636335098" duration="3565000" />
       <workItem from="1747649390797" duration="4106000" />
-      <workItem from="1747664562181" duration="2465000" />
+      <workItem from="1747664562181" duration="5971000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -138,7 +138,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747653524005</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Table creation complete. Hovering effect done as well">
+      <option name="closed" value="true" />
+      <created>1747667072890</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1747667072890</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,6 +157,7 @@
     <MESSAGE value="Assigned values of csv numeric headers to chart" />
     <MESSAGE value="Defined gray line for the radar chart" />
     <MESSAGE value="Bugs for gray lines as well as domains" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bugs for gray lines as well as domains" />
+    <MESSAGE value="Table creation complete. Hovering effect done as well" />
+    <option name="LAST_COMMIT_MESSAGE" value="Table creation complete. Hovering effect done as well" />
   </component>
 </project>
