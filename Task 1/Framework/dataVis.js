@@ -64,15 +64,11 @@ function init() {
         let reader = new FileReader();
         reader.onloadend = function () {
 
-            let parsedData = d3.csvParse(reader.result);
-            parsedData.forEach(function (d) {
-                console.log(d);
-            })
-
+            let parsedData = d3.csvParse(reader.result); // list of objects
 
             // TODO: parse reader.result data and call the init functions with the parsed data!
-            initVis(null);
-            //CreateDataTable(data);
+            initVis(parsedData);
+            CreateDataTable(parsedData);
             // TODO: possible place to call the dashboard file for Part 2
             initDashboard(null);
         };
@@ -82,20 +78,40 @@ function init() {
 }
 
 
-function initVis(_data){
+/**
+ *
+ * @param parsedData DSVRowArray<string> that contains the list of parsed objects
+ */
+function initVis(parsedData){
 
-    // TODO: parse dimensions (i.e., attributes) from input file
+    let header = parsedData.columns; // header of csv dataset
+    let numericHeader = []; // keeps track of all numeric attributes
 
-
-    // y scalings for scatterplot
+    // y scalings for scatter plot
     // TODO: set y domain for each dimension
     let y = d3.scaleLinear()
         .range([height - margin.bottom - margin.top, margin.top]);
+    let datasetDomains = new Map(); // used to retrieve the domain of each single dimension
+    header.forEach(col => {
+        // + converts a string to a number
+        if (!isNaN(+parsedData[0][col])) { // take first row and defines the domain for each numeric attribute
+            const domain = d3.extent(
+                parsedData,
+                    d => +d[col]
+            ); // returns min and max value of the converted domain
+            console.log("Domain range: " + domain + " for " + col);
+
+            numericHeader.push(col);
+            datasetDomains.set(col, domain);
+        }
+    });
 
     // x scalings for scatter plot
     // TODO: set x domain for each dimension
     let x = d3.scaleLinear()
         .range([margin.left, width - margin.left - margin.right]);
+    x.domain(datasetDomains.get(numericHeader[0]));
+    y.domain(datasetDomains.get(numericHeader[1]));
 
     // radius scalings for radar chart
     // TODO: set radius domain for each dimension
@@ -185,7 +201,7 @@ function CreateDataTable(dataRetrieved) {
     /*for (let i = 0; i < dataRetrieved.length; i++) {
         console.log(dataRetrieved[i]);
     }
-    */
+
     // table creation
     let table = dataTable.append("table")
         .attr("class", "dataTableClass");
@@ -222,6 +238,8 @@ function CreateDataTable(dataRetrieved) {
             .append("td")
             .text(d => d);
     }
+
+     */
     // TODO: add mouseover event
 
 }
