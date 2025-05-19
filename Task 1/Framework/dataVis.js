@@ -168,7 +168,7 @@ function initVis(parsedData){
         .style("stroke", "black");
 
     // TODO: render grid lines in gray
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= dimensions.length; i++) {
         let points = [];
         for (let j = 0; j < dimensions.length; j++) {
             points.push({
@@ -190,6 +190,7 @@ function initVis(parsedData){
             .style("stroke", "gray")
             .style("stroke-dasharray", "2,2");
     }
+
     // TODO: render correct axes labels
     radar.selectAll(".axisLabel")
         .data(dimensions)
