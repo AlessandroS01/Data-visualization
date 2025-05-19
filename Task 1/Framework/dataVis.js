@@ -199,28 +199,54 @@ function initVis(parsedData){
         .style("stroke", "black");
 
     // TODO: render grid lines in gray
-    const axisLength = radius * maxAxisRadius;
+    const axisLength = radius * maxAxisRadius; // defines the real maximum length of the axis
 
     for (let i = 1; i <= dimensions.length; i++) {
         const rLevel = axisLength * (i / dimensions.length); // evenly spaced radius steps
 
-        const points = dimensions.map((_, j) => ({
-            x: radarX(rLevel, j),
+        const points = dimensions.map((_, j) => ({ // we do not care about the element, but only its index j
+            x: radarX(rLevel, j), // return the (x, y) coordinate for each dimension at the specified radius
             y: radarY(rLevel, j)
         }));
 
-        const lineFunction = d3.line()
-            .x(d => d.x)
+        points.forEach(p => console.log("Point: " + p.x + ", " + p.y));
+
+        const lineFunction = d3.line() // line generator function
+            .x(d => d.x) // for each point given uses x and y as horizontal and vertical coordinates
             .y(d => d.y)
-            .curve(d3.curveLinearClosed);
+            .curve(d3.curveLinearClosed); // draw straight line
 
         radar.append("path")
-            .datum(points)
+            .datum(points) // bind whole array to single closed line rather than n different elements
             .attr("class", "grid-circle-" + i)
-            .attr("d", lineFunction)
+            .attr("d", lineFunction) // defines how to draw the line according to the points given
             .style("fill", "none")
             .style("stroke", "gray")
             .style("stroke-dasharray", "2,2");
+        /*
+        radar.selectAll(`.grid-point-${i}`)
+            .data(points)
+            .enter()
+            .append("circle")
+            .attr("class", `grid-point-${i}`)
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .attr("r", 3)
+            .style("fill", "red");
+
+        // Append labels separately
+        radar.selectAll(`.grid-label-${i}`)
+            .data(points)
+            .enter()
+            .append("text")
+            .attr("class", `grid-label-${i}`)
+            .attr("x", d => d.x + 5)  // offset so text isn't on top of circle
+            .attr("y", d => d.y + 3)
+            .text(d => "Point " + d.x + ", " + d.y)
+            .style("text-anchor", "start")
+            .style("font-size", "10px")
+            .style("fill", "black");
+         */
     }
 
     // TODO: render correct axes labels
