@@ -14,7 +14,7 @@ let xAxis, yAxis, xAxisLabel, yAxisLabel;
 // radar chart axes
 let radarAxes, radarAxesAngle;
 
-let dimensions = ["dimension 1", "dimension 2", "dimension 3", "dimension 4", "dimension 5", "dimension 6"];
+let dimensions = [];
 //*HINT: the first dimension is often a label; you can simply remove the first dimension with
 // dimensions.splice(0, 1);
 
@@ -84,7 +84,7 @@ function init() {
  */
 function initVis(parsedData){
 
-    let header = parsedData.columns; // header of csv dataset
+    let header = parsedData.columns;  // header of csv dataset
     let numericHeader = []; // keeps track of all numeric attributes
 
     // y scalings for scatter plot
@@ -105,13 +105,18 @@ function initVis(parsedData){
             datasetDomains.set(col, domain);
         }
     });
+    dimensions = numericHeader;
 
     // x scalings for scatter plot
     // TODO: set x domain for each dimension
     let x = d3.scaleLinear()
         .range([margin.left, width - margin.left - margin.right]);
-    x.domain(datasetDomains.get(numericHeader[0]));
-    y.domain(datasetDomains.get(numericHeader[1]));
+
+    // defines initial domains
+    let xChosenDomain = numericHeader[0];
+    let yChosenDomain = numericHeader[1];
+    x.domain(datasetDomains.get(xChosenDomain));
+    y.domain(datasetDomains.get(yChosenDomain));
 
     // radius scalings for radar chart
     // TODO: set radius domain for each dimension
@@ -127,7 +132,7 @@ function initVis(parsedData){
     yAxisLabel = yAxis.append("text")
         .style("text-anchor", "middle")
         .attr("y", margin.top / 2)
-        .text("x");
+        .text(yChosenDomain);
 
     xAxis = scatter.append("g")
         .attr("class", "axis")
@@ -137,7 +142,7 @@ function initVis(parsedData){
     xAxisLabel = xAxis.append("text")
         .style("text-anchor", "middle")
         .attr("x", width - margin.right)
-        .text("y");
+        .text(xChosenDomain);
 
     // radar chart axes
     radarAxesAngle = Math.PI * 2 / dimensions.length;
@@ -153,7 +158,7 @@ function initVis(parsedData){
         .enter()
         .append("g")
         .attr("class", "axis");
-
+    
     radarAxes.append("line")
         .attr("x1", 0)
         .attr("y1", 0)
@@ -163,7 +168,28 @@ function initVis(parsedData){
         .style("stroke", "black");
 
     // TODO: render grid lines in gray
+    for (let i = 1; i <= 5; i++) {
+        let points = [];
+        for (let j = 0; j < dimensions.length; j++) {
+            points.push({
+                x: radarX(radius * gridRadius * i, j),
+                y: radarY(radius * gridRadius * i, j)
+            });
+        }
 
+        let lineFunction = d3.line()
+            .x(d => d.x)
+            .y(d => d.y)
+            .curve(d3.curveLinearClosed);
+
+        radar.append("path")
+            .datum(points)
+            .attr("class", "grid-circle-" + i)
+            .attr("d", lineFunction)
+            .style("fill", "none")
+            .style("stroke", "gray")
+            .style("stroke-dasharray", "2,2");
+    }
     // TODO: render correct axes labels
     radar.selectAll(".axisLabel")
         .data(dimensions)
@@ -173,7 +199,8 @@ function initVis(parsedData){
         .attr("dy", "0.35em")
         .attr("x", function(d, i){ return radarX(axisRadius(textRadius), i); })
         .attr("y", function(d, i){ return radarY(axisRadius(textRadius), i); })
-        .text("dimension");
+        .text((d) => d);
+
 
     // init menu for the visual channels
     channels.forEach(function(c){

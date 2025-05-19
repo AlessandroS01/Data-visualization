@@ -29,12 +29,12 @@
     &quot;assignee&quot;: &quot;AlessandroS01&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/AlessandroS01/Data-visualization.git&quot;,
-    &quot;accountId&quot;: &quot;5a1bd112-94ea-45f3-9cc9-b9933fa089ef&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/AlessandroS01/Data-visualization.git",
+    "accountId": "e6f4e48a-49b4-4b1c-8e1d-b69b39fcd3e7"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -87,6 +87,7 @@
       <workItem from="1747589114702" duration="1160000" />
       <workItem from="1747590294754" duration="333000" />
       <workItem from="1747636335098" duration="3565000" />
+      <workItem from="1747649390797" duration="2568000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
