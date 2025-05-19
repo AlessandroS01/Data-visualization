@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Defined gray line for the radar chart">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Bugs for gray lines as well as domains">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 1/Framework/dataVis.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 1/Framework/dataVis.js" afterDir="false" />
     </list>
@@ -29,12 +29,12 @@
     &quot;assignee&quot;: &quot;AlessandroS01&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/AlessandroS01/Data-visualization.git",
-    "accountId": "e6f4e48a-49b4-4b1c-8e1d-b69b39fcd3e7"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/AlessandroS01/Data-visualization.git&quot;,
+    &quot;accountId&quot;: &quot;e6f4e48a-49b4-4b1c-8e1d-b69b39fcd3e7&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -87,7 +87,8 @@
       <workItem from="1747589114702" duration="1160000" />
       <workItem from="1747590294754" duration="333000" />
       <workItem from="1747636335098" duration="3565000" />
-      <workItem from="1747649390797" duration="4088000" />
+      <workItem from="1747649390797" duration="4106000" />
+      <workItem from="1747664562181" duration="2465000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -129,7 +130,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747652252522</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Bugs for gray lines as well as domains">
+      <option name="closed" value="true" />
+      <created>1747653524005</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1747653524005</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,6 +148,7 @@
     <MESSAGE value="Defined structure of the repository" />
     <MESSAGE value="Assigned values of csv numeric headers to chart" />
     <MESSAGE value="Defined gray line for the radar chart" />
-    <option name="LAST_COMMIT_MESSAGE" value="Defined gray line for the radar chart" />
+    <MESSAGE value="Bugs for gray lines as well as domains" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugs for gray lines as well as domains" />
   </component>
 </project>

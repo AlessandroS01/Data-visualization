@@ -15,8 +15,7 @@ let xAxis, yAxis, xAxisLabel, yAxisLabel;
 let radarAxes, radarAxesAngle;
 
 let dimensions = [];
-//*HINT: the first dimension is often a label; you can simply remove the first dimension with
-// dimensions.splice(0, 1);
+
 
 // the visual channels we can use for the scatterplot
 let channels = ["scatterX", "scatterY", "size"];
@@ -196,7 +195,7 @@ function initVis(parsedData){
         .attr("dy", "0.35em")
         .attr("x", function(d, i){ return radarX(axisRadius(textRadius), i); })
         .attr("y", function(d, i){ return radarY(axisRadius(textRadius), i); })
-        .text((d) => d);
+        .text(d => d);
 
 
     // init menu for the visual channels
@@ -222,51 +221,49 @@ function clear(){
 
 //Create Table
 function CreateDataTable(dataRetrieved) {
-    /*for (let i = 0; i < dataRetrieved.length; i++) {
-        console.log(dataRetrieved[i]);
-    }
-
-    // table creation
-    let table = dataTable.append("table")
+    let table = dataTable.append("table") // creation of the table
         .attr("class", "dataTableClass");
 
-    let headerData = dataRetrieved[0].split(",");
-    console.log(headerData)
+    let headerData = dataRetrieved.columns; // take the csv dataset attributes
 
-    // table header creation
-    let tableHeader = table.append("thead")
-        .attr("class", "tableHeaderClass");
+    let tableHeader = table.append("thead"); // defines the header of the table
 
-    tableHeader.append("tr")
-        .selectAll("th")
+    tableHeader.append("tr") // generate the row for the header
+        .selectAll("th") // used as placeholder that says we want to bind data to the new created th DOM elements
         .data(headerData)
         .enter()
         .append("th")
-        .text(d => d);
+        .attr("class", "tableHeaderClass")
+        .text(d => d); // give to each single cell the value of the corresponding index inside headerData
 
-    // table body creation
-    let tbody = table.append("tbody")
-        .attr("class", "tableBodyClass");
+    let tbody = table.append("tbody");
 
     for (let i = 1; i < dataRetrieved.length; i++) {
-        let rowData = dataRetrieved[i].split(",");
+        let rowData = dataRetrieved[i];
+        console.log(rowData);
+        Object.values(rowData).forEach(function(d){
+            console.log(d);
+        })
 
-        // Append a row for each data entry
-        let row = tbody.append("tr")
+        let row = tbody.append("tr") // Append a row for each data entry
             .attr("class", "tableRowClass");
 
-        // Append a cell for each column
-        row.selectAll("td")
-            .data(rowData)
+        row.selectAll("td") // generates new cells according to the values inside each object
+            .data(Object.values(rowData))
             .enter()
             .append("td")
-            .text(d => d);
+            .attr("class", "tableBodyClass")
+            .text(d => d)
+            .on("mouseover", function(_){
+                return this.style.backgroundColor = "lightblue";
+            })
+            .on("mouseout", function(_){
+                return this.style.backgroundColor = "white";
+            });
     }
-
-     */
-    // TODO: add mouseover event
-
 }
+
+
 function renderScatterplot(){
 
     // TODO: get domain names from menu and label x- and y-axis
