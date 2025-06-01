@@ -16,6 +16,9 @@ let radarAxes, radarAxesAngle;
 
 let dimensions = [];
 
+// Stores the parsed data from the csv
+// Use this to modify the plots
+let data = []
 
 // the visual channels we can use for the scatterplot
 let channels = ["scatterX", "scatterY", "size"];
@@ -64,6 +67,10 @@ function init() {
         reader.onloadend = function () {
 
             let parsedData = d3.csvParse(reader.result); // list of objects
+            data = parsedData
+            // Debug: view the csv
+            // delete commen and log later
+            // console.log("Parsed CSV data:", parsedData);
 
             // TODO: parse reader.result data and call the init functions with the parsed data!
             initVis(parsedData);
@@ -93,7 +100,7 @@ function initVis(parsedData){
                 parsedData,
                 d => +d[col]
             ); // returns min and max value of the converted domain
-            console.log("Domain range: " + domain + " for " + col);
+            // console.log("Domain range: " + domain + " for " + col);
 
             dimensions.push(col); // adds only numeric attributes
             datasetDomainsScales.set(col, domain);
@@ -145,13 +152,13 @@ function initVis(parsedData){
     });
 
     yScales.forEach(function(scale, key) {
-        console.log("yScale for " + key + ": " + scale);
+        // console.log("yScale for " + key + ": " + scale);
     });
     xScales.forEach(function(scale, key) {
-        console.log("xScale for " + key + ": " + scale);
+        // console.log("xScale for " + key + ": " + scale);
     });
     rScales.forEach(function(scale, key) {
-        console.log("rScale for " + key + ": " + scale);
+        // console.log("rScale for " + key + ": " + scale);
     });
 
     // scatterplot axes
@@ -209,7 +216,7 @@ function initVis(parsedData){
             y: radarY(rLevel, j)
         }));
 
-        points.forEach(p => console.log("Point: " + p.x + ", " + p.y));
+        // points.forEach(p => console.log("Point: " + p.x + ", " + p.y));
 
         const lineFunction = d3.line() // line generator function
             .x(d => d.x) // for each point given uses x and y as horizontal and vertical coordinates
@@ -331,11 +338,27 @@ function createDataTable(dataRetrieved) {
 
 function renderScatterplot(){
 
+    console.log("here")
     // TODO: get domain names from menu and label x- and y-axis
+    // --------------------------------------------------------------------------------------------------------
+    // Possible future updates : update the text and font to make the axes more readable
+
+    // Read what the axes is set to on the dropdown menu
+    let xText = readMenu("scatterX");
+    let yText = readMenu("scatterY");
+
+    // Update the axes' text accordingly
+    xAxisLabel.text(xText)
+    yAxisLabel.text(yText)
+
 
     // TODO: re-render axes
+    // --------------------------------------------------------------------------------------------------------
+    
+
 
     // TODO: render dots
+    // --------------------------------------------------------------------------------------------------------
 }
 
 function renderRadarChart(){
