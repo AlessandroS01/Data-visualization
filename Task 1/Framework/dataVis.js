@@ -10,6 +10,7 @@
 */
 
 // scatterplot axes
+let xScales, yScales, rScales;
 let xAxis, yAxis, xAxisLabel, yAxisLabel;
 // radar chart axes
 let radarAxes, radarAxesAngle;
@@ -116,19 +117,19 @@ function initVis(parsedData){
     // TODO: set y domain for each dimension
     let y = d3.scaleLinear()
         .range([height - margin.bottom - margin.top, margin.top]);
-    let yScales = new Map();
+    yScales = new Map();
 
     // x scalings for scatter plot
     // TODO: set x domain for each dimension
     let x = d3.scaleLinear()
         .range([margin.left, width - margin.left - margin.right]);
-    let xScales = new Map();
+    xScales = new Map();
 
     // radius scalings for radar chart
     // TODO: set radius domain for each dimension
     let r = d3.scaleLinear()
         .range([0, radius]);
-    let rScales = new Map();
+    rScales = new Map();
 
 
     // defines domain for x, y, and r
@@ -149,7 +150,6 @@ function initVis(parsedData){
         const rScale = d3.scaleLinear()
             .domain(domain)
             .range(r.range());  // reuse the range you set earlier
-
 
         yScales.set(col, yScale);
         xScales.set(col, xScale);
@@ -343,34 +343,64 @@ function createDataTable(dataRetrieved) {
 
 function renderScatterplot(){
 
-    console.log("here")
     // TODO: get domain names from menu and label x- and y-axis
+    // FINISHED
     // --------------------------------------------------------------------------------------------------------
     // Possible future updates : update the text and font to make the axes more readable
 
     // Read what the axes is set to on the dropdown menu
     let xText = readMenu("scatterX");
     let yText = readMenu("scatterY");
+    let rText = readMenu("size");
 
     // Update the axes' text accordingly
     xAxisLabel.text(xText)
     yAxisLabel.text(yText)
 
-
     // TODO: re-render axes
+    // FINISHED
     // --------------------------------------------------------------------------------------------------------
-    
+    let xScale = xScales.get(xText);
+    let yScale = yScales.get(yText);
+    let rScale = rScales.get(rText);
 
+    xAxis.transition().duration(500).call(d3.axisBottom(xScale));
+    yAxis.transition().duration(500).call(d3.axisLeft(yScale));
 
     // TODO: render dots
     // --------------------------------------------------------------------------------------------------------
 
-    addSelectedPoint(data[0]);
-    addSelectedPoint(data[1]);
-    addSelectedPoint(data[2]);
-    addSelectedPoint(data[3]);
-    addSelectedPoint(data[4]);
-    addSelectedPoint(data[5]);
+    // Bind data to circles
+    let circles = scatter.selectAll("circle").data(data);
+
+    // ENTER: create new circles
+    let circlesEnter = circles.enter()
+        .append("circle")
+        .attr("cx", d => xScale(+d[xText]))
+        .attr("cy", d => yScale(+d[yText]))
+        .attr("r", d => {
+            let raw = rScale(+d[rText]);
+            let minR = 2, maxR = 10;
+            let norm = (raw - rScale.range()[0]) / (rScale.range()[1] - rScale.range()[0]);
+            return minR + norm * (maxR - minR);
+        })
+        .attr("fill", "black")
+        .attr("opacity", 0.3);
+
+    // UPDATE: apply to both new and existing circles
+    circlesEnter.merge(circles)
+        .transition().duration(500)
+        .attr("cx", d => xScale(+d[xText]))
+        .attr("cy", d => yScale(+d[yText]))
+        .attr("r", d => {
+            let raw = rScale(+d[rText]);
+            let minR = 2, maxR = 10;
+            let norm = (raw - rScale.range()[0]) / (rScale.range()[1] - rScale.range()[0]);
+            return minR + norm * (maxR - minR);
+        });
+
+    // EXIT: remove old circles
+    circles.exit().remove();
 }
 
 function renderRadarChart(){
