@@ -338,7 +338,6 @@ function createDataTable(dataRetrieved) {
 
 function renderScatterplot(){
 
-    console.log("here")
     // TODO: get domain names from menu and label x- and y-axis
     // FINISHED
     // --------------------------------------------------------------------------------------------------------
@@ -347,29 +346,57 @@ function renderScatterplot(){
     // Read what the axes is set to on the dropdown menu
     let xText = readMenu("scatterX");
     let yText = readMenu("scatterY");
-    // let rText = readMenu("scatterZ") // ????? what should the name be?
+    let rText = readMenu("size");
 
     // Update the axes' text accordingly
     xAxisLabel.text(xText)
     yAxisLabel.text(yText)
 
-
     // TODO: re-render axes
+    // FINISHED
     // --------------------------------------------------------------------------------------------------------
     let xScale = xScales.get(xText);
     let yScale = yScales.get(yText);
+    let rScale = rScales.get(rText);
 
     xAxis.transition().duration(500).call(d3.axisBottom(xScale));
     yAxis.transition().duration(500).call(d3.axisLeft(yScale));
 
-
-
-
-
-
-
     // TODO: render dots
     // --------------------------------------------------------------------------------------------------------
+
+    // Bind data to circles
+    let circles = scatter.selectAll("circle").data(data);
+
+    // ENTER: create new circles
+    circles.enter()
+        .append("circle")
+        .attr("cx", d => xScale(+d[xText]))
+        .attr("cy", d => yScale(+d[yText]))
+        .attr("r", d => {
+            let raw = rScale(+d[rText]);
+            let minR = 2, maxR = 10;
+            let norm = (raw - rScale.range()[0]) / (rScale.range()[1] - rScale.range()[0]);
+            return minR + norm * (maxR - minR);
+        })
+        .attr("fill", "black")
+        .attr("opacity", 0.3)
+
+        // UPDATE: reposition existing circles
+        .merge(circles)
+        .transition().duration(500)
+        .attr("cx", d => xScale(+d[xText]))
+        .attr("cy", d => yScale(+d[yText]))
+        .attr("r", d => {
+            let raw = rScale(+d[rText]);
+            let minR = 2, maxR = 10;
+            let norm = (raw - rScale.range()[0]) / (rScale.range()[1] - rScale.range()[0]);
+            return minR + norm * (maxR - minR);
+        });
+
+    console.log(xScale(+d[xText]));
+
+    circles.exit().remove();
 }
 
 function renderRadarChart(){
