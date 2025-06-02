@@ -10,6 +10,7 @@
 */
 
 // scatterplot axes
+let xScales, yScales, rScales;
 let xAxis, yAxis, xAxisLabel, yAxisLabel;
 // radar chart axes
 let radarAxes, radarAxesAngle;
@@ -111,19 +112,19 @@ function initVis(parsedData){
     // TODO: set y domain for each dimension
     let y = d3.scaleLinear()
         .range([height - margin.bottom - margin.top, margin.top]);
-    let yScales = new Map();
+    yScales = new Map();
 
     // x scalings for scatter plot
     // TODO: set x domain for each dimension
     let x = d3.scaleLinear()
         .range([margin.left, width - margin.left - margin.right]);
-    let xScales = new Map();
+    xScales = new Map();
 
     // radius scalings for radar chart
     // TODO: set radius domain for each dimension
     let r = d3.scaleLinear()
         .range([0, radius]);
-    let rScales = new Map();
+    rScales = new Map();
 
 
     // defines domain for x, y, and r
@@ -144,7 +145,6 @@ function initVis(parsedData){
         const rScale = d3.scaleLinear()
             .domain(domain)
             .range(r.range());  // reuse the range you set earlier
-
 
         yScales.set(col, yScale);
         xScales.set(col, xScale);
@@ -340,12 +340,14 @@ function renderScatterplot(){
 
     console.log("here")
     // TODO: get domain names from menu and label x- and y-axis
+    // FINISHED
     // --------------------------------------------------------------------------------------------------------
     // Possible future updates : update the text and font to make the axes more readable
 
     // Read what the axes is set to on the dropdown menu
     let xText = readMenu("scatterX");
     let yText = readMenu("scatterY");
+    // let rText = readMenu("scatterZ") // ????? what should the name be?
 
     // Update the axes' text accordingly
     xAxisLabel.text(xText)
@@ -354,7 +356,16 @@ function renderScatterplot(){
 
     // TODO: re-render axes
     // --------------------------------------------------------------------------------------------------------
-    
+    let xScale = xScales.get(xText);
+    let yScale = yScales.get(yText);
+
+    xAxis.transition().duration(500).call(d3.axisBottom(xScale));
+    yAxis.transition().duration(500).call(d3.axisLeft(yScale));
+
+
+
+
+
 
 
     // TODO: render dots
