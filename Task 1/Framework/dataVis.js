@@ -404,11 +404,21 @@ function renderRadarChart(){
     let li = ul.selectAll("li")
         .data(selectedItems)
         .enter()
-        .append("li");
+        .append("li")
+        .style("display", "flex")
+        .style("align-items", "center")
+        .style("gap", "6px"); // space between dot and text
 
+    // Add colored dot
     li.append("span")
-        .text(d => d[Object.keys(d)[0]] + " ");
+        .attr("class", "color-circle")
+        .style("background-color", (d) => colorUsedMap.get(d));
 
+    // Add text
+    li.append("span")
+        .text(d => d[Object.keys(d)[0]]);
+
+    // Add remove button
     li.append("button")
         .text("X")
         .attr("class", "close")
