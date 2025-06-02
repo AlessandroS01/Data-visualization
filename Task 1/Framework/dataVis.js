@@ -369,7 +369,7 @@ function renderScatterplot(){
     let circles = scatter.selectAll("circle").data(data);
 
     // ENTER: create new circles
-    circles.enter()
+    let circlesEnter = circles.enter()
         .append("circle")
         .attr("cx", d => xScale(+d[xText]))
         .attr("cy", d => yScale(+d[yText]))
@@ -380,10 +380,10 @@ function renderScatterplot(){
             return minR + norm * (maxR - minR);
         })
         .attr("fill", "black")
-        .attr("opacity", 0.3)
+        .attr("opacity", 0.3);
 
-        // UPDATE: reposition existing circles
-        .merge(circles)
+    // UPDATE: apply to both new and existing circles
+    circlesEnter.merge(circles)
         .transition().duration(500)
         .attr("cx", d => xScale(+d[xText]))
         .attr("cy", d => yScale(+d[yText]))
@@ -394,8 +394,7 @@ function renderScatterplot(){
             return minR + norm * (maxR - minR);
         });
 
-    console.log(xScale(+d[xText]));
-
+    // EXIT: remove old circles
     circles.exit().remove();
 }
 
