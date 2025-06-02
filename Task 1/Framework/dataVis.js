@@ -31,10 +31,7 @@ let scatter, radar, dataTable;
 
 // Add additional variables
 let selectedItems = [];
-const colorList = [
-    "#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00",
-    "#ffff33", "#a65628", "#f781bf", "#999999", "#66c2a5"
-];
+let colorUsedMap = new Map();
 
 
 function init() {
@@ -235,30 +232,6 @@ function initVis(parsedData){
             .style("fill", "none")
             .style("stroke", "gray")
             .style("stroke-dasharray", "2,2");
-        /*
-        radar.selectAll(`.grid-point-${i}`)
-            .data(points)
-            .enter()
-            .append("circle")
-            .attr("class", `grid-point-${i}`)
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y)
-            .attr("r", 3)
-            .style("fill", "red");
-
-        // Append labels separately
-        radar.selectAll(`.grid-label-${i}`)
-            .data(points)
-            .enter()
-            .append("text")
-            .attr("class", `grid-label-${i}`)
-            .attr("x", d => d.x + 5)  // offset so text isn't on top of circle
-            .attr("y", d => d.y + 3)
-            .text(d => "Point " + d.x + ", " + d.y)
-            .style("text-anchor", "start")
-            .style("font-size", "10px")
-            .style("fill", "black");
-         */
     }
 
     // TODO: render correct axes labels
@@ -292,6 +265,11 @@ function clear(){
     scatter.selectAll("*").remove();
     radar.selectAll("*").remove();
     dataTable.selectAll("*").remove();
+
+
+    // Clear any existing legend to avoid duplication
+    let legend = d3.select("#legend");
+    legend.selectAll("ul").remove();
 }
 
 //Create Table
@@ -315,12 +293,6 @@ function createDataTable(dataRetrieved) {
 
     for (let i = 1; i < dataRetrieved.length; i++) {
         let rowData = dataRetrieved[i];
-        /*
-        console.log("Table row data: " + rowData);
-        Object.values(rowData).forEach(function(d){
-            console.log("Value of row data item: " + d);
-        })
-         */
 
         let row = tbody.append("tr") // Append a row for each data entry
             .attr("class", "tableRowClass");
@@ -378,14 +350,22 @@ function renderScatterplot(){
         .append("circle")
         .attr("cx", d => xScale(+d[xText]))
         .attr("cy", d => yScale(+d[yText]))
+        .attr("id", d => "point"+data.indexOf(d)) // gives id equal to the position inside the data array
         .attr("r", d => {
             let raw = rScale(+d[rText]);
             let minR = 2, maxR = 10;
             let norm = (raw - rScale.range()[0]) / (rScale.range()[1] - rScale.range()[0]);
             return minR + norm * (maxR - minR);
-        })
+        }) // normalized scale between 2 and 10
         .attr("fill", "black")
-        .attr("opacity", 0.3);
+        .attr("opacity", 0.3)
+        .on("click", function(event, d) {
+            if (selectedItems.includes(d)) { // remove the selection
+                removeSelectedPoint(d);
+            } else { // add the selection
+                addSelectedPoint(d);
+            }
+        });
 
     // UPDATE: apply to both new and existing circles
     circlesEnter.merge(circles)
@@ -404,57 +384,124 @@ function renderScatterplot(){
 }
 
 function renderRadarChart(){
-
-    console.log("Radar chart")
-    console.log(selectedItems)
-
     // TODO: show selected items in legend
     let legend = d3.select("#legend");
+
+    // Clear any existing list to avoid duplication
+    legend.selectAll("ul").remove();
+
     let ul = legend.append("ul")
         .attr("id", "legend-list");
 
-    // Bind data and create <li> elements
     let li = ul.selectAll("li")
         .data(selectedItems)
         .enter()
-        .append("li")
-        .attr("id", function(_, i) {
-            return i;
-        }); // defines an id for each <li> element equal to the list position to handle the removal
+        .append("li");
 
-    // Append span with first attribute
     li.append("span")
         .text(d => d[Object.keys(d)[0]] + " ");
 
-    // Append button
     li.append("button")
         .text("X")
         .attr("class", "close")
-        .on("click", function(event, d, i) {
-            console.log(i);
-            // Remove the item from selectedItems
-            removeSelectedPointByIndex(i);
-            renderRadarChart();
+        .on("click", function(event, d) {
+            removeSelectedPoint(d);
+            renderRadarChart();  // Re-render after removal
         });
     // TODO: render polylines in a unique color
 }
 
 /**
  * Add a point to the selected points list
- * @param point - being the object selected
+ * @param dataPoint - object to be added
  */
-function addSelectedPoint(point) {
-    selectedItems.push(point);
+function addSelectedPoint(dataPoint) {
+    selectedItems.push(dataPoint);
+
+    const indexDataPoint = data.indexOf(dataPoint);
+    const colorList = [
+        "#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00",
+        "#ffff33", "#a65628", "#f781bf", "#999999", "#66c2a5"
+    ];
+
+    if(colorUsedMap.size === 0) { // no other element selected
+
+        d3.select("#point"+indexDataPoint)
+            .transition()
+            .duration(300)
+            .attr("fill",colorList[0])
+            .attr("opacity", 1);
+        colorUsedMap.set(dataPoint, colorList[0]);
+
+    } else {
+        let attributeName = getNameKey(dataPoint); // takes name of the added element
+        let newColor = "";
+
+        // checks if no other selected element has the same "category"
+        if (selectedItems.filter(item => getNameKey(item) === attributeName).length === 1) {
+            let usedColors = new Set(colorUsedMap.values()); // set of colors already used
+            for (let i = 0; i < colorList.length; i++) {
+                if (!usedColors.has(colorList[i])) {
+                    newColor = colorList[i];
+                    break;
+                }
+            }
+        } else {
+            colorUsedMap.forEach(function(value, key) {
+                if (getNameKey(key) === attributeName) {
+                    newColor = value;
+                }
+            })
+        }
+
+        d3.select("#point"+indexDataPoint)
+            .transition()
+            .duration(300)
+            .attr("fill",newColor)
+            .attr("opacity", 1);
+        colorUsedMap.set(dataPoint, newColor);
+    }
+
+    renderRadarChart();
 }
 
 /**
  * Remove an object from the selection
- * @param index - index of the object to remove
+ * @param dataPoint - object to be removed
  */
-function removeSelectedPointByIndex(index) {
-    selectedItems.splice(index, 1);
-    radar.selectAll("#legend-list").remove();
-    radar.selectAll("#"+index).remove();
+function removeSelectedPoint(dataPoint) {
+    selectedItems = selectedItems.filter(item => item !== dataPoint);
+
+    const indexDataPoint = data.indexOf(dataPoint);
+    d3.select("#point"+indexDataPoint)
+        .transition()
+        .duration(300)
+        .attr("opacity", 0.3)
+        .attr("fill","black"); // reset the color of the point to black
+    colorUsedMap.delete(dataPoint);
+
+    renderRadarChart();
+}
+
+/**
+ * Returns the initial name of an instance by applying a split.
+ * The name is extracted from the first element of the object.
+ * @param obj - object of which it is needed the name
+ * @returns {name}
+ */
+function getNameKey(obj) {
+    const instance = obj[Object.keys(obj)[0]];
+
+    const spaceIndex = instance.indexOf(" ");
+    const dotIndex = instance.indexOf(".");
+
+    if (spaceIndex !== -1 && (dotIndex === -1 || spaceIndex < dotIndex)) { // space comes first or dot not present
+        return instance.split(" ")[0];
+    } else if (dotIndex !== -1) { // dot comes first
+        return instance.split(".")[0];
+    } else { // no space or dot
+        return instance;
+    }
 }
 
 
