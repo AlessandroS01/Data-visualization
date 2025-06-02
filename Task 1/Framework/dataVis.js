@@ -268,6 +268,8 @@ function clear(){
 
 
     // Clear any existing legend to avoid duplication
+    selectedItems = [];
+    colorUsedMap.clear();
     let legend = d3.select("#legend");
     legend.selectAll("ul").remove();
 }
@@ -348,6 +350,7 @@ function renderScatterplot(){
     // ENTER: create new circles
     let circlesEnter = circles.enter()
         .append("circle")
+        .attr("class", "dot")
         .attr("cx", d => xScale(+d[xText]))
         .attr("cy", d => yScale(+d[yText]))
         .attr("id", d => "point"+data.indexOf(d)) // gives id equal to the position inside the data array
@@ -360,10 +363,15 @@ function renderScatterplot(){
         .attr("fill", "black")
         .attr("opacity", 0.3)
         .on("click", function(event, d) {
+            const element = d3.select(this);
             if (selectedItems.includes(d)) { // remove the selection
                 removeSelectedPoint(d);
+                element.attr("stroke", null)
+                    .attr("stroke-width", null);
             } else { // add the selection
                 addSelectedPoint(d);
+                element.attr("stroke", "black")
+                    .attr("stroke-width", 1);
             }
         });
 
