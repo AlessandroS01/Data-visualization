@@ -29,6 +29,7 @@ let margin, width, height, radius;
 let scatter, radar, dataTable;
 
 // Add additional variables
+let selectedItems = [];
 
 
 function init() {
@@ -359,14 +360,63 @@ function renderScatterplot(){
 
     // TODO: render dots
     // --------------------------------------------------------------------------------------------------------
+
+    addSelectedPoint(data[0]);
+    addSelectedPoint(data[1]);
+    addSelectedPoint(data[2]);
+    addSelectedPoint(data[3]);
+    addSelectedPoint(data[4]);
+    addSelectedPoint(data[5]);
 }
 
 function renderRadarChart(){
 
-    // TODO: show selected items in legend
+    console.log("Radar chart")
+    console.log(selectedItems)
 
+    // TODO: show selected items in legend
+    let legend = d3.select("#legend");
+    let ul = legend.append("ul")
+        .attr("id", "legend-list");
+
+    // Bind data and create <li> elements
+    let li = ul.selectAll("li")
+        .data(selectedItems)
+        .enter()
+        .append("li")
+        .attr("id", function(_, i) {
+            return i;
+        }); // defines an id for each <li> element equal to the list position to handle the removal
+
+    // Append span with first attribute
+    li.append("span")
+        .text(d => d[Object.keys(d)[0]] + " ");
+
+    // Append button
+    li.append("button")
+        .text("X")
+        .attr("class", "close")
+        .on("click", function(event, d, i) {
+            console.log(i);
+            // Remove the item from selectedItems
+            removeSelectedPointByIndex(i);
+            renderRadarChart();
+        });
     // TODO: render polylines in a unique color
 }
+
+// handle selected points addition
+function addSelectedPoint(point) {
+    selectedItems.push(point);
+}
+
+// handle selected points removal
+function removeSelectedPointByIndex(index) {
+    selectedItems.splice(index, 1);
+    radar.selectAll("#legend-list").remove();
+    radar.selectAll("#"+index).remove();
+}
+
 
 
 function radarX(radius, index){
