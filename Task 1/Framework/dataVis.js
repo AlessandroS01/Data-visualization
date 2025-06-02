@@ -405,12 +405,18 @@ function renderRadarChart(){
     // TODO: render polylines in a unique color
 }
 
-// handle selected points addition
+/**
+ * Add a point to the selected points list
+ * @param point - being the object selected
+ */
 function addSelectedPoint(point) {
     selectedItems.push(point);
 }
 
-// handle selected points removal
+/**
+ * Remove an object from the selection
+ * @param index - index of the object to remove
+ */
 function removeSelectedPointByIndex(index) {
     selectedItems.splice(index, 1);
     radar.selectAll("#legend-list").remove();
