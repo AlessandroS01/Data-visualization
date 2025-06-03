@@ -14,6 +14,9 @@ let xScales, yScales, rScales;
 let xAxis, yAxis, xAxisLabel, yAxisLabel;
 // radar chart axes
 let radarAxes, radarAxesAngle;
+let maxAxisRadius = 0.75, // lines for radarChart (defines a proportion of the radius range)
+    textRadius = 0.8;
+
 
 let dimensions = [];
 
@@ -153,16 +156,6 @@ function initVis(parsedData){
         rScales.set(col, rScale);
     });
 
-    yScales.forEach(function(scale, key) {
-        // console.log("yScale for " + key + ": " + scale);
-    });
-    xScales.forEach(function(scale, key) {
-        // console.log("xScale for " + key + ": " + scale);
-    });
-    rScales.forEach(function(scale, key) {
-        // console.log("rScale for " + key + ": " + scale);
-    });
-
     // scatterplot axes
     yAxis = scatter.append("g")
         .attr("class", "axis")
@@ -188,9 +181,6 @@ function initVis(parsedData){
     radarAxesAngle = Math.PI * 2 / dimensions.length;
     let axisRadius = d3.scaleLinear()
         .range([0, radius]);
-    let maxAxisRadius = 0.75,
-        textRadius = 0.8,
-        gridRadius = 0.1;
 
     // radar axes
     radarAxes = radar.selectAll(".axis")
@@ -393,6 +383,8 @@ function renderScatterplot(){
 
 function renderRadarChart(){
     // TODO: show selected items in legend
+    // FINISHED
+    // ---------------------------------------------------------
     let legend = d3.select("#legend");
 
     // Clear any existing list to avoid duplication
@@ -426,7 +418,41 @@ function renderRadarChart(){
             removeSelectedPoint(d);
             renderRadarChart();  // Re-render after removal
         });
+
     // TODO: render polylines in a unique color
+    // ---------------------------------------------------------
+    // Clean previous radar shapes
+    radar.selectAll(".radar-shape").remove();
+
+    selectedItems.forEach((item, index) => {
+        let proportionalRadius = radius * maxAxisRadius;
+
+        const points = dimensions.map((dim, i) => {
+            const rawValue = +item[dim]; // extract value for each dimension
+            const scaled = rScales.get(dim)(rawValue); // scales the value
+
+            // Use the scale, then proportionally map to proportionalRadius
+            const adjusted = scaled * (proportionalRadius / radius); // rescale directly
+
+            return {
+                x: radarX(adjusted, i),
+                y: radarY(adjusted, i)
+            };
+        });
+        console.log(points);
+
+        radar.append("path")
+            .datum(points)
+            .attr("class", "radar-shape")
+            .attr("d", d3.line()
+                .x(d => d.x)
+                .y(d => d.y)
+                .curve(d3.curveLinearClosed))
+            .attr("fill", "none")
+            .style("stroke", colorUsedMap.get(item))
+            .style("stroke-width", 2);
+    });
+
 }
 
 /**
