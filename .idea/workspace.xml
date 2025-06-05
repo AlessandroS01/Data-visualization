@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Radar gray lines completed">
-      <change beforePath="$PROJECT_DIR$/Task 1/Framework/dataVis.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 1/Framework/dataVis.js" afterDir="false" />
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements">
+      <change afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Task 2/Framework/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Task 2/Framework/worldmap.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 1/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 1/Framework/dashboard.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="selection" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -47,37 +54,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JavaScript Debug.index.html.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Node.js.dataVis.js.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;alessandro&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lenovo/Desktop/University/Master University/Passau University/Studies/Sommersemester 2025/Data Visualization/Uebung/Final Project/Specification Sheet&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;JavaScript.Libraries&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2025.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JavaScript Debug.index.html (1).executor": "Run",
+    "JavaScript Debug.index.html.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Node.js.dataVis.js.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "C:/Users/Lenovo/Desktop/University/Master University/Passau University/Studies/Sommersemester 2025/Data Visualization/Uebung/Project/Task 2",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "JavaScript.Libraries",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Lenovo\Desktop\University\Master University\Passau University\Studies\Sommersemester 2025\Data Visualization\Uebung\Project\Task 2" />
       <recent name="C:\Users\Lenovo\Desktop\University\Master University\Passau University\Studies\Sommersemester 2025\Data Visualization\Uebung\Final Project\Specification Sheet" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JavaScript Debug.index.html">
+    <configuration name="index.html (1)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Project/Task 2/Framework/index.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Project/Task 1/Framework/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JavaScript Debug.index.html" />
+        <item itemvalue="JavaScript Debug.index.html (1)" />
+        <item itemvalue="JavaScript Debug.index.html" />
         <item itemvalue="JavaScript Debug.index.html" />
       </list>
     </recent_temporary>
@@ -104,6 +119,11 @@
       <workItem from="1747649390797" duration="4106000" />
       <workItem from="1747664562181" duration="8174000" />
       <workItem from="1748845363322" duration="218000" />
+      <workItem from="1748874135150" duration="8911000" />
+      <workItem from="1748934663928" duration="2707000" />
+      <workItem from="1749112152520" duration="698000" />
+      <workItem from="1749115629554" duration="1658000" />
+      <workItem from="1749119744551" duration="3421000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -177,7 +197,71 @@
       <option name="project" value="LOCAL" />
       <updated>1747672612420</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Creating gitignore">
+      <option name="closed" value="true" />
+      <created>1748859453575</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1748859453575</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Definition color list">
+      <option name="closed" value="true" />
+      <created>1748859728409</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1748859728409</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Creation of hashmap for color usage. TODO remove element with index">
+      <option name="closed" value="true" />
+      <created>1748860757636</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1748860757636</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Implemented adding and removal of selected elements. Done color change as well.">
+      <option name="closed" value="true" />
+      <created>1748881845286</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1748881845288</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added line stroke to selected elements in the scatterplot">
+      <option name="closed" value="true" />
+      <created>1748882406629</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1748882406629</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Legend completed">
+      <option name="closed" value="true" />
+      <created>1748883077691</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1748883077691</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Radar chart completed">
+      <option name="closed" value="true" />
+      <created>1748937586374</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1748937586374</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements">
+      <option name="closed" value="true" />
+      <created>1749116170360</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1749116170360</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -201,6 +285,14 @@
     <MESSAGE value="Bugs for gray lines as well as domains" />
     <MESSAGE value="Table creation complete. Hovering effect done as well" />
     <MESSAGE value="Radar gray lines completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Radar gray lines completed" />
+    <MESSAGE value="Creating gitignore" />
+    <MESSAGE value="Definition color list" />
+    <MESSAGE value="Creation of hashmap for color usage. TODO remove element with index" />
+    <MESSAGE value="Implemented adding and removal of selected elements. Done color change as well." />
+    <MESSAGE value="Added line stroke to selected elements in the scatterplot" />
+    <MESSAGE value="Legend completed" />
+    <MESSAGE value="Radar chart completed" />
+    <MESSAGE value="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements" />
   </component>
 </project>
