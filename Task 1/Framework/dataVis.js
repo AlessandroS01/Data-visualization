@@ -34,6 +34,7 @@ let scatter, radar, dataTable;
 
 // Add additional variables
 let selectedItems = [];
+const MAX_SELECTED_ITEMS = 10;
 let colorUsedMap = new Map();
 
 
@@ -359,9 +360,14 @@ function renderScatterplot(){
                 element.attr("stroke", null)
                     .attr("stroke-width", null);
             } else { // add the selection
-                addSelectedPoint(d);
-                element.attr("stroke", "black")
-                    .attr("stroke-width", 1);
+                if (selectedItems.length === MAX_SELECTED_ITEMS) {
+                    window.confirm("You've selected the maximum number of items. \n " +
+                        "To continue the selection remove at least one element.");
+                } else {
+                    addSelectedPoint(d);
+                    element.attr("stroke", "black")
+                        .attr("stroke-width", 1);
+                }
             }
         });
 
@@ -478,6 +484,15 @@ function addSelectedPoint(dataPoint) {
         colorUsedMap.set(dataPoint, colorList[0]);
 
     } else {
+        let newColor = "";
+        let usedColors = new Set(colorUsedMap.values()); // set of colors already used
+        for (let i = 0; i < colorList.length; i++) {
+            if (!usedColors.has(colorList[i])) {
+                newColor = colorList[i];
+                break;
+            }
+        }
+        /* CAN BE USED IN CASE WE WANT EACH ELEMENT OF THE SAME GROUP TO HAVE THE SAME COLOR
         let attributeName = getNameKey(dataPoint); // takes name of the added element
         let newColor = "";
 
@@ -497,6 +512,7 @@ function addSelectedPoint(dataPoint) {
                 }
             })
         }
+         */
 
         d3.select("#point"+indexDataPoint)
             .transition()
