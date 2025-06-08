@@ -4,15 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements">
-      <change afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Task 2/Framework/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Task 2/Framework/worldmap.svg" afterDir="false" />
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Started implementation of map in Task 2">
       <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 1/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 1/Framework/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd - Copy.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd - Copy.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd.metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd.metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GDP/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GDP/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index - Copy.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index - Copy.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index.metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index.metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GINI INDEX/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GINI INDEX/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/Main information database - Copy.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/Main information database - Copy.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/Main information database.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/Main information database.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/dataset.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/dataset.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/whole dataset metadata.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/whole dataset metadata.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/TestData/cars.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/TestData/flowers.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/TestData/nutrients.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,46 +66,54 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JavaScript Debug.index.html (1).executor": "Run",
-    "JavaScript Debug.index.html.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Node.js.dataVis.js.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Users/Lenovo/Desktop/University/Master University/Passau University/Studies/Sommersemester 2025/Data Visualization/Uebung/Project/Task 2",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "JavaScript.Libraries",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JavaScript Debug.Task 2.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.index.html (1).executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.index.html.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Node.js.dataVis.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lenovo/Desktop/University/Master University/Passau University/Studies/Sommersemester 2025/Data Visualization/Uebung/Project/Task 2&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;JavaScript.Libraries&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2025.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Lenovo\Desktop\University\Master University\Passau University\Studies\Sommersemester 2025\Data Visualization\Uebung\Project\Task 2" />
       <recent name="C:\Users\Lenovo\Desktop\University\Master University\Passau University\Studies\Sommersemester 2025\Data Visualization\Uebung\Final Project\Specification Sheet" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Lenovo\Desktop\University\Master University\Passau University\Studies\Sommersemester 2025\Data Visualization\Uebung\Project\Task 2\data" />
+    </key>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.index.html">
-    <configuration name="index.html (1)" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Project/Task 2/Framework/index.html" useBuiltInWebServerPort="true">
+  <component name="RunManager" selected="JavaScript Debug.Task 2">
+    <configuration name="Task 1" type="JavascriptDebugType" temporary="true" uri="http://localhost:63342/Project/Task 1/Framework/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
-    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Project/Task 1/Framework/index.html" useBuiltInWebServerPort="true">
+    <configuration name="Task 2" type="JavascriptDebugType" temporary="true" uri="http://localhost:63342/Project/Task 2/Framework/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.Task 1" />
+      <item itemvalue="JavaScript Debug.Task 2" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JavaScript Debug.index.html" />
-        <item itemvalue="JavaScript Debug.index.html (1)" />
-        <item itemvalue="JavaScript Debug.index.html" />
-        <item itemvalue="JavaScript Debug.index.html" />
+        <item itemvalue="JavaScript Debug.Task 2" />
+        <item itemvalue="JavaScript Debug.Task 1" />
+        <item itemvalue="JavaScript Debug.Task 1" />
+        <item itemvalue="JavaScript Debug.Task 1" />
       </list>
     </recent_temporary>
   </component>
@@ -123,7 +143,9 @@
       <workItem from="1748934663928" duration="2707000" />
       <workItem from="1749112152520" duration="698000" />
       <workItem from="1749115629554" duration="1658000" />
-      <workItem from="1749119744551" duration="3421000" />
+      <workItem from="1749119744551" duration="3641000" />
+      <workItem from="1749373288025" duration="1883000" />
+      <workItem from="1749386572733" duration="8222000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -261,7 +283,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749116170360</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Started implementation of map in Task 2">
+      <option name="closed" value="true" />
+      <created>1749123402299</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1749123402299</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -293,6 +323,7 @@
     <MESSAGE value="Legend completed" />
     <MESSAGE value="Radar chart completed" />
     <MESSAGE value="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements" />
+    <MESSAGE value="Started implementation of map in Task 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Started implementation of map in Task 2" />
   </component>
 </project>

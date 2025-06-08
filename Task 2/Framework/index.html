@@ -29,6 +29,7 @@
     <script src="dataVis.js"></script>
     <!-- PART 2: include scripts for the dashboard -->
     <script src="dashboard.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
 
 </head>
 
@@ -104,11 +105,9 @@
 
 <!-- Tab 3 -->
 <div id="Dashboard" class="tabcontent">
-    <h1>Dashboard Example</h1>
-
     <!-- TODO: The environment of your dashboard can be freely customized. Here is a general layout to get you started. -->
 
-    <!-- Grid container -->
+    <!-- Container -->
     <div class="dashboardGrid">
 
         <div class="map" id="map-chart">
@@ -118,6 +117,10 @@
           <div>das</div>
           <div>asda</div>
         </div>
+
+        <!-- JUST FOR DEBUGGING THE CODE-->
+        <h1>SELECTED COUNTRIES</h1>
+        <ul id="sel_countries"></ul>
 
     </div>
 

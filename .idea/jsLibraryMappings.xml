@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{@types/d3, d2906de347a160f38bc0b7ca57721328, d3-geo-projection.v2, d3-scale-chromatic.v1, jquery-3.6.1, jquery-ui}" />
+    <file url="PROJECT" libraries="{@types/d3, d2906de347a160f38bc0b7ca57721328, d3-geo-projection.v2, d3-scale-chromatic.v1, jquery-3.6.1, jquery-ui, topojson.v2}" />
   </component>
 </project>

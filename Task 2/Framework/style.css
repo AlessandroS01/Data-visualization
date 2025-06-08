@@ -150,19 +150,20 @@ div.tooltip {
 .map {
     width: 100%;
     margin-bottom: 50px;
-    padding: 20px 0;      /* some vertical spacing */
-    box-sizing: border-box;
     flex-grow: 1;            /* take all available vertical space */
     display: flex;
     justify-content: center; /* center SVG horizontally */
     align-items: center;     /* center SVG vertically */
+    border: solid 1px black;
 }
 
-.map svg {
-    width: 60%;              /* scale to 60% width of container */
-    height: auto;            /* scale height automatically to preserve ratio */
-    display: block;
-    max-height: 100%;
+.country {
+    fill: whitesmoke;
+    stroke: #999;
+    cursor: pointer;
+}
+.country:hover {
+    fill: lightblue;
 }
 
 .dashboardGrid .charts {

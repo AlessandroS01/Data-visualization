@@ -13,32 +13,60 @@
 // TODO: You can edit this file as you wish - add new methods, variables etc. or change/delete existing ones.
 
 // TODO: use descriptive names for variables
-let mapChart;
-const mapWidth = 960;  // base width for viewBox
-const mapHeight = 500; // base height for viewBox
+let mapChart, gMap;
+const mapWidth = 1000;  // base width for map
+const mapHeight = 450; // base height for map
+const projection = d3.geoEquirectangular().scale(160);
+const path = d3.geoPath(projection);
 
-function initDashboard(_data) {
+let selectedCountry = [];
+
+
+function initDashboard(retrievedData) {
     // Select .map div and append an svg
     mapChart = d3.select(".map").append("svg")
-        .attr("viewBox", `0 0 ${mapWidth} ${mapHeight}`)    // make svg scalable
-        .attr("preserveAspectRatio", "xMidYMid meet") // keep aspect ratio and centered
-        .classed("map-svg", true);
+        .attr("width", mapWidth)
+        .attr("height", mapHeight)
+        .attr("viewBox", "0 0 1000 400") // This defines the coordinate system of your map content
+        .attr("preserveAspectRatio", "xMidYMid meet");
+    gMap = mapChart.append("g");
 
     createMap();
 }
 
 function createMap() {
-    d3.xml("worldmap.svg").then(data => {
-        const importedSVG = data.documentElement;
-        // Clear previous content if any
-        mapChart.selectAll("*").remove();
-        // Append the imported SVG nodes into mapChart svg
-        importedSVG.childNodes.forEach(node => {
-            mapChart.node().appendChild(node.cloneNode(true));
+    d3.json('../data/worldMap.geojson')
+        .then(worldData => {
+            const countriesFeature = worldData.features;
+            console.log(countriesFeature);
+
+            gMap.selectAll('path')
+                .data(countriesFeature)
+                .enter()
+                .append('path')
+                .attr('class', 'country')
+                .attr('d', path)
+                .on('click', (event, d) => {
+                    const countryName = d.properties.name;
+
+                    // Optional: prevent duplicates
+                    if (!selectedCountry.includes(countryName)) {
+                        selectedCountry.push(countryName);
+                        updateCountryList();
+                    }
+                });
         });
-    }).catch(error => {
-        console.error("Error loading SVG:", error);
-    });
+}
+
+function updateCountryList() {
+    const list = d3.select('#sel_countries');
+    list.selectAll('li').remove(); // Clear old list
+
+    list.selectAll('li')
+        .data(selectedCountry)
+        .enter()
+        .append('li')
+        .text(d => d);
 }
 
 
