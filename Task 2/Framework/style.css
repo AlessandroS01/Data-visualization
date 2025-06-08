@@ -147,14 +147,22 @@ div.tooltip {
     padding: 10px;
 }
 
-.map {
+.main_charts {
     width: 100%;
-    margin-bottom: 50px;
-    flex-grow: 1;            /* take all available vertical space */
     display: flex;
-    justify-content: center; /* center SVG horizontally */
-    align-items: center;     /* center SVG vertically */
-    border: solid 1px black;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.map {
+    width: 80%;
+}
+
+.map_legend {
+    padding: 10px;
+    width: 15%;
+    border-top: #bbbbbb solid 1px;
+    border-left: #bbbbbb solid 1px;
 }
 
 .country {

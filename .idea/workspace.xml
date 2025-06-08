@@ -4,27 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Started implementation of map in Task 2">
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Map creation finished">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd - Copy.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd - Copy.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd.metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GDP/gdp-worldbank-constant-usd.metadata.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GDP/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GDP/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index - Copy.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index - Copy.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index.metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GINI INDEX/economic-inequality-gini-index.metadata.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/GINI INDEX/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/GINI INDEX/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/Main information database - Copy.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/Main information database - Copy.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/Taken datasets/Main information database.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/Taken datasets/Main information database.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/dataset.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/dataset.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Dataset/whole dataset metadata.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/whole dataset metadata.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/TestData/cars.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/TestData/flowers.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/TestData/nutrients.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/data/worldMap.geojson" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/worldMap.geojson" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +130,7 @@
       <workItem from="1749115629554" duration="1658000" />
       <workItem from="1749119744551" duration="3641000" />
       <workItem from="1749373288025" duration="1883000" />
-      <workItem from="1749386572733" duration="8222000" />
+      <workItem from="1749386572733" duration="12055000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -291,7 +276,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749123402299</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Map creation finished">
+      <option name="closed" value="true" />
+      <created>1749397036331</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1749397036331</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -324,6 +317,7 @@
     <MESSAGE value="Radar chart completed" />
     <MESSAGE value="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements" />
     <MESSAGE value="Started implementation of map in Task 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started implementation of map in Task 2" />
+    <MESSAGE value="Map creation finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="Map creation finished" />
   </component>
 </project>

@@ -14,8 +14,8 @@
 
 // TODO: use descriptive names for variables
 let mapChart, gMap;
-const mapWidth = 1000;  // base width for map
-const mapHeight = 450; // base height for map
+const mapWidth = "100%";  // base width for map
+const mapHeight = 500; // base height for map
 const projection = d3.geoEquirectangular().scale(160);
 const path = d3.geoPath(projection);
 
@@ -50,7 +50,7 @@ function createMap() {
                     const countryName = d.properties.name;
 
                     // Optional: prevent duplicates
-                    if (!selectedCountry.includes(countryName)) {
+                    if (!selectedCountry.includes(countryName) && countryName!== "") {
                         selectedCountry.push(countryName);
                         updateCountryList();
                     }
