@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Map creation finished">
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/data/worldMap.geojson" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/worldMap.geojson" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +131,8 @@
       <workItem from="1749115629554" duration="1658000" />
       <workItem from="1749119744551" duration="3641000" />
       <workItem from="1749373288025" duration="1883000" />
-      <workItem from="1749386572733" duration="12055000" />
+      <workItem from="1749386572733" duration="12306000" />
+      <workItem from="1749452978463" duration="5271000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -284,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749397036331</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Map creation finished">
+      <option name="closed" value="true" />
+      <created>1749401046430</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1749401046430</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

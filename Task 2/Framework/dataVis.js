@@ -83,7 +83,7 @@ function init() {
             initVis(parsedData);
             createDataTable(parsedData);
             // TODO: possible place to call the dashboard file for Part 2
-            initDashboard(null);
+            initDashboard(parsedData);
         };
         reader.readAsBinaryString(fileInput.files[0]);
     };
