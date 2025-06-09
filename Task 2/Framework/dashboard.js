@@ -10,21 +10,36 @@
 */
 
 // TODO: use descriptive names for variables
-let mapChart, gMap, timeline;
+/* variables for main map */
+let mapChart, gMap;
 const mapWidth = "100%";  // base width for map
-const mapHeight = 500; // base height for map
+const mapHeight = 500 + "px"; // base height for map
 const projection = d3.geoEquirectangular().scale(160);
 const path = d3.geoPath(projection); // generate paths according to the projection used and the geojson data
 
-const timelineHeight = 90;
+/* variables for timeline */
+let timeline, timelineSlider;
+const timelineHeight = 90 + "px";
 const startYear = 1960;
 const endYear = 2023;
-const periodInterval = d3.range(startYear, endYear + 1); // for the timeline
+// used for defining timeline legend classes and ranges
+const classNames = [
+    "timeline-range no-data",
+    "timeline-range first-interval",
+    "timeline-range second-interval",
+    "timeline-range third-interval",
+    "timeline-range fourth-interval"
+];
+const fertilityRanges = ["No data available", "0 - 2.5", "2.5 - 5.0", "5.0 - 7.5", "7.5 - 10"];
 
+
+/* variables for data */
 let selectedCountry = [];
+let fertilityData = [];
 
 
 function initDashboard(retrievedData) {
+    fertilityData = retrievedData;
 
     // Select .map div and append an svg
     mapChart = d3.select(".map").append("svg")
@@ -56,39 +71,40 @@ function createMap() {
                     if (!selectedCountry.includes(countryName)) {
                         selectedCountry.push(countryName);
                         updateCountryList();
+                    } else {
+                        selectedCountry = selectedCountry.filter(country => country.name !== countryName);
                     }
                 });
         });
 }
 
 function createTimeline() {
-    const xScaleTimeline = d3.scaleLinear()
-        .domain([startYear, endYear])
-        .range([40, mapWidth - 20]);
-
-    const xAxisTimeline = d3.axisBottom(xScaleTimeline)
-        .tickFormat(d3.format("d")) // show whole years like "1960"
-        .ticks(endYear - startYear); // one tick per year (or use fewer if crowded)
-
-
     timeline = d3.select(".map").append("div")
+        .attr("class", "timeline")
         .attr("width", mapWidth)
         .attr("height", timelineHeight)
         .style("padding", "5px")
         .style("display", "grid")
-        .style("grid-template-columns", "10% 85%")
-        .style("grid-template-rows", "45% 45%")
-        .style("gap", "5%");
+        .style("grid-template-columns", "1fr 4fr")
+        .style("grid-template-rows", "1fr 1fr")
+        .style("gap", "10px");
 
     // First cell (empty)
     timeline.append("div")
         .style("border", "1px solid transparent"); // or no border if you want it invisible
 
-    // Other cells with content
-    timeline.append("div")
-        .style("border", "1px solid lightgray")
-        .style("padding", "10px")
-        .text("Cell 2 (top-right)");
+    // Timeline legend (color schema)
+    let legendTimeline = timeline.append("div")
+        .style("display", "flex")
+        .style("flex-direction", "row")
+        .style("align-items", "center");
+
+    for(let i = 0; i < 5; i++) {
+        legendTimeline.append("div")
+            .attr("class", classNames[i])
+            .text(fertilityRanges[i]);
+    }
+
 
     // Button logic
     let timelineButton = timeline.append("div")
@@ -96,20 +112,17 @@ function createTimeline() {
         .style("justify-content", "center")
         .style("align-items", "center")
         .append("button")
-        .attr("id", "play-button");
+        .attr("id", "play-button")
+        .text("Play time-lapse ");
     timelineButton.append("i")
         .attr("class", "fa-solid fa-play")
-        .style("font-size", "15px");
+        .style("font-size", "10px");
     creationTimelineButtonLogic();
 
-    // effective timeline
-    timeline.append("div")
-        .style("border", "1px solid lightgray")
-        .style("padding", "10px")
-        .text("Cell 4 (bottom-right)");
-
-    //let button = timeline.append("button").text("AFAFD");
-    //let g = timeline.append("svg");
+    // Effective timeline
+    timelineSlider = timeline.append("div")
+        .attr("class", "slider-container");
+    creationSlider();
 }
 
 /**
@@ -125,18 +138,29 @@ function creationTimelineButtonLogic() {
 
         if (isTimelinePlaying) {
             icon.remove();
+            timelineButton.text("Stop time-lapse ");
             timelineButton.append("i")
                 .attr("class", "fa-solid fa-pause")
-                .style("font-size", "15px");
+                .style("font-size", "10px");
         } else {
             icon.remove();
+            timelineButton.text("Play time-lapse ");
             timelineButton.append("i")
                 .attr("class", "fa-solid fa-play")
-                .style("font-size", "15px");
+                .style("font-size", "10px");
         }
 
         // Trigger your timeline animation here based on isPlaying
     });
+}
+
+/**
+ * Used to create the timeline slider
+ */
+function creationSlider() {
+    timelineSlider.append("div").attr("class", "year-container").text(startYear);
+    timelineSlider.append("div").attr("id", "slider");
+    timelineSlider.append("div").attr("class", "year-container").text(endYear);
 }
 
 function updateCountryList() {

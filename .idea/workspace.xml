@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Map creation finished">
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -133,6 +130,7 @@
       <workItem from="1749373288025" duration="1883000" />
       <workItem from="1749386572733" duration="12306000" />
       <workItem from="1749452978463" duration="5271000" />
+      <workItem from="1749467034842" duration="5911000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />

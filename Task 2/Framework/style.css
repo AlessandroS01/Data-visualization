@@ -170,28 +170,86 @@ div.tooltip {
 
 /* MAP*/
 .country {
-    fill: whitesmoke;
     stroke: #999;
     cursor: pointer;
+    fill: whitesmoke;
 }
 .country:hover {
     fill: lightblue;
 }
 
-/* TIMELINE*/
+/* TIMELINE */
 #play-button {
     width: 70%;
     height: 100%;
-    background-color: #dedede;
+    background-color: whitesmoke;
     cursor: pointer;
     border: #bbbbbb solid 1px;
     transition: 0.3s ease-in-out;
+    font: auto 8px Helvetica;
+    color: dimgray;
 }
 #play-button:hover {
-    background-color: #bbbbbb;
+    background-color: lightgray;
+}
+/* TIMELINE LEGEND */
+.timeline-range {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #bbbbbb;
+    font: bold 12px Helvetica;
 }
 
-/* OTHER CHARTS */
+.no-data {
+    background: repeating-linear-gradient(
+            -45deg,
+            whitesmoke,
+            whitesmoke 5px,
+            lightgray 5px,
+            lightgray 8px
+    );
+}
+.first-interval {
+    background-color: #bcdff1;
+}
+.second-interval {
+    background-color: #c6e5b3;
+}
+.third-interval {
+    background-color: #f3e6c8;
+}
+.fourth-interval {
+    background-color: #f2c1b6;
+}
+
+/* TIMELINE SLIDER */
+.slider-container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.slider-container .year-container {
+    padding: 5px;
+    text-align: center;
+    width: 5%;
+    background-color: whitesmoke;
+    font: bold 12px Helvetica;
+    color: #5b5b5b;
+
+}
+.slider-container #slider {
+    width: 70%;
+    fill: blue;
+}
+
+
+    /* OTHER CHARTS */
 .dashboardGrid .charts {
     display: flex;
     flex-direction: row;
