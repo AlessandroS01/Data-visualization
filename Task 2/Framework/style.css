@@ -245,7 +245,8 @@ div.tooltip {
 }
 .slider-container #slider {
     width: 70%;
-    fill: blue;
+    height: 2px;
+    fill: black;
 }
 
 

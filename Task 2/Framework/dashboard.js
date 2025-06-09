@@ -158,9 +158,53 @@ function creationTimelineButtonLogic() {
  * Used to create the timeline slider
  */
 function creationSlider() {
-    timelineSlider.append("div").attr("class", "year-container").text(startYear);
-    timelineSlider.append("div").attr("id", "slider");
-    timelineSlider.append("div").attr("class", "year-container").text(endYear);
+    timelineSlider.append("div")
+        .attr("class", "year-container")
+        .text(startYear);
+
+    const svg = timelineSlider.append("svg")
+        .attr("id", "slider"); // Let CSS handle the size
+
+    timelineSlider.append("div")
+        .attr("class", "year-container")
+        .text(endYear);
+
+    // Get actual dimensions from the rendered SVG (after it's in the DOM)
+    const bbox = svg.node().getBoundingClientRect();
+    const width = bbox.width;
+    const height = bbox.height;
+
+    const xScale = d3.scaleLinear()
+        .domain([startYear, endYear])
+        .range([0, width]); // add margin
+
+    svg.append("line")
+        .attr("x1", xScale(startYear))
+        .attr("x2", xScale(endYear))
+        .attr("y1", height / 2)
+        .attr("y2", height / 2)
+        .attr("stroke", "#999")
+        .attr("stroke-width", 4);
+
+    const handle = svg.append("circle")
+        .attr("r", 8)
+        .attr("cx", xScale(startYear))
+        .attr("cy", height / 2)
+        .attr("fill", "#333")
+        .style("cursor", "pointer");
+
+    const drag = d3.drag()
+        .on("drag", function (event) {
+            let posX = event.x;
+            posX = Math.max(xScale(startYear), Math.min(xScale(endYear), posX));
+
+            handle.attr("cx", posX);
+
+            const year = Math.round(xScale.invert(posX));
+            console.log("Year:", year);
+        });
+
+    handle.call(drag);
 }
 
 function updateCountryList() {

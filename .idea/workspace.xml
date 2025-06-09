@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Map creation finished">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Timeline half constructed, along with the legend and the playing button. I will continue with the creation of the slider">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
@@ -130,7 +130,7 @@
       <workItem from="1749373288025" duration="1883000" />
       <workItem from="1749386572733" duration="12306000" />
       <workItem from="1749452978463" duration="5271000" />
-      <workItem from="1749467034842" duration="5911000" />
+      <workItem from="1749467034842" duration="7033000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -292,7 +292,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749401046430</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Timeline half constructed, along with the legend and the playing button. I will continue with the creation of the slider">
+      <option name="closed" value="true" />
+      <created>1749473237906</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1749473237906</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -326,6 +334,7 @@
     <MESSAGE value="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements" />
     <MESSAGE value="Started implementation of map in Task 2" />
     <MESSAGE value="Map creation finished" />
-    <option name="LAST_COMMIT_MESSAGE" value="Map creation finished" />
+    <MESSAGE value="Timeline half constructed, along with the legend and the playing button. I will continue with the creation of the slider" />
+    <option name="LAST_COMMIT_MESSAGE" value="Timeline half constructed, along with the legend and the playing button. I will continue with the creation of the slider" />
   </component>
 </project>
