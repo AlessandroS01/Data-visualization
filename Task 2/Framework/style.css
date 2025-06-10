@@ -186,7 +186,7 @@ div.tooltip {
     cursor: pointer;
     border: #bbbbbb solid 1px;
     transition: 0.3s ease-in-out;
-    font: auto 8px Helvetica;
+    font: bold 12px Helvetica;
     color: dimgray;
 }
 #play-button:hover {
@@ -241,12 +241,10 @@ div.tooltip {
     background-color: whitesmoke;
     font: bold 12px Helvetica;
     color: #5b5b5b;
-
+    border: #bbbbbb solid 1px;
 }
 .slider-container #slider {
-    width: 70%;
-    height: 2px;
-    fill: black;
+    overflow: visible;
 }
 
 

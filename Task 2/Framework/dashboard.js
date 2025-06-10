@@ -18,10 +18,13 @@ const projection = d3.geoEquirectangular().scale(160);
 const path = d3.geoPath(projection); // generate paths according to the projection used and the geojson data
 
 /* variables for timeline */
-let timeline, timelineSlider;
+let timeline, timelineSlider, timelineScale, sliderHandler, sliderLabel;
+const viewBoxWidthTimeline = 400;
+const viewBoxHeightTimeline = 30;
 const timelineHeight = 90 + "px";
 const startYear = 1960;
 const endYear = 2023;
+let currentYear = startYear; // handle current year in timeline
 // used for defining timeline legend classes and ranges
 const classNames = [
     "timeline-range no-data",
@@ -53,6 +56,9 @@ function initDashboard(retrievedData) {
     createTimeline();
 }
 
+/**
+ * Creates the map of the world with countries
+ */
 function createMap() {
     d3.json('../data/worldMap.geojson')
         .then(worldData => {
@@ -78,6 +84,9 @@ function createMap() {
         });
 }
 
+/**
+ * Creates the timeline for the map
+ */
 function createTimeline() {
     timeline = d3.select(".map").append("div")
         .attr("class", "timeline")
@@ -93,7 +102,7 @@ function createTimeline() {
     timeline.append("div")
         .style("border", "1px solid transparent"); // or no border if you want it invisible
 
-    // Timeline legend (color schema)
+    // Timeline legend (color schema) - Second cell
     let legendTimeline = timeline.append("div")
         .style("display", "flex")
         .style("flex-direction", "row")
@@ -106,7 +115,7 @@ function createTimeline() {
     }
 
 
-    // Button logic
+    // Button logic - Third cell
     let timelineButton = timeline.append("div")
         .style("display", "flex")
         .style("justify-content", "center")
@@ -117,12 +126,19 @@ function createTimeline() {
     timelineButton.append("i")
         .attr("class", "fa-solid fa-play")
         .style("font-size", "10px");
-    creationTimelineButtonLogic();
+    // The line fills the SVG horizontally (full width of SVG)
+    timelineScale = d3.scaleLinear()
+        .domain([startYear, endYear])
+        .range([0, viewBoxWidthTimeline]);
 
-    // Effective timeline
+
+    // Effective timeline slider - Fourth cell
     timelineSlider = timeline.append("div")
         .attr("class", "slider-container");
+
+
     creationSlider();
+    creationTimelineButtonLogic();
 }
 
 /**
@@ -131,26 +147,44 @@ function createTimeline() {
 function creationTimelineButtonLogic() {
     let isTimelinePlaying = false;
     let timelineButton = d3.select("#play-button");
+
+    let playInterval = null; // defines the interval for the play button in ms
+
     timelineButton.on("click", function () {
         isTimelinePlaying = !isTimelinePlaying;
-
         const icon = d3.select("#play-button .fa-solid");
-
         if (isTimelinePlaying) {
             icon.remove();
             timelineButton.text("Stop time-lapse ");
             timelineButton.append("i")
                 .attr("class", "fa-solid fa-pause")
                 .style("font-size", "10px");
+
+            // Reset currentYear to the current slider position
+            let currentX = +sliderHandler.attr("cx");
+            currentYear = Math.round(timelineScale.invert(currentX));
+
+            playInterval = setInterval(() => {
+                if (currentYear < endYear) {
+                    currentYear++;
+                    updateSlider();
+                } else {
+                    clearInterval(playInterval);
+                    isTimelinePlaying = false;
+                    timelineButton.text("Play time-lapse ");
+                    timelineButton.append("i")
+                        .attr("class", "fa-solid fa-play")
+                        .style("font-size", "10px");
+                }
+            }, 500); // 0ms for instant update
         } else {
             icon.remove();
             timelineButton.text("Play time-lapse ");
             timelineButton.append("i")
                 .attr("class", "fa-solid fa-play")
                 .style("font-size", "10px");
+            clearInterval(playInterval);
         }
-
-        // Trigger your timeline animation here based on isPlaying
     });
 }
 
@@ -162,49 +196,65 @@ function creationSlider() {
         .attr("class", "year-container")
         .text(startYear);
 
+    // Set up SVG dimensions and viewBox for responsive scaling
     const svg = timelineSlider.append("svg")
-        .attr("id", "slider"); // Let CSS handle the size
+        .attr("viewBox", `0 0 ${viewBoxWidthTimeline} ${viewBoxHeightTimeline}`)
+        .attr("id", "slider")
+        .style("width", "80%") // SVG is 80% of container width
+        .style("height", `${viewBoxHeightTimeline}px`) // Fixed height in px
+        .attr("preserveAspectRatio", "none"); // Stretch to fill container, no aspect ratio
 
+    svg.append("line")
+        .attr("x1", 0)
+        .attr("x2", viewBoxWidthTimeline)
+        .attr("y1", viewBoxHeightTimeline / 2)
+        .attr("y2", viewBoxHeightTimeline / 2)
+        .attr("stroke", "#bbbbbb")
+        .attr("stroke-width", viewBoxHeightTimeline / 5)
+        .attr("stroke-linecap", "round");
+
+    // Slider handle (make it visually come out of the line)
+    sliderHandler = svg.append("circle")
+        .attr("cx", timelineScale(startYear))
+        .attr("cy", viewBoxHeightTimeline / 2)
+        .attr("r", viewBoxHeightTimeline / 4)
+        .attr("fill", "#bbbbbb")
+        .attr("cursor", "pointer");
+
+    // Add a label below the slider showing the selected year
+    sliderLabel = svg.append("text")
+        .attr("x", timelineScale(startYear))
+        .attr("y", viewBoxHeightTimeline + 1)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "10px")
+        .attr("fill", "black")
+        .text("");
+
+    // Drag behavior
+    const drag = d3.drag()
+        .on("drag", function (event) {
+            let xPos = Math.max(timelineScale(startYear), Math.min(timelineScale(endYear), event.x));
+            currentYear = Math.round(timelineScale.invert(xPos));
+
+            updateSlider();
+        });
+    sliderHandler.call(drag);
+
+    // final year
     timelineSlider.append("div")
         .attr("class", "year-container")
         .text(endYear);
+}
 
-    // Get actual dimensions from the rendered SVG (after it's in the DOM)
-    const bbox = svg.node().getBoundingClientRect();
-    const width = bbox.width;
-    const height = bbox.height;
-
-    const xScale = d3.scaleLinear()
-        .domain([startYear, endYear])
-        .range([0, width]); // add margin
-
-    svg.append("line")
-        .attr("x1", xScale(startYear))
-        .attr("x2", xScale(endYear))
-        .attr("y1", height / 2)
-        .attr("y2", height / 2)
-        .attr("stroke", "#999")
-        .attr("stroke-width", 4);
-
-    const handle = svg.append("circle")
-        .attr("r", 8)
-        .attr("cx", xScale(startYear))
-        .attr("cy", height / 2)
-        .attr("fill", "#333")
-        .style("cursor", "pointer");
-
-    const drag = d3.drag()
-        .on("drag", function (event) {
-            let posX = event.x;
-            posX = Math.max(xScale(startYear), Math.min(xScale(endYear), posX));
-
-            handle.attr("cx", posX);
-
-            const year = Math.round(xScale.invert(posX));
-            console.log("Year:", year);
-        });
-
-    handle.call(drag);
+/**
+ * Updates the slider position and label based on the current year
+ */
+function updateSlider() {
+    const xPos = timelineScale(currentYear);
+    sliderHandler.attr("cx", xPos);
+    sliderLabel
+        .attr("x", xPos)
+        .text(currentYear);
 }
 
 function updateCountryList() {
