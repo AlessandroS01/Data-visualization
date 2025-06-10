@@ -24,7 +24,7 @@ const viewBoxHeightTimeline = 30;
 const timelineHeight = 90 + "px";
 let startYear;
 let endYear;
-let currentYear = startYear; // handle current year in timeline
+let currentYear; // handle current year in timeline
 // used for defining timeline legend classes and ranges
 const classNames = [
     "timeline-range no-data",
@@ -43,7 +43,7 @@ let numericalColumnsData = [];
 let domainScales = new Map();
 
 
-function initDashboard(retrievedData) {
+function initDashboardTask2(retrievedData) {
     fertilityData = retrievedData;
 
     startYear = d3.min(fertilityData, d => d.Year);
@@ -289,9 +289,13 @@ function updateCountryList() {
 
 
 // clear files if changes (dataset) occur
-function clearDashboard() {
-    chart1.selectAll("*").remove();
-    chart2.selectAll("*").remove();
-    chart3.selectAll("*").remove();
-    chart4.selectAll("*").remove();
+function clearDashboardTask2() {
+    mapChart.selectAll("*").remove();
+    timeline.selectAll("*").remove();
+
+    currentYear = startYear;
+    selectedCountry = [];
+    fertilityData = [];
+    numericalColumnsData = [];
+    domainScales.clear();
 }

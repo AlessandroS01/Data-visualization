@@ -66,7 +66,6 @@ function init() {
 
     // read and parse input file
     let fileInput = document.getElementById("upload"), readFile = function () {
-
         // clear existing visualizations
         clear();
 
@@ -83,7 +82,7 @@ function init() {
             initVis(parsedData);
             createDataTable(parsedData);
             // TODO: possible place to call the dashboard file for Part 2
-            initDashboard(parsedData);
+            initDashboardTask2(parsedData);
         };
         reader.readAsBinaryString(fileInput.files[0]);
     };
