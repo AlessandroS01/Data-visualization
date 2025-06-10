@@ -22,8 +22,8 @@ let timeline, timelineSlider, timelineScale, sliderHandler, sliderLabel;
 const viewBoxWidthTimeline = 400;
 const viewBoxHeightTimeline = 30;
 const timelineHeight = 90 + "px";
-const startYear = 1960;
-const endYear = 2023;
+let startYear;
+let endYear;
 let currentYear = startYear; // handle current year in timeline
 // used for defining timeline legend classes and ranges
 const classNames = [
@@ -39,10 +39,29 @@ const fertilityRanges = ["No data available", "0 - 2.5", "2.5 - 5.0", "5.0 - 7.5
 /* variables for data */
 let selectedCountry = [];
 let fertilityData = [];
+let numericalColumnsData = [];
+let domainScales = new Map();
 
 
 function initDashboard(retrievedData) {
     fertilityData = retrievedData;
+
+    startYear = d3.min(fertilityData, d => d.Year);
+    endYear = d3.max(fertilityData, d => d.Year);
+
+    retrievedData.columns.forEach(column => {
+        if (!isNaN(+fertilityData[0][column])) { // take first row and defines the domain for each numeric attribute
+            const domain = d3.extent(
+                retrievedData,
+                d => +d[column]
+            ); // returns min and max value of the converted domain
+            // console.log("Domain range: " + domain + " for " + col);
+
+            numericalColumnsData.push(column); // adds only numeric attributes
+            domainScales.set(column, domain);
+        }
+    });
+
 
     // Select .map div and append an svg
     mapChart = d3.select(".map").append("svg")
@@ -271,7 +290,6 @@ function updateCountryList() {
 
 // clear files if changes (dataset) occur
 function clearDashboard() {
-
     chart1.selectAll("*").remove();
     chart2.selectAll("*").remove();
     chart3.selectAll("*").remove();
