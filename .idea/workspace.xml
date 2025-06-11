@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Created reduced dataset for a shorter period analysis (1980-2023)">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Changed timeline ranges and added a new dataset that has all the fertility rate data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +133,7 @@
       <workItem from="1749467034842" duration="7128000" />
       <workItem from="1749562203797" duration="1779000" />
       <workItem from="1749564071124" duration="8748000" />
-      <workItem from="1749622321878" duration="5058000" />
+      <workItem from="1749622321878" duration="6205000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -336,7 +335,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749572883813</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Changed timeline ranges and added a new dataset that has all the fertility rate data">
+      <option name="closed" value="true" />
+      <created>1749627784080</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1749627784080</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -374,6 +381,7 @@
     <MESSAGE value="Slider finished" />
     <MESSAGE value="Retrieved data" />
     <MESSAGE value="Created reduced dataset for a shorter period analysis (1980-2023)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Created reduced dataset for a shorter period analysis (1980-2023)" />
+    <MESSAGE value="Changed timeline ranges and added a new dataset that has all the fertility rate data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed timeline ranges and added a new dataset that has all the fertility rate data" />
   </component>
 </project>

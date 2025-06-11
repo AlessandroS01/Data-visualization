@@ -12,8 +12,8 @@
 // TODO: use descriptive names for variables
 /* variables for main map */
 let mapChart, gMap;
-const mapWidth = "100%";  // base width for map
-const mapHeight = 500 + "px"; // base height for map
+const mapWidth = "80%";  // base width for map
+const mapHeight = 400 + "px"; // base height for map
 const projection = d3.geoEquirectangular().scale(160);
 const path = d3.geoPath(projection); // generate paths according to the projection used and the geojson data
 
@@ -70,6 +70,7 @@ function initDashboardTask2(retrievedData) {
     mapChart = d3.select(".map").append("svg")
         .attr("width", mapWidth)
         .attr("height", mapHeight)
+        .style("margin", "0 10%")
         .attr("viewBox", "0 0 1000 400") // This defines the coordinate system of your map content
         .attr("preserveAspectRatio", "xMidYMid meet");
     gMap = mapChart.append("g");
@@ -349,7 +350,7 @@ function creationSlider() {
         .attr("x", timelineScale(startYear))
         .attr("y", viewBoxHeightTimeline + 1)
         .attr("text-anchor", "middle")
-        .attr("font-size", "10px")
+        .attr("font-size", "8px")
         .attr("fill", "black")
         .text("");
 
