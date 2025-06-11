@@ -31,9 +31,12 @@ const classNames = [
     "timeline-range first-interval",
     "timeline-range second-interval",
     "timeline-range third-interval",
-    "timeline-range fourth-interval"
+    "timeline-range fourth-interval",
+    "timeline-range fifth-interval",
+    "timeline-range sixth-interval",
+    "timeline-range seventh-interval",
+    "timeline-range eighth-interval"
 ];
-const fertilityRanges = ["No data available", "0 - 2.5", "2.5 - 5.0", "5.0 - 7.5", "7.5 - 10"];
 
 
 /* variables for data */
@@ -123,14 +126,115 @@ function createTimeline() {
 
     // Timeline legend (color schema) - Second cell
     let legendTimeline = timeline.append("div")
+        .attr("width", "100%")
+        .attr("height", "10px")
         .style("display", "flex")
-        .style("flex-direction", "row")
-        .style("align-items", "center");
+        .style("flex-orientation", "row")
+        .style("justify-content", "center")
+        .style("align-items", "center")
+        .append("svg")
+        .attr("width", "80%")
+        .attr("height", "10px")
+        .style("overflow", "visible");
 
-    for(let i = 0; i < 5; i++) {
-        legendTimeline.append("div")
-            .attr("class", classNames[i])
-            .text(fertilityRanges[i]);
+    let defs = legendTimeline.append("defs");
+    defs.append("pattern")
+        .attr("id", "noDataPattern")
+        .attr("patternUnits", "userSpaceOnUse")
+        .attr("width", 8)
+        .attr("height", 8)
+        .attr("patternTransform", "rotate(45)"); // for -45deg angle
+    // Light stripe (bottom part)
+    defs.select("pattern")
+        .append("rect")
+        .attr("width", 5)
+        .attr("height", 8)
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("fill", "whitesmoke");
+
+    // Dark stripe (overlay on right side of light stripe)
+    defs.select("pattern")
+        .append("rect")
+        .attr("width", 2)
+        .attr("height", 8)
+        .attr("x", 5)
+        .attr("y", 0)
+        .attr("fill", "#bbbbbb");
+
+    for(let i = 0; i < classNames.length; i++) {
+        const isFirst = i === 0;
+        const x = 5 + i * 10;
+        const width = isFirst ? 5 : 10;
+
+        // Append rects first
+        const rect = legendTimeline.append("rect")
+            .attr("x", `${x}%`)
+            .attr("width", `${width}%`)
+            .attr("height", "100%")
+            .attr("class", classNames[i]);
+
+        if (isFirst) {
+            rect.attr("fill", "url(#noDataPattern)");
+        }
+
+        if (isFirst) {
+            legendTimeline.append("line")
+                .attr("x1", `${x + 2.5}%`)
+                .attr("x2", `${x + 2.5}%`)
+                .attr("y1", "100%")
+                .attr("y2", "150%")
+                .attr("stroke", "#bbbbbb")
+                .attr("stroke-width", 2);
+
+            legendTimeline.append("text")
+                .attr("x", `${x + .5}%`)  // Offset to right of line (if calc is supported)
+                .attr("y", "220%")                  // Slightly above SVG (you can tweak this)
+                .attr("text-anchor", "start")
+                .attr("font-size", "10px")
+                .text("No data");
+        } else if( i % 2 === 0) {
+            legendTimeline.append("line")
+                .attr("x1", `${x}%`)
+                .attr("x2", `${x}%`)
+                .attr("y1", "100%")
+                .attr("y2", "180%")
+                .attr("stroke", "#bbbbbb")
+                .attr("stroke-width", 2);
+
+            if ( i === 1) {
+                legendTimeline.append("text")
+                    .attr("x", `${x + .5}%`)  // Offset to right of line (if calc is supported)
+                    .attr("y", "240%")                  // Slightly above SVG (you can tweak this)
+                    .attr("text-anchor", "start")
+                    .attr("font-size", "10px")
+                    .text(i + " birth");
+            } else {
+                legendTimeline.append("text")
+                    .attr("x", `${x + .5}%`)  // Offset to right of line (if calc is supported)
+                    .attr("y", "240%")                  // Slightly above SVG (you can tweak this)
+                    .attr("text-anchor", "start")
+                    .attr("font-size", "10px")
+                    .text(i + " births");
+            }
+        } else {
+            legendTimeline.append("line")
+                .attr("x1", `${x}%`)
+                .attr("x2", `${x}%`)
+                .attr("y1", "100%")
+                .attr("y2", "240%")
+                .attr("stroke", "#bbbbbb")
+                .attr("stroke-width", 2);
+
+            legendTimeline.append("text")
+                .attr("x", `${x + .5}%`)  // Offset to right of line (if calc is supported)
+                .attr("y", "280%")                  // Slightly above SVG (you can tweak this)
+                .attr("text-anchor", "start")
+                .attr("font-size", "10px")
+                .text(i + " births");
+        }
+
+
     }
 
 

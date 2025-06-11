@@ -194,35 +194,36 @@ div.tooltip {
 }
 /* TIMELINE LEGEND */
 .timeline-range {
-    width: 20%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #bbbbbb;
-    font: bold 12px Helvetica;
+    stroke: #bbbbbb;
+    stroke-width: 2px;
 }
 
 .no-data {
-    background: repeating-linear-gradient(
-            -45deg,
-            whitesmoke,
-            whitesmoke 5px,
-            lightgray 5px,
-            lightgray 8px
-    );
+
 }
 .first-interval {
-    background-color: #bcdff1;
+    fill: #f7fcfd;
 }
 .second-interval {
-    background-color: #c6e5b3;
+    fill: #e0ecf4;
 }
 .third-interval {
-    background-color: #f3e6c8;
+    fill: #bfd3e6;
 }
 .fourth-interval {
-    background-color: #f2c1b6;
+    fill: #9ebcda;
+}
+.fifth-interval {
+    fill: #8c96c6;
+}
+.sixth-interval {
+    fill: #8c6bb1;
+}
+.seventh-interval {
+    fill: #88419d;
+}
+.eighth-interval {
+    fill: #540051;
 }
 
 /* TIMELINE SLIDER */
