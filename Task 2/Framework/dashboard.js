@@ -130,12 +130,17 @@ function updateMap() {
             if (dataCountryByYear) {
                 const fertilityValue = +dataCountryByYear.FertilityR;
                 console.log(fertilityValue);
+                if (fertilityValue === 0 || isNaN(fertilityValue)) {
+                    d3.select(this)
+                        .attr('class', 'country no-data')
+                        .attr('stroke', '#999');
+                }
                 for (let interval = 1; interval < assignClass.length; interval++) { // skip no country interval
                     if (interval === classNames.length - 1) {
                         d3.select(this)
                             .attr('class', `country ${assignClass[interval]}`);
                     }
-                    if (fertilityValue >= interval && fertilityValue < interval + 1) {
+                    if (fertilityValue >= interval - 1 && fertilityValue < interval) {
                         d3.select(this)
                             .attr('class', `country ${assignClass[interval]}`);
                         break;
@@ -211,7 +216,7 @@ function createTimeline() {
                 .attr("text-anchor", "start")
                 .attr("font-size", "10px")
                 .text("No data");
-        } else if( i % 2 === 0) {
+        } else if( (i - 1) % 2 === 0) {
             legendTimeline.append("line")
                 .attr("x1", `${x}%`)
                 .attr("x2", `${x}%`)
@@ -220,20 +225,20 @@ function createTimeline() {
                 .attr("stroke", "#bbbbbb")
                 .attr("stroke-width", 2);
 
-            if ( i === 1) {
+            if ( i - 1 === 0) {
                 legendTimeline.append("text")
                     .attr("x", `${x + .5}%`)  // Offset to right of line (if calc is supported)
                     .attr("y", "240%")                  // Slightly above SVG (you can tweak this)
                     .attr("text-anchor", "start")
                     .attr("font-size", "10px")
-                    .text(i + " birth");
+                    .text(i - 1 + " birth");
             } else {
                 legendTimeline.append("text")
                     .attr("x", `${x + .5}%`)  // Offset to right of line (if calc is supported)
                     .attr("y", "240%")                  // Slightly above SVG (you can tweak this)
                     .attr("text-anchor", "start")
                     .attr("font-size", "10px")
-                    .text(i + " births");
+                    .text(i - 1 + " births");
             }
         } else {
             legendTimeline.append("line")
@@ -249,7 +254,7 @@ function createTimeline() {
                 .attr("y", "280%")                  // Slightly above SVG (you can tweak this)
                 .attr("text-anchor", "start")
                 .attr("font-size", "10px")
-                .text(i + " births");
+                .text(i - 1 + " births");
         }
 
 
