@@ -506,6 +506,22 @@ function updateCountryList() {
         .attr('width', '100%')
         .style("background-color", d => colorCountryMap.get(d));
 
+    divs
+        .on("mouseover", function (event, countryName) {
+            const hoveredSelection = gMap.select(`#${countryName}`);
+
+            // Dim all countries first
+            gMap.selectAll('path.country')
+                .style('opacity', 0.2);
+
+            // Then reset opacity back to 1 for hovered group
+            hoveredSelection.style('opacity', 1);
+        })
+        .on("mouseout", function(event, countryName) {
+            gMap.selectAll('path.country')
+                .style('opacity', 1);
+        });
+
     divs.append('button')
         .attr("class", "remove-country-button")
         .text("X")

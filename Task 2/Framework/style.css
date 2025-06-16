@@ -162,6 +162,7 @@ div.tooltip {
     display: flex;
     flex-direction: row;
     align-items: center;
+    cursor: pointer;
 }
 
 .map-legend .remove-country-button {
