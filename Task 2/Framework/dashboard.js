@@ -62,8 +62,6 @@ let colorCountryMap = new Map();
 function initDashboardTask2(retrievedData) {
     fertilityData = retrievedData;
 
-
-
     startYear = d3.min(fertilityData, d => d.Year);
     currentYear = startYear;
     endYear = d3.max(fertilityData, d => d.Year);
@@ -109,7 +107,7 @@ function createMap() {
                 .enter()
                 .append('path')
                 .attr('class', 'country')
-                .attr('id', d => d.properties.name)
+                .attr('id', d => d.properties.name.replace(/\s+/g, '_')) // replace spaces with underscores for valid IDs
                 .attr('d', path)
                 .on('click', (event, d) => {
                     const countryName = d.properties.name;
@@ -487,6 +485,10 @@ function addSelectedCountry(countryName) {
 function removeSelectedCountry(countryName) {
     selectedCountry = selectedCountry.filter(country => country !== countryName);
     colorCountryMap.delete(countryName);
+
+    gMap.selectAll('path.country')
+        .style('opacity', 1); // Reset opacity for all countries or bug occurs
+
     updateCountryList();
 }
 
@@ -508,7 +510,7 @@ function updateCountryList() {
 
     divs
         .on("mouseover", function (event, countryName) {
-            const hoveredSelection = gMap.select(`#${countryName}`);
+            const hoveredSelection = gMap.select(`#${countryName.replace(/\s+/g, '_')}`);
 
             // Dim all countries first
             gMap.selectAll('path.country')

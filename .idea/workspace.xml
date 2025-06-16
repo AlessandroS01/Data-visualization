@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Finished country legend">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Added legend hovering effect for the map">
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +136,7 @@
       <workItem from="1750056565653" duration="10035000" />
       <workItem from="1750079279007" duration="1667000" />
       <workItem from="1750081828777" duration="22000" />
-      <workItem from="1750082249551" duration="5296000" />
+      <workItem from="1750082249551" duration="5642000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -404,7 +402,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750087323835</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Added legend hovering effect for the map">
+      <option name="closed" value="true" />
+      <created>1750087721179</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1750087721179</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -422,7 +428,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Defined gray line for the radar chart" />
     <MESSAGE value="Bugs for gray lines as well as domains" />
     <MESSAGE value="Table creation complete. Hovering effect done as well" />
     <MESSAGE value="Radar gray lines completed" />
@@ -447,6 +452,7 @@
     <MESSAGE value="Corrected timeline ranges and data linking. Added hovering effect for timeline" />
     <MESSAGE value="Added point in the radar chart" />
     <MESSAGE value="Finished country legend" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished country legend" />
+    <MESSAGE value="Added legend hovering effect for the map" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added legend hovering effect for the map" />
   </component>
 </project>
