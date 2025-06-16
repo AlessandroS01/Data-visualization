@@ -199,7 +199,7 @@ div.tooltip {
 }
 
 .no-data {
-
+    fill: black;
 }
 .first-interval {
     fill: #f7fcfd;

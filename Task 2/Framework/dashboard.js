@@ -49,7 +49,10 @@ let domainScales = new Map();
 function initDashboardTask2(retrievedData) {
     fertilityData = retrievedData;
 
+
+
     startYear = d3.min(fertilityData, d => d.Year);
+    currentYear = startYear;
     endYear = d3.max(fertilityData, d => d.Year);
 
     retrievedData.columns.forEach(column => {
@@ -73,6 +76,7 @@ function initDashboardTask2(retrievedData) {
         .style("margin", "0 10%")
         .attr("viewBox", "0 0 1000 400") // This defines the coordinate system of your map content
         .attr("preserveAspectRatio", "xMidYMid meet");
+
     gMap = mapChart.append("g");
 
     createMap();
@@ -92,6 +96,7 @@ function createMap() {
                 .enter()
                 .append('path')
                 .attr('class', 'country')
+                .attr('id', d => d.properties.name)
                 .attr('d', path)
                 .on('click', (event, d) => {
                     const countryName = d.properties.name;
@@ -103,7 +108,44 @@ function createMap() {
                     } else {
                         selectedCountry = selectedCountry.filter(country => country.name !== countryName);
                     }
-                });
+                })
+                .append("title")
+                .text(d => d.properties.name);
+
+            updateMap();
+        });
+}
+
+function updateMap() {
+    gMap.selectAll('path.country')
+        .each(function(d) {
+            const countryName = d.properties.name;
+            const dataCountryByYear = fertilityData.find(
+                entry =>
+                    entry.Name === countryName && +entry.Year === +currentYear
+            );
+
+            const assignClass = classNames.map(d => d.split(' ')[1]);
+
+            if (dataCountryByYear) {
+                const fertilityValue = +dataCountryByYear.FertilityR;
+                console.log(fertilityValue);
+                for (let interval = 1; interval < assignClass.length; interval++) { // skip no country interval
+                    if (interval === classNames.length - 1) {
+                        d3.select(this)
+                            .attr('class', `country ${assignClass[interval]}`);
+                    }
+                    if (fertilityValue >= interval && fertilityValue < interval + 1) {
+                        d3.select(this)
+                            .attr('class', `country ${assignClass[interval]}`);
+                        break;
+                    }
+                }
+            } else {
+                d3.select(this)
+                    .attr('class', 'country no-data')
+                    .attr('stroke', '#999');
+            }
         });
 }
 
@@ -138,31 +180,6 @@ function createTimeline() {
         .attr("height", "10px")
         .style("overflow", "visible");
 
-    let defs = legendTimeline.append("defs");
-    defs.append("pattern")
-        .attr("id", "noDataPattern")
-        .attr("patternUnits", "userSpaceOnUse")
-        .attr("width", 8)
-        .attr("height", 8)
-        .attr("patternTransform", "rotate(45)"); // for -45deg angle
-    // Light stripe (bottom part)
-    defs.select("pattern")
-        .append("rect")
-        .attr("width", 5)
-        .attr("height", 8)
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("fill", "whitesmoke");
-
-    // Dark stripe (overlay on right side of light stripe)
-    defs.select("pattern")
-        .append("rect")
-        .attr("width", 2)
-        .attr("height", 8)
-        .attr("x", 5)
-        .attr("y", 0)
-        .attr("fill", "#bbbbbb");
-
     for(let i = 0; i < classNames.length; i++) {
         const isFirst = i === 0;
         const x = 5 + i * 10;
@@ -176,7 +193,7 @@ function createTimeline() {
             .attr("class", classNames[i]);
 
         if (isFirst) {
-            rect.attr("fill", "url(#noDataPattern)");
+            rect.attr("class", "timeline-range no-data");
         }
 
         if (isFirst) {
@@ -379,6 +396,7 @@ function updateSlider() {
     sliderLabel
         .attr("x", xPos)
         .text(currentYear);
+    updateMap();
 }
 
 function updateCountryList() {
