@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Change name of the dataset to use, since it is the one in which all fertility rate data are defined">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Corrected timeline ranges and data linking">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +135,7 @@
       <workItem from="1749562203797" duration="1779000" />
       <workItem from="1749564071124" duration="8748000" />
       <workItem from="1749622321878" duration="6722000" />
-      <workItem from="1750056565653" duration="5729000" />
+      <workItem from="1750056565653" duration="9279000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -368,7 +369,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750061937048</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Corrected timeline ranges and data linking">
+      <option name="closed" value="true" />
+      <created>1750067235686</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1750067235686</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -409,6 +418,7 @@
     <MESSAGE value="Changed timeline ranges and added a new dataset that has all the fertility rate data" />
     <MESSAGE value="Timeline range finished. Linked data finished." />
     <MESSAGE value="Change name of the dataset to use, since it is the one in which all fertility rate data are defined" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change name of the dataset to use, since it is the one in which all fertility rate data are defined" />
+    <MESSAGE value="Corrected timeline ranges and data linking" />
+    <option name="LAST_COMMIT_MESSAGE" value="Corrected timeline ranges and data linking" />
   </component>
 </project>

@@ -196,6 +196,7 @@ div.tooltip {
 .timeline-range {
     stroke: #bbbbbb;
     stroke-width: 2px;
+    cursor: pointer;
 }
 
 .no-data {

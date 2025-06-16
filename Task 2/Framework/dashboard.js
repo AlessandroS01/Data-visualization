@@ -129,26 +129,25 @@ function updateMap() {
 
             if (dataCountryByYear) {
                 const fertilityValue = +dataCountryByYear.FertilityR;
-                console.log(fertilityValue);
                 if (fertilityValue === 0 || isNaN(fertilityValue)) {
                     d3.select(this)
-                        .attr('class', 'country no-data')
+                        .attr('class', `country ${assignClass[0]}`)
                         .attr('stroke', '#999');
                 }
                 for (let interval = 1; interval < assignClass.length; interval++) { // skip no country interval
-                    if (interval === classNames.length - 1) {
-                        d3.select(this)
-                            .attr('class', `country ${assignClass[interval]}`);
-                    }
-                    if (fertilityValue >= interval - 1 && fertilityValue < interval) {
+                    if (fertilityValue > interval - 1 && fertilityValue < interval) {
                         d3.select(this)
                             .attr('class', `country ${assignClass[interval]}`);
                         break;
                     }
+                    if (interval === classNames.length - 1 && fertilityValue >= interval) {
+                        d3.select(this)
+                            .attr('class', `country ${assignClass[interval]}`);
+                    }
                 }
             } else {
                 d3.select(this)
-                    .attr('class', 'country no-data')
+                    .attr('class', `country ${assignClass[0]}`)
                     .attr('stroke', '#999');
             }
         });
@@ -195,10 +194,33 @@ function createTimeline() {
             .attr("x", `${x}%`)
             .attr("width", `${width}%`)
             .attr("height", "100%")
-            .attr("class", classNames[i]);
+            .attr("class", classNames[i])
+            .on("mouseover", function () {
+                const hoveredClassLine = d3.select(this).attr("class") || "";
+                // If multiple classes, take the one you want; if single class, just use it directly
+                const secondClass = hoveredClassLine.split(' ')[1];
+
+                const hoveredSelection = gMap.selectAll(`path.country.${secondClass}`);
+
+                // Dim all countries first
+                gMap.selectAll('path.country')
+                    .style('opacity', 0.2);
+
+                // Then reset opacity back to 1 for hovered group
+                hoveredSelection.style('opacity', 1);
+            })
+            .on("mouseout", function() {
+                // Optional: reset fill on mouseout
+                const hoveredClassLine = d3.select(this).attr("class") || "";
+                // If multiple classes, take the one you want; if single class, just use it directly
+                const secondClass = hoveredClassLine.split(' ')[1];
+
+                gMap.selectAll('path.country')
+                    .style('opacity', 1);
+            });
 
         if (isFirst) {
-            rect.attr("class", "timeline-range no-data");
+            rect.attr("class", classNames[0]);
         }
 
         if (isFirst) {
@@ -256,9 +278,8 @@ function createTimeline() {
                 .attr("font-size", "10px")
                 .text(i - 1 + " births");
         }
-
-
     }
+
 
 
     // Button logic - Third cell
