@@ -40,10 +40,23 @@ const classNames = [
 
 
 /* variables for data */
-let selectedCountry = [];
 let fertilityData = [];
 let numericalColumnsData = [];
 let domainScales = new Map();
+
+let selectedCountry = [];
+const colorListWorld = [
+    "#ffcdc8",
+    "#c8e7ff",
+    "#c6cbbe",
+    "#fedcff",
+    "#fff0dc",
+    "#fff5a4",
+    "#dcd5ff",
+    "#ffd3eb"
+];
+
+let colorCountryMap = new Map();
 
 
 function initDashboardTask2(retrievedData) {
@@ -103,10 +116,14 @@ function createMap() {
 
                     // Optional: prevent duplicates
                     if (!selectedCountry.includes(countryName)) {
-                        selectedCountry.push(countryName);
-                        updateCountryList();
+                        if (selectedCountry.length === 8) {
+                            window.confirm("You've selected the maximum number of countries. \n " +
+                                "To continue the selection remove at least one of them.");
+                        } else {
+                            addSelectedCountry(countryName);
+                        }
                     } else {
-                        selectedCountry = selectedCountry.filter(country => country.name !== countryName);
+                        removeSelectedCountry(countryName);
                     }
                 })
                 .append("title")
@@ -425,15 +442,81 @@ function updateSlider() {
     updateMap();
 }
 
-function updateCountryList() {
-    const list = d3.select('#sel_countries');
-    list.selectAll('li').remove(); // Clear old list
+/**
+ * Add new country to the selected list and handle color assignment
+ * @param countryName of the country to be added
+ */
+function addSelectedCountry(countryName) {
+    selectedCountry.push(countryName);
+    if(colorCountryMap.size === 0) { // no other element selected
+        // TODO: add here how to handle addition of new selected country from the charts (look comment below)
+        /*d3.select("#point"+countryName)
+            .transition()
+            .duration(300)
+            .attr("fill",colorListWorld)
+            .attr("opacity", 1);
 
-    list.selectAll('li')
+         */
+        colorCountryMap.set(countryName, colorListWorld[0]);
+    } else {
+        let newColor = "";
+        let usedColors = new Set(colorCountryMap.values()); // set of colors already used
+        for (let i = 0; i < colorListWorld.length; i++) {
+            if (!usedColors.has(colorListWorld[i])) {
+                newColor = colorListWorld[i];
+                break;
+            }
+        }
+        // TODO: add here how to handle addition of new selected country from the charts (look comment below)
+        /*d3.select("#point"+countryName)
+            .transition()
+            .duration(300)
+            .attr("fill",newColor)
+            .attr("opacity", 1);
+
+         */
+        colorCountryMap.set(countryName, newColor);
+    }
+    updateCountryList();
+}
+
+/**
+ * Remove country from the selected list
+ * @param countryName of the country to be removed
+ */
+function removeSelectedCountry(countryName) {
+    selectedCountry = selectedCountry.filter(country => country !== countryName);
+    colorCountryMap.delete(countryName);
+    updateCountryList();
+}
+
+/**
+ * Updates the country list in the dashboard
+ */
+function updateCountryList() {
+    const countryList = d3.select('#sel_countries');
+
+    countryList.selectAll('div').remove(); // Clear old list
+
+    const divs = countryList.selectAll('div')
         .data(selectedCountry)
         .enter()
-        .append('li')
-        .text(d => d);
+        .append('div')
+        .attr("class", "map-legend")
+        .attr('width', '100%')
+        .style("background-color", d => colorCountryMap.get(d));
+
+    divs.append('button')
+        .attr("class", "remove-country-button")
+        .text("X")
+        .on('click', function(event, countryName) {
+            removeSelectedCountry(countryName);
+        });
+    divs.append('text')
+        .text(d => d)
+        .style("color", "black")
+        .style("font", "Helvetica")
+        .style("font-size", "12px");
 }
 
 

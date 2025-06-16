@@ -155,7 +155,28 @@ div.tooltip {
     justify-content: space-between;
 }
 
-/* MAP, TIMELINE*/
+.map-legend {
+    margin: 10px 0;
+    padding: 7px;
+    border: #bbbbbb solid 1px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.map-legend .remove-country-button {
+    margin-right: 20px;
+    background-color: white;
+    border: #bbbbbb solid 1px;
+    cursor: pointer;
+    color: #777777;
+    transition: 300ms ease-in-out;
+}
+.map-legend .remove-country-button:hover {
+    background-color: whitesmoke;
+}
+
+    /* MAP, TIMELINE*/
 .map {
     width: 80%;
 }
@@ -202,6 +223,7 @@ div.tooltip {
 .no-data {
     fill: black;
 }
+/*
 .first-interval {
     fill: #f7fcfd;
 }
@@ -225,6 +247,32 @@ div.tooltip {
 }
 .eighth-interval {
     fill: #540051;
+}
+ */
+
+.first-interval {
+    fill: #ffffe5;
+}
+.second-interval {
+    fill: #f7fcb9;
+}
+.third-interval {
+    fill: #d9f0a3;
+}
+.fourth-interval {
+    fill: #addd8e;
+}
+.fifth-interval {
+    fill: #78c679;
+}
+.sixth-interval {
+    fill: #41ab5d;
+}
+.seventh-interval {
+    fill: #238443;
+}
+.eighth-interval {
+    fill: #005a32;
 }
 
 /* TIMELINE SLIDER */
