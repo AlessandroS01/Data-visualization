@@ -429,6 +429,7 @@ function renderRadarChart(){
     // ---------------------------------------------------------
     // Clean previous radar shapes
     radar.selectAll(".radar-shape").remove();
+    radar.selectAll(".radar-point").remove();
 
     selectedItems.forEach((item, index) => {
         let proportionalRadius = radius * maxAxisRadius;
@@ -457,6 +458,16 @@ function renderRadarChart(){
             .attr("fill", "none")
             .style("stroke", colorUsedMap.get(item))
             .style("stroke-width", 2);
+
+        radar.selectAll(null)  // use null to avoid binding to an existing selection
+            .data(points)
+            .enter()
+            .append("circle")
+            .attr("class", "radar-point")
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .attr("r", 3) // adjust size as needed
+            .attr("fill", colorUsedMap.get(item));
     });
 
 }
