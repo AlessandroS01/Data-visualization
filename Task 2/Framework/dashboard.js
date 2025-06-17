@@ -114,6 +114,8 @@ function createMap() {
                     d3.select("body")
                         .append("div")
                         .attr("class", "hover-tooltip")
+                        .attr("width", "250px")
+                        .attr("hieght", "200px")
                         .style("position", "absolute")
                         .style("background", "#fff")
                         .style("border", "1px solid #ccc")
