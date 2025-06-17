@@ -107,8 +107,35 @@ function createMap() {
                 .enter()
                 .append('path')
                 .attr('class', 'country')
-                .attr('id', d => d.properties.name.replace(/\s+/g, '_')) // replace spaces with underscores for valid IDs
+                .attr('id', d => d.properties.name.replace(/[\s.]/g, '_')) // replace spaces with underscores for valid IDs
                 .attr('d', path)
+                .on('mouseover', function(event, d) {
+                    // Create the tooltip on hover
+                    d3.select("body")
+                        .append("div")
+                        .attr("class", "hover-tooltip")
+                        .style("position", "absolute")
+                        .style("background", "#fff")
+                        .style("border", "1px solid #ccc")
+                        .style("padding", "6px 10px")
+                        .style("border-radius", "4px")
+                        .style("box-shadow", "0 0 6px rgba(0,0,0,0.2)")
+                        .style("font-size", "12px")
+                        .style("pointer-events", "none")
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY + 10) + "px")
+                        .text(d.properties.name);
+                })
+                .on('mousemove', function(event) {
+                    // Update position if mouse moves
+                    d3.select(".hover-tooltip")
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY + 10) + "px");
+                })
+                .on('mouseout', function() {
+                    // Remove tooltip on mouse out
+                    d3.select(".hover-tooltip").remove();
+                })
                 .on('click', (event, d) => {
                     const countryName = d.properties.name;
 
@@ -118,19 +145,21 @@ function createMap() {
                             window.confirm("You've selected the maximum number of countries. \n " +
                                 "To continue the selection remove at least one of them.");
                         } else {
-                            addSelectedCountry(countryName);
+                            addSelectedCountry(countryName, d);
                         }
                     } else {
                         removeSelectedCountry(countryName);
                     }
-                })
-                .append("title")
-                .text(d => d.properties.name);
+                });
 
             updateMap();
         });
 }
 
+/**
+ * Updates the map based on the current year and fertility data and handles
+ * change of the fertility value inside each selected country
+ */
 function updateMap() {
     gMap.selectAll('path.country')
         .each(function(d) {
@@ -166,6 +195,17 @@ function updateMap() {
                     .attr('stroke', '#999');
             }
         });
+
+    selectedCountry.forEach(countryName => {
+        const textId = `label-${countryName.replace(/[\s.]/g, '_')}`;
+
+        const matchedEntry = fertilityData.find(value =>
+            +value.Year === +currentYear && value.Name === countryName
+        );
+        const fertilityValue = matchedEntry ? matchedEntry.FertilityR : "NaN";
+        d3.select(`#${textId}`)
+            .text(fertilityValue);
+    })
 }
 
 /**
@@ -443,8 +483,9 @@ function updateSlider() {
 /**
  * Add new country to the selected list and handle color assignment
  * @param countryName of the country to be added
+ * @param geoFeature the geo feature of the country to add the center label
  */
-function addSelectedCountry(countryName) {
+function addSelectedCountry(countryName, geoFeature) {
     selectedCountry.push(countryName);
     if(colorCountryMap.size === 0) { // no other element selected
         // TODO: add here how to handle addition of new selected country from the charts (look comment below)
@@ -475,7 +516,64 @@ function addSelectedCountry(countryName) {
          */
         colorCountryMap.set(countryName, newColor);
     }
+    const countryCentroid = getMainlandCentroid(geoFeature);
+    const textId = `label-${countryName.replace(/[\s.]/g, '_')}`;
+    const matchedEntry = fertilityData.find(value =>
+        +value.Year === +currentYear && value.Name === countryName
+    );
+    const fertilityValue = matchedEntry ? matchedEntry.FertilityR : "NaN";
+    gMap.append("text")
+        .attr("id", textId)
+        .attr("x", countryCentroid[0])
+        .attr("y", countryCentroid[1])
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .attr("font-size", "10px")
+        .attr("font-weight", "bold")
+        .attr("fill", "#333")
+        .style("pointer-events", "none")
+        .text(fertilityValue);
+
     updateCountryList();
+}
+
+/**
+ * Return the centroid of the mainland of the passed country
+ * @param feature country geoFeature
+ * @returns {[number, number]|number[]} centroid x and y coordinates of the mainland of the country
+ */
+function getMainlandCentroid(feature) {
+    const geometry = feature.geometry;
+
+    if (geometry.type === "Polygon") {
+        return path.centroid(feature);
+    }
+
+    if (geometry.type === "MultiPolygon") {
+        let maxArea = -Infinity;
+        let largestPolygon = null;
+
+        // Loop through all polygons in the MultiPolygon
+        geometry.coordinates.forEach(coords => {
+            const poly = {
+                type: "Feature",
+                geometry: {
+                    type: "Polygon",
+                    coordinates: coords
+                }
+            };
+
+            const area = d3.geoArea(poly);
+            if (area > maxArea) {
+                maxArea = area;
+                largestPolygon = poly;
+            }
+        });
+
+        return path.centroid(largestPolygon);
+    }
+
+    return [0, 0]; // Fallback for unsupported types
 }
 
 /**
@@ -488,6 +586,7 @@ function removeSelectedCountry(countryName) {
 
     gMap.selectAll('path.country')
         .style('opacity', 1); // Reset opacity for all countries or bug occurs
+    d3.select(`#label-${countryName.replace(/[\s.]/g, '_')}`).remove();
 
     updateCountryList();
 }
@@ -510,7 +609,7 @@ function updateCountryList() {
 
     divs
         .on("mouseover", function (event, countryName) {
-            const hoveredSelection = gMap.select(`#${countryName.replace(/\s+/g, '_')}`);
+            const hoveredSelection = gMap.select(`#${countryName.replace(/[\s.]/g, '_')}`);
 
             // Dim all countries first
             gMap.selectAll('path.country')

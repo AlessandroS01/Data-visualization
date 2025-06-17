@@ -195,6 +195,7 @@ div.tooltip {
     stroke: #999;
     cursor: pointer;
     fill: whitesmoke;
+    vector-effect: non-scaling-stroke;
 }
 .country:hover {
     fill: lightblue;
