@@ -10,7 +10,7 @@
 */
 
 // TODO: use descriptive names for variables
-/* variables for timeline */
+/* general variables */
 let startYear;
 let endYear;
 let currentYear; // handle current year in timeline
@@ -28,7 +28,7 @@ const classNames = [
 ];
 
 
-/* variables for data */
+/* data variables */
 let fertilityData = [];
 let numericalColumnsData = [];
 let domainScales = new Map();
@@ -182,12 +182,12 @@ function removeSelectedCountry(countryName) {
 }
 
 /**
- * Updates the country list in the dashboard
+ * Updates the country list in the legend
  */
 function updateCountryList() {
     const countryList = d3.select('#sel_countries');
 
-    countryList.selectAll('div').remove(); // Clear old list
+    countryList.selectAll('div').remove();
 
     const divs = countryList.selectAll('div')
         .data(selectedCountry)

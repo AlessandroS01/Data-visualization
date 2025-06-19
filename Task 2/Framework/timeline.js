@@ -64,7 +64,6 @@ function creationTimelineLegend() {
                 const hoveredClassLine = d3.select(this).attr("class") || "";
                 // If multiple classes, take the one you want; if single class, just use it directly
                 const secondClass = hoveredClassLine.split(' ')[1];
-
                 const hoveredSelection = gMap.selectAll(`path.country.${secondClass}`);
 
                 // Dim all countries first
@@ -75,11 +74,6 @@ function creationTimelineLegend() {
                 hoveredSelection.style('opacity', 1);
             })
             .on("mouseout", function() {
-                // Optional: reset fill on mouseout
-                const hoveredClassLine = d3.select(this).attr("class") || "";
-                // If multiple classes, take the one you want; if single class, just use it directly
-                const secondClass = hoveredClassLine.split(' ')[1];
-
                 gMap.selectAll('path.country')
                     .style('opacity', 1);
             });
