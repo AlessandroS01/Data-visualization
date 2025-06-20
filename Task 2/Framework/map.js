@@ -5,6 +5,22 @@ const mapHeight = 400 + "px"; // base height for map
 const projection = d3.geoEquirectangular().scale(160);
 const path = d3.geoPath(projection); // generate paths according to the projection used and the geojson data
 
+/* variables for map legend */
+const fertilityColorMap = [
+    { threshold: 1.0, color: "#ffffe5" }, // .first-interval
+    { threshold: 2.0, color: "#f7fcb9" }, // .second-interval
+    { threshold: 3.0, color: "#d9f0a3" }, // .third-interval
+    { threshold: 4.0, color: "#addd8e" }, // .fourth-interval
+    { threshold: 5.0, color: "#78c679" }, // .fifth-interval
+    { threshold: 6.0, color: "#41ab5d" }, // .sixth-interval
+    { threshold: 7.0, color: "#238443" }, // .seventh-interval
+    { threshold: Infinity, color: "#005a32" } // .eighth-interval
+];
+let xScale, yFertilityScale, yPopulationScale;
+const chartHeight = 110;
+
+/* variables for map tooltip */
+let hoveredCountry = "";
 
 /**
  * Creates the map of the world with countries
@@ -43,6 +59,7 @@ function createMap() {
                 .on('mouseout', function() {
                     // Remove tooltip on mouse out
                     d3.select(".map-tooltip").remove();
+                    hoveredCountry = "";
                 })
                 .on('click', (event, d) => {
                     const countryName = d.properties.name;
@@ -120,8 +137,7 @@ function updateMap() {
     });
 
     // responsible for updating map tooltip
-    let tooltipHeader = d3.select(".map-tooltip-header");
-    tooltipHeader.select("text").text(currentYear);
+    updateTooltipData();
 }
 
 
@@ -129,6 +145,9 @@ function updateMap() {
  * Generate line charts when hovering over a country
  */
 function createPopulationLineChart(countryName) {
+    hoveredCountry = "";
+    hoveredCountry = countryName;
+
     // Create the tooltip on hover
     let tooltip = d3.select("body")
         .append("div")
@@ -136,16 +155,16 @@ function createPopulationLineChart(countryName) {
 
     let header = tooltip.append("div")
         .attr("class", "map-tooltip-header");
-    header.append("h3").text(countryName).style("margin", 0);
-    header.append("text").text(currentYear);
+    header.append("h3").text(countryName).style("margin", 0).style("fill", "#1a1a1a");
+    header.append("text").text(currentYear).style("fill", "#1a1a1a");
 
     let linecharts = tooltip.append("div")
         .attr("class", "map-tooltip-charts-container");
 
 
-    let filteredCountryData = fertilityData.filter(
-        value => value.Name === countryName
-    );
+    let filteredCountryData = fertilityData
+        .filter(value => value.Name === countryName)
+        .sort((a, b) => +a.Year - +b.Year);
 
     if (filteredCountryData.length === 0) {
         linecharts
@@ -154,131 +173,342 @@ function createPopulationLineChart(countryName) {
             .style("box-sizing", "border-box")
             .style("margin", "0")
             .style("font-size", "14px")
-            .style("color", "dimgray");
+            .style("fill", "#1a1a1a");
     } else {
+        const currentData = filteredCountryData.find(
+            d => +d.Year === +currentYear
+        );
+
+        const countryPopulationData = currentData.Population;
+        const countryFertilityData = currentData.FertilityR;
+
+        if (countryFertilityData) {
+            linecharts
+                .append("div")
+                .attr("id", "fertility")
+                .style("box-sizing", "border-box")
+                .style("margin", "3px 0 5px 0")
+                .style("font-size", "12px")
+                .html(`
+                    <span style="color: whitesmoke; font-weight: bold">Fertility rate: </span>
+                    <span style="color: ${getFertilityColor(countryFertilityData)}; font-weight: bold;">
+                      ${countryFertilityData}
+                    </span>
+                `);
+        } else {
+            linecharts
+                .append("h4")
+                .attr("id", "fertility")
+                .text("No fertility data")
+                .style("box-sizing", "border-box")
+                .style("margin", "3px 0 5px 0")
+                .style("font-size", "12px")
+                .style("fill", "whitesmoke");
+        }
+
+        if (countryPopulationData) {
+            linecharts
+                .append("h4")
+                .attr("id", "population")
+                .text("Population: " + d3.format(".2s")(countryPopulationData).replace("G", "B"))
+                .style("box-sizing", "border-box")
+                .style("margin", "2px 0")
+                .style("font-size", "12px")
+                .style("color", "whitesmoke");
+        } else {
+            linecharts
+                .append("h4")
+                .attr("id", "population")
+                .text("No population data")
+                .style("box-sizing", "border-box")
+                .style("margin", "2px 0")
+                .style("font-size", "12px")
+                .style("color", "whitesmoke");
+        }
+
+
+
+
+
         let fertilityDomain = d3.extent(
             filteredCountryData, d => +d["FertilityR"]
         );
         let populationDomain = d3.extent(
             filteredCountryData, d => +d["Population"]
         );
-        const currentData = filteredCountryData.find(
-            d => d.Year === currentYear
-        );
-        console.log(currentData)
 
-        const chartHeight = 80;
-        const gap = 10;
-        const totalHeight = chartHeight * 2 + gap + 20;
+        const gap = 20;
+        const totalHeight = chartHeight * 2 + gap + 50;
 
         const width = linecharts.node().getBoundingClientRect().width;
 
         const svg = linecharts.append("svg")
+            .attr("class", "svg-line-charts")
             .attr("viewBox", `0 0 ${width} ${totalHeight}`)
             .attr("preserveAspectRatio", "xMidYMid meet")
             .style("width", "100%")
-            .style("height", "auto");
+            .style("height", "auto")
+            .style("margin-top", "10px")
+            .style("overflow", "visible");
 
         // X Scale
-        const x = d3.scaleLinear()
+        xScale = d3.scaleLinear()
             .domain([startYear, endYear])
             .range([0, width]);
 
         // Y Scales
-        const yFertility = d3.scaleLinear()
-            .domain(fertilityDomain).nice()
+        yFertilityScale = d3.scaleLinear()
+            .domain(fertilityDomain)
             .range([chartHeight, 0]);
 
-        const yPop = d3.scaleLinear()
-            .domain(populationDomain).nice()
+        yPopulationScale = d3.scaleLinear()
+            .domain(populationDomain)
             .range([chartHeight, 0]);
 
-// Line Generators
-        const lineFertility = d3.line()
-            .x(d => x(d.Year))
-            .y(d => yFertility(d.FertilityR));
-
+        // Line Generator
         const linePop = d3.line()
-            .x(d => x(d.Year))
-            .y(d => yPop(d.Population));
+            .x(d => xScale(d.Year))
+            .y(d => yPopulationScale(d.Population));
 
-// Chart 1: Fertility
+        // Chart 1: Fertility (custom segmented lines)
         const gFert = svg.append("g");
-        gFert.append("path")
-            .datum(filteredCountryData)
-            .attr("fill", "none")
-            .attr("stroke", "mediumpurple")
-            .attr("stroke-width", 2)
-            .attr("d", lineFertility);
+        gFert.append("line")
+            .attr("x1", 0)
+            .attr("x2", width)
+            .attr("y1", 0)
+            .attr("y2", 0)
+            .attr("stroke", "whitesmoke");
+        gFert.append("text")
+            .attr("x", width - 5)
+            .attr("y", 10) // a little below the top line
+            .attr("font-size", "10px")
+            .attr("fill", "whitesmoke")
+            .attr("text-anchor", "end")
+            .text(fertilityDomain[1].toFixed(4));
 
-// Highlight Point (Fertility)
 
+        for (let i = 0; i < filteredCountryData.length - 1; i++) {
+            const d1 = filteredCountryData[i];
+            const d2 = filteredCountryData[i + 1];
+
+            gFert.append("line")
+                .attr("x1", xScale(d1.Year))
+                .attr("y1", yFertilityScale(d1.FertilityR))
+                .attr("x2", xScale(d2.Year))
+                .attr("y2", yFertilityScale(d2.FertilityR))
+                .attr("stroke", getFertilityColor(d1.FertilityR)) // or average of d1/d2
+                .attr("stroke-width", 3);
+        }
+        gFert.append("line")
+            .attr("x1", 0)
+            .attr("x2", width)
+            .attr("y1", chartHeight)
+            .attr("y2", chartHeight)
+            .attr("stroke", "whitesmoke");
+        gFert.append("text")
+            .attr("x", width - 5)
+            .attr("y", chartHeight - 3) // a little above the bottom line
+            .attr("font-size", "10px")
+            .attr("fill", "whitesmoke")
+            .attr("text-anchor", "end")
+            .text(fertilityDomain[0].toFixed(4));
+
+        // Highlight Point (Fertility)
         if (currentData) {
-            const xVal = x(currentYear);
-            const yVal = yFertility(currentData.FertilityR);
+            const xVal = xScale(currentYear);
+            const yVal = yFertilityScale(currentData.FertilityR);
 
             gFert.append("line")
                 .attr("x1", xVal)
                 .attr("x2", xVal)
                 .attr("y1", 0)
                 .attr("y2", chartHeight)
-                .attr("stroke", "#ccc")
+                .attr("id", "fer-highlight-line")
+                .attr("stroke", "whitesmoke")
                 .attr("stroke-dasharray", "2,2");
 
             gFert.append("circle")
+                .attr("id", "fer-highlight-circle")
                 .attr("cx", xVal)
                 .attr("cy", yVal)
                 .attr("r", 4)
-                .attr("fill", "mediumpurple");
-
-            // Fertility Value Label
-            gFert.append("text")
-                .text(currentData.FertilityR.toFixed(1))
-                .attr("x", xVal + 5)
-                .attr("y", yVal - 10)
-                .attr("fill", "mediumpurple")
-                .style("font-size", "12px");
+                .attr("fill", getFertilityColor(countryFertilityData));
         }
 
-// Chart 2: Population
+        // Chart 2: Population
         const gPop = svg.append("g")
             .attr("transform", `translate(0, ${chartHeight + gap})`);
+        gPop.append("line")
+            .attr("x1", 0)
+            .attr("x2", width)
+            .attr("y1", 0)
+            .attr("y2", 0)
+            .attr("stroke", "whitesmoke");
+        gPop.append("text")
+            .attr("x", width - 5)
+            .attr("y", 10) // a little below the top line
+            .attr("font-size", "10px")
+            .attr("fill", "whitesmoke")
+            .attr("text-anchor", "end")
+            .text(d3.format(".2s")(populationDomain[1]).replace("G", "B"));
 
         gPop.append("path")
             .datum(filteredCountryData)
             .attr("fill", "none")
             .attr("stroke", "steelblue")
-            .attr("stroke-width", 2)
+            .attr("stroke-width", 3)
             .attr("d", linePop);
 
-// Highlight Point (Population)
+        // Highlight Point (Population)
         if (currentData) {
-            const xVal = x(currentYear);
-            const yVal = yPop(currentData.Population);
+            const xVal = xScale(currentYear);
+            const yVal = yPopulationScale(countryPopulationData);
 
             gPop.append("line")
                 .attr("x1", xVal)
                 .attr("x2", xVal)
                 .attr("y1", 0)
                 .attr("y2", chartHeight)
-                .attr("stroke", "#ccc")
+                .attr("id", "pop-highlight-line")
+                .attr("stroke", "whitesmoke")
                 .attr("stroke-dasharray", "2,2");
 
             gPop.append("circle")
+                .attr("id", "pop-highlight-circle")
                 .attr("cx", xVal)
                 .attr("cy", yVal)
                 .attr("r", 4)
                 .attr("fill", "steelblue");
-
-            // Population Value Label
-            gPop.append("text")
-                .text(d3.format(",")(currentData.Population))
-                .attr("x", xVal + 5)
-                .attr("y", yVal - 10)
-                .attr("fill", "steelblue")
-                .style("font-size", "12px");
         }
 
-    }
+        // Append x-axis group at the bottom
+        const xAxisGroup = svg.append("g")
+            .attr("transform", `translate(0, ${chartHeight * 2 + gap})`);
 
+        // Draw the main horizontal x-axis line
+        xAxisGroup.append("line")
+            .attr("x1", 0)
+            .attr("x2", width)
+            .attr("y1", 0)
+            .attr("y2", 0)
+            .attr("stroke", "whitesmoke");
+
+        xAxisGroup.append("text")
+            .attr("x", width - 5)
+            .attr("y", -3) // a little above the bottom line
+            .attr("font-size", "10px")
+            .attr("fill", "whitesmoke")
+            .attr("text-anchor", "end")
+            .text(d3.format(".2s")(populationDomain[0]).replace("G", "B"));
+
+        // Data for ticks: only start and end year
+        const xTicks = [startYear, endYear];
+
+        // Draw ticks
+        xAxisGroup.selectAll("line.tick")
+            .data(xTicks)
+            .enter()
+            .append("line")
+            .attr("class", "tick")
+            .attr("x1", d => xScale(d))
+            .attr("x2", d => xScale(d))
+            .attr("y1", 0)
+            .attr("y2", 5)
+            .attr("stroke", "whitesmoke");
+
+    // Add labels under the ticks
+        xAxisGroup.selectAll("text.tick-label")
+            .data(xTicks)
+            .enter()
+            .append("text")
+            .attr("class", "tick-label")
+            .attr("x", d => xScale(d))
+            .attr("y", 10)
+            .attr("text-anchor", d => d === startYear ? "start" : "end")
+            .attr("font-size", "10px")
+            .text(d => d)
+            .attr("fill", "whitesmoke");
+    }
+}
+
+/**
+ * Handles the update of the map tooltip
+ */
+function updateTooltipData() {
+    if (hoveredCountry !== "") {
+        let tooltipHeader = d3.select(".map-tooltip-header");
+        tooltipHeader.select("text").text(currentYear);
+
+        const currentData = fertilityData.find(entry =>
+            entry.Name === hoveredCountry && +entry.Year === +currentYear
+        );
+
+        let linecharts = d3
+            .select(".map-tooltip-charts-container");
+
+        const countryPopulationData = currentData.Population;
+        const countryFertilityData = currentData.FertilityR;
+
+        if (countryFertilityData) {
+            linecharts
+                .select("#fertility")
+                .html(`
+                <span style="color: whitesmoke; font-weight: bold">Fertility rate: </span>
+                <span style="color: ${getFertilityColor(countryFertilityData)}; font-weight: bold;">
+                  ${countryFertilityData}
+                </span>
+            `);
+        } else {
+            linecharts
+                .select("#fertility")
+                .text("No fertility data").style("fill", "whitesmoke");
+        }
+
+        if (countryPopulationData) {
+            linecharts.select("#population").text("Population: " + d3.format(".2s")(countryPopulationData).replace("G", "B"));
+        } else {
+            linecharts.select("#population").text("No population data").style("fill", "whitesmoke");
+        }
+
+        const xVal = xScale(currentYear);
+        const yValFertility = yFertilityScale(countryFertilityData);
+        const yValPopulation = yPopulationScale(countryPopulationData);
+
+        d3.select("#fer-highlight-line")
+            .attr("x1", xVal)
+            .attr("x2", xVal)
+            .attr("y1", 0)
+            .attr("y2", chartHeight);
+
+        d3.select("#fer-highlight-circle")
+            .attr("cx", xVal)
+            .attr("cy", yValFertility)
+            .attr("fill", getFertilityColor(countryFertilityData));
+
+        d3.select("#pop-highlight-line")
+            .attr("x1", xVal)
+            .attr("x2", xVal)
+            .attr("y1", 0)
+            .attr("y2", chartHeight);
+
+        d3.select("#pop-highlight-circle")
+            .attr("cx", xVal)
+            .attr("cy", yValPopulation);
+    }
+}
+
+/**
+ * Retrieves the correspondent color for fertility rate according to the value
+ * @param value of the fertility rate
+ * @returns {string} of the color
+ */
+function getFertilityColor(value) {
+    if (value <= 1.0) return "#ffffe5";
+    if (value <= 2.0) return "#f7fcb9";
+    if (value <= 3.0) return "#d9f0a3";
+    if (value <= 4.0) return "#addd8e";
+    if (value <= 5.0) return "#78c679";
+    if (value <= 6.0) return "#41ab5d";
+    if (value <= 7.0) return "#238443";
+    return "#005a32";
 }
