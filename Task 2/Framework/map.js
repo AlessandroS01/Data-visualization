@@ -173,7 +173,7 @@ function createPopulationLineChart(countryName) {
             .style("box-sizing", "border-box")
             .style("margin", "0")
             .style("font-size", "14px")
-            .style("fill", "#1a1a1a");
+            .style("color", "whitesmoke");
     } else {
         const currentData = filteredCountryData.find(
             d => +d.Year === +currentYear

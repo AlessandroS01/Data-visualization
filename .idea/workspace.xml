@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Started line chart implementation">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Line chart implementation finished">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/map.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +143,8 @@
       <workItem from="1750142613726" duration="4302000" />
       <workItem from="1750324494760" duration="141000" />
       <workItem from="1750337775315" duration="8372000" />
-      <workItem from="1750406644799" duration="10510000" />
+      <workItem from="1750406644799" duration="10641000" />
+      <workItem from="1750508186110" duration="2655000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -458,7 +458,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750346239535</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Line chart implementation finished">
+      <option name="closed" value="true" />
+      <created>1750417397119</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1750417397119</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,7 +484,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Definition color list" />
     <MESSAGE value="Creation of hashmap for color usage. TODO remove element with index" />
     <MESSAGE value="Implemented adding and removal of selected elements. Done color change as well." />
     <MESSAGE value="Added line stroke to selected elements in the scatterplot" />
@@ -501,6 +508,7 @@
     <MESSAGE value="Added dynamic fertility label inside selected country" />
     <MESSAGE value="Redefined structure to have a better scalability" />
     <MESSAGE value="Started line chart implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started line chart implementation" />
+    <MESSAGE value="Line chart implementation finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="Line chart implementation finished" />
   </component>
 </project>
