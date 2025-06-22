@@ -30,9 +30,11 @@ const classNames = [
 
 /* data variables */
 let fertilityData = [];
+let mapCountryContinent = new Map();
 let numericalColumnsData = [];
 let domainScales = new Map();
 
+/* data for visualization interaction */
 let selectedCountry = [];
 const colorListWorld = [
     "#ffcdc8",
@@ -68,6 +70,7 @@ function initDashboardTask2(retrievedData) {
     });
     createMap();
     createTimeline();
+    initializeCountryContinentMap();
 }
 
 /**
@@ -224,6 +227,28 @@ function updateCountryList() {
         .style("color", "black")
         .style("font", "Helvetica")
         .style("font-size", "12px");
+}
+
+/**
+ * Initialize map that maps the countries to their continent
+ */
+function initializeCountryContinentMap() {
+    d3.csv("../data/continents.csv").then(function(countryContinentData) {
+        let setCountryNames = new Set();
+        fertilityData.forEach(d => setCountryNames.add(d.Name));
+
+        setCountryNames.forEach(countryName => {
+            const region = countryContinentData.find(
+                country => country.Entity === countryName
+            )?.Region;
+
+            if (region !== undefined) {
+                mapCountryContinent.set(countryName, region);
+            }
+        });
+    }).catch(function(error) {
+        console.error("Error loading the CSV file:", error);
+    });
 }
 
 
