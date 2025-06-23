@@ -283,7 +283,16 @@ function createDataTable(dataRetrieved) {
 
     let tbody = table.append("tbody");
 
-    for (let i = 1; i < dataRetrieved.length; i++) {
+    dataRetrieved.sort((a, b) => {
+        // Compare by Name (string)
+        if (a.Name < b.Name) return -1;
+        if (a.Name > b.Name) return 1;
+
+        // If Name is the same, compare by Year (number)
+        return a.Year - b.Year;
+    });
+
+    for (let i = 0; i < dataRetrieved.length; i++) {
         let rowData = dataRetrieved[i];
 
         let row = tbody.append("tr") // Append a row for each data entry
