@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Added labels to line charts">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Removed Cote Ivore bug">
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/map.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +146,7 @@
       <workItem from="1750406644799" duration="10641000" />
       <workItem from="1750508186110" duration="2723000" />
       <workItem from="1750578218945" duration="3852000" />
-      <workItem from="1750659950420" duration="4660000" />
+      <workItem from="1750659950420" duration="5179000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -500,7 +500,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750674076356</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Removed Cote Ivore bug">
+      <option name="closed" value="true" />
+      <created>1750675415330</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1750675415330</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -518,7 +526,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Radar chart completed" />
     <MESSAGE value="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements" />
     <MESSAGE value="Started implementation of map in Task 2" />
     <MESSAGE value="Map creation finished" />
@@ -543,6 +550,7 @@
     <MESSAGE value="Added map of country to continent for the future bubble chart" />
     <MESSAGE value="Created python file to handle filling values" />
     <MESSAGE value="Added labels to line charts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added labels to line charts" />
+    <MESSAGE value="Removed Cote Ivore bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed Cote Ivore bug" />
   </component>
 </project>

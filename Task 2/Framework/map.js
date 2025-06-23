@@ -6,16 +6,6 @@ const projection = d3.geoEquirectangular().scale(160);
 const path = d3.geoPath(projection); // generate paths according to the projection used and the geojson data
 
 /* variables for map legend */
-const fertilityColorMap = [
-    { threshold: 1.0, color: "#ffffe5" }, // .first-interval
-    { threshold: 2.0, color: "#f7fcb9" }, // .second-interval
-    { threshold: 3.0, color: "#d9f0a3" }, // .third-interval
-    { threshold: 4.0, color: "#addd8e" }, // .fourth-interval
-    { threshold: 5.0, color: "#78c679" }, // .fifth-interval
-    { threshold: 6.0, color: "#41ab5d" }, // .sixth-interval
-    { threshold: 7.0, color: "#238443" }, // .seventh-interval
-    { threshold: Infinity, color: "#005a32" } // .eighth-interval
-];
 let xScale, yFertilityScale, yPopulationScale;
 const chartHeight = 110;
 
