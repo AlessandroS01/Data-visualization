@@ -280,6 +280,13 @@ function createPopulationLineChart(countryName) {
             .attr("stroke", "whitesmoke");
         gFert.append("text")
             .attr("x", width - 5)
+            .attr("y", -3) // a little above the bottom line
+            .attr("font-size", "10px")
+            .attr("fill", "whitesmoke")
+            .attr("text-anchor", "end")
+            .text("Fertility rate");
+        gFert.append("text")
+            .attr("x", width - 5)
             .attr("y", 10) // a little below the top line
             .attr("font-size", "10px")
             .attr("fill", "whitesmoke")
@@ -344,6 +351,13 @@ function createPopulationLineChart(countryName) {
             .attr("y1", 0)
             .attr("y2", 0)
             .attr("stroke", "whitesmoke");
+        gPop.append("text")
+            .attr("x", width - 5)
+            .attr("y", -3) // a little above the bottom line
+            .attr("font-size", "10px")
+            .attr("fill", "whitesmoke")
+            .attr("text-anchor", "end")
+            .text("Population");
         gPop.append("text")
             .attr("x", width - 5)
             .attr("y", 10) // a little below the top line

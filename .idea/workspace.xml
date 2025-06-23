@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Added map of country to continent for the future bubble chart">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Created python file to handle filling values">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/map.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +147,7 @@
       <workItem from="1750406644799" duration="10641000" />
       <workItem from="1750508186110" duration="2723000" />
       <workItem from="1750578218945" duration="3852000" />
-      <workItem from="1750659950420" duration="2692000" />
+      <workItem from="1750659950420" duration="3516000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -485,7 +485,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750582556716</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Created python file to handle filling values">
+      <option name="closed" value="true" />
+      <created>1750662781740</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1750662781740</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -503,7 +511,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added line stroke to selected elements in the scatterplot" />
     <MESSAGE value="Legend completed" />
     <MESSAGE value="Radar chart completed" />
     <MESSAGE value="Radar chart completed. Added a limitation on the size of the selected items. Removed color groups for similar elements" />
@@ -528,6 +535,7 @@
     <MESSAGE value="Line chart implementation finished" />
     <MESSAGE value="Added presentation file. Already done first part" />
     <MESSAGE value="Added map of country to continent for the future bubble chart" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added map of country to continent for the future bubble chart" />
+    <MESSAGE value="Created python file to handle filling values" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created python file to handle filling values" />
   </component>
 </project>
