@@ -27,3 +27,8 @@ df = df.sort_values(by=["Name", "Year"])
 df.to_csv("filledDataReduced.csv", index=False)
 
 print(df)
+
+
+
+
+
