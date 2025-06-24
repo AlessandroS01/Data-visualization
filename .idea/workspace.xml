@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Presentation update with data interpolation slide">
-      <change afterPath="$PROJECT_DIR$/Task 2/Framework/scatterplot.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +104,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-WS-251.26094.131" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-WS-251.26927.40" />
       </set>
     </attachedChunks>
   </component>
@@ -147,7 +147,8 @@
       <workItem from="1750508186110" duration="2723000" />
       <workItem from="1750578218945" duration="3852000" />
       <workItem from="1750659950420" duration="7441000" />
-      <workItem from="1750746561940" duration="1497000" />
+      <workItem from="1750746561940" duration="1848000" />
+      <workItem from="1750748543173" duration="273000" />
     </task>
     <task id="LOCAL-00001" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -525,7 +526,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750747830106</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Presentation update with data interpolation slide">
+      <option name="closed" value="true" />
+      <created>1750748432624</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1750748432624</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
