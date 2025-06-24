@@ -336,11 +336,24 @@ div.tooltip {
 }
 
 
-    /* OTHER CHARTS */
+/* OTHER CHARTS */
+.bubble-chart {
+    width: 60%;
+    height: 100%;
+    background-color: white;
+}
+
+.scatterplot {
+    width: 30%;
+    height: 100%;
+    background-color: lightgray;
+}
+
 .dashboardGrid .charts {
+    padding: 10px;
     height: 500px;
     display: flex;
     flex-direction: row;
     background-color: #777777;
-    justify-content: space-around;
+    justify-content: space-between;
 }
