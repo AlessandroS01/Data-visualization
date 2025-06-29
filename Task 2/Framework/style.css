@@ -361,6 +361,6 @@ div.tooltip {
 /* In style.css */
 .scatterplot {
   width: 100%; /* Make the container take up all available width */
-  max-width: 800px; /* But don't let it get bigger than 800px */
+  max-width: 1000px; /* But don't let it get bigger than 800px */
   margin: 0 auto; /* Center it */
 }

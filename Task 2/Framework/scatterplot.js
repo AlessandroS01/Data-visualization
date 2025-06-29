@@ -4,13 +4,14 @@
 */
 
 // --- 1. DEFINE MODULE-LEVEL VARIABLES ---
-// These variables will store the state of our chart so the update function can access them.
 let svg,
     x,
     y,
+    radiusScale,      // <-- ADD THIS
     fullData,
     xAccessor,
-    yAccessor;
+    yAccessor,
+    sizeAccessor;     // <-- ADD THIS
 
 /**
  * Initializes the dashboard scatterplot, creating the SVG, scales, and axes.
@@ -20,6 +21,7 @@ let svg,
  * @param {Array} config.data - The complete array of data objects.
  * @param {string} config.xCol - The name of the column for the X-axis.
  * @param {string} config.yCol - The name of the column for the Y-axis.
+ * @param {string} config.sizeCol - The name of the column for the circle size.
  */
 function initDashboardScatterplot(config) {
     console.log("Initializing scatterplot module with config:", config);
@@ -28,14 +30,14 @@ function initDashboardScatterplot(config) {
     fullData = config.data;
     xAccessor = config.xCol;
     yAccessor = config.yCol;
+    sizeAccessor = config.sizeCol; // <-- ADD THIS
 
-    // --- Create the chart structure (similar to your previous create function) ---
     const container = d3.select(config.container);
-    container.html(""); // Clear the container
+    container.html("");
 
-    const width = 500, height = 350, marginTop = 30, marginRight = 30, marginBottom = 60, marginLeft = 70;
+    const width = 1000, height = 800, marginTop = 30, marginRight = 30, marginBottom = 60, marginLeft = 70;
 
-    // Create and store the scales
+    // Create and store the X and Y scales
     x = d3.scaleLinear()
         .domain(d3.extent(fullData, d => +d[xAccessor])).nice()
         .range([marginLeft, width - marginRight]);
@@ -44,10 +46,18 @@ function initDashboardScatterplot(config) {
         .domain(d3.extent(fullData, d => +d[yAccessor])).nice()
         .range([height - marginBottom, marginTop]);
 
+    // --- (NEW) Create and store the Radius Scale ---
+    radiusScale = d3.scaleSqrt()
+        .domain(d3.extent(fullData, d => +d[sizeAccessor])).nice()
+        .range([2, 18]); // Circles will have a radius between 2px and 18px
+    // ---------------------------------------------
+
     // Create and store the main SVG element
     svg = d3.create("svg")
         .attr("width", width)
         .attr("height", height)
+        // ... (rest of the init function is the same)
+        // ...
         .attr("viewBox", [0, 0, width, height])
         .attr("style", "max-width: 100%; height: auto;");
 
@@ -89,30 +99,61 @@ function initDashboardScatterplot(config) {
  * @param {number} currentYear - The year to display.
  */
 function updateDashboardScatterplot(currentYear) {
-    if (!svg) { // Don't run if the chart hasn't been initialized
+    if (!svg) {
         console.error("Scatterplot has not been initialized. Call initDashboardScatterplot first.");
         return;
     }
     
-    // Filter the data for the given year
     const chartData = fullData.filter(d => +d.Year === +currentYear);
 
-    // Select the dots group and update the data
-    svg.select(".scatterplot-dots")
+    // --- (CORRECTED LOGIC) ---
+    // The `circles` variable now stores the final, merged selection returned by .join()
+    const circles = svg.select(".scatterplot-dots")
       .selectAll("circle")
       .data(chartData, d => d.Name)
       .join(
           enter => enter.append("circle")
-              .attr("r", 4)
               .style("opacity", 0)
               .attr("cx", d => x(+d[xAccessor]))
               .attr("cy", d => y(+d[yAccessor]))
-              .call(enter => enter.transition().duration(300).style("opacity", 1)),
+              .attr("r", 0) // Start at radius 0
+              .call(enter => enter.transition().duration(300)
+                  .style("opacity", 1)
+                  .attr("r", d => radiusScale(+d[sizeAccessor]))), // Animate to final radius
           update => update
               .call(update => update.transition().duration(300)
                   .attr("cx", d => x(+d[xAccessor]))
-                  .attr("cy", d => y(+d[yAccessor]))),
+                  .attr("cy", d => y(+d[yAccessor]))
+                  .attr("r", d => radiusScale(+d[sizeAccessor]))),
           exit => exit
-              .call(exit => exit.transition().duration(300).style("opacity", 0).remove())
+              .call(exit => exit.transition().duration(300)
+                  .style("opacity", 0)
+                  .attr("r", 0)
+                  .remove())
       );
+
+    // Now, attach event listeners to the 'circles' selection,
+    // which contains ALL circles (both new and updated).
+    circles
+        .on("mouseover", function(event, d) {
+            d3.select(this)
+              .transition().duration(100)
+              .attr("r", radiusScale(+d[sizeAccessor]) * 1.5)
+              .style("stroke", "black")
+              .style("stroke-width", 1.5);
+            createPopulationLineChart(d.Name);
+        })
+        .on("mousemove", function(event) {
+            d3.select(".map-tooltip")
+              .style("left", (event.pageX + 15) + "px")
+              .style("top", (event.pageY + 10) + "px");
+        })
+        .on("mouseout", function(event, d) {
+            d3.select(this)
+              .transition().duration(100)
+              .attr("r", radiusScale(+d[sizeAccessor]))
+              .style("stroke", "none");
+            d3.select(".map-tooltip").remove();
+            hoveredCountry = "";
+        });
 }

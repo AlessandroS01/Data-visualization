@@ -78,10 +78,10 @@ function initDashboardTask2(retrievedData) {
         container: ".scatterplot",
         data: retrievedData,
         xCol: "Population",
-        yCol: "FertilityR"
+        yCol: "FertilityR",
+        sizeCol: "FertilityR"
     });
 
-    // --- (NEW) Call the update function once to draw the initial state ---
     updateDashboardScatterplot(startYear);
 }
 
