@@ -71,6 +71,7 @@ function initDashboardTask2(retrievedData) {
     createMap();
     createTimeline();
     initializeCountryContinentMap();
+    appendChartToContainer(".scatterplot", createDashboardScatterplot);
 }
 
 /**
@@ -256,6 +257,7 @@ function initializeCountryContinentMap() {
 function clearDashboardTask2() {
     mapChart.selectAll("*").remove();
     timeline.selectAll("*").remove();
+    d3.select(".scatterplot").selectAll("*").remove();
 
     currentYear = startYear;
     selectedCountry = [];
