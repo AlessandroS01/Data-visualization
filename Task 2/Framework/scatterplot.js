@@ -1,97 +1,118 @@
-/* variables for scatterplot */
-
 /*
-* Data Visualization - Dashboard Scatterplot
-* This file contains the logic for the scatterplot on the main dashboard.
+* Data Visualization - Dashboard Scatterplot Module
+* This file contains all logic for creating and updating the dashboard scatterplot.
 */
 
-// --- 1. DEFINE VARIABLES ---
-// We define variables in this file's scope to avoid conflicts with other plots.
-let dashboardScatterSvg, scatterplotWidth, scatterplotHeight, scatterplotMargin;
-let xDashboardScale, yDashboardScale;
-let xDashboardAxis, yDashboardAxis;
-let xDashboardAxisLabel, yDashboardAxisLabel;
-
-
-function appendChartToContainer(containerSelector, chartGenerator) {
-    const container = d3.select(containerSelector);
-
-    // Safety check: make sure the container exists
-    if (container.empty()) {
-        console.error(`Chart container "${containerSelector}" not found.`);
-        return;
-    }
-
-    // 1. Clear the container of any previous content.
-    container.html("");
-
-    // 2. Call the generator function to create the chart node and append it.
-    container.append(chartGenerator);
-}
+// --- 1. DEFINE MODULE-LEVEL VARIABLES ---
+// These variables will store the state of our chart so the update function can access them.
+let svg,
+    x,
+    y,
+    fullData,
+    xAccessor,
+    yAccessor;
 
 /**
- * Initializes an empty scatterplot on the dashboard.
- * This function sets up the SVG container, margins, scales, and axes.
- * It's called when the dashboard is first created.
+ * Initializes the dashboard scatterplot, creating the SVG, scales, and axes.
+ * This should only be called once.
+ * @param {object} config - A configuration object.
+ * @param {string} config.container - The CSS selector for the chart's container.
+ * @param {Array} config.data - The complete array of data objects.
+ * @param {string} config.xCol - The name of the column for the X-axis.
+ * @param {string} config.yCol - The name of the column for the Y-axis.
  */
-function createDashboardScatterplot() {
-    console.log("Creating self-contained scatterplot node...");
+function initDashboardScatterplot(config) {
+    console.log("Initializing scatterplot module with config:", config);
+    
+    // Store the configuration in our module-level variables
+    fullData = config.data;
+    xAccessor = config.xCol;
+    yAccessor = config.yCol;
 
-    // 1. Specify the chart’s fixed dimensions.
-    const width = 500; // You can adjust this size
-    const height = 350; // You can adjust this size
-    const marginTop = 30;
-    const marginRight = 30;
-    const marginBottom = 60;
-    const marginLeft = 70;
+    // --- Create the chart structure (similar to your previous create function) ---
+    const container = d3.select(config.container);
+    container.html(""); // Clear the container
 
-    // 2. Prepare the scales with a default domain.
-    const x = d3.scaleLinear()
-        .domain([0, 100]) // Default placeholder domain
+    const width = 500, height = 350, marginTop = 30, marginRight = 30, marginBottom = 60, marginLeft = 70;
+
+    // Create and store the scales
+    x = d3.scaleLinear()
+        .domain(d3.extent(fullData, d => +d[xAccessor])).nice()
         .range([marginLeft, width - marginRight]);
 
-    const y = d3.scaleLinear()
-        .domain([0, 100]) // Default placeholder domain
+    y = d3.scaleLinear()
+        .domain(d3.extent(fullData, d => +d[yAccessor])).nice()
         .range([height - marginBottom, marginTop]);
 
-    // 3. Create the SVG container in memory.
-    const svg = d3.create("svg")
+    // Create and store the main SVG element
+    svg = d3.create("svg")
+        .attr("width", width)
+        .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
-        .attr("style", "max-width: 100%; height: auto;"); // Makes the SVG responsive
+        .attr("style", "max-width: 100%; height: auto;");
 
-    // 4. Create the axes.
+    // Create axes and labels
     svg.append("g")
         .attr("transform", `translate(0, ${height - marginBottom})`)
-        .call(d3.axisBottom(x))
-        .call(g => g.append("text")
-            .attr("x", width - marginRight)
-            .attr("y", marginBottom - 4)
-            .attr("fill", "currentColor")
-            .attr("text-anchor", "end")
-            .text("X-Axis Placeholder →"));
+        .call(d3.axisBottom(x));
+    svg.append("text")
+        .attr("x", width - marginRight)
+        .attr("y", height - 4)
+        .attr("fill", "currentColor")
+        .attr("text-anchor", "end")
+        .text(`${xAccessor} →`);
 
     svg.append("g")
         .attr("transform", `translate(${marginLeft}, 0)`)
-        .call(d3.axisLeft(y))
-        .call(g => g.append("text")
-            .attr("x", -marginLeft)
-            .attr("y", 15)
-            .attr("fill", "currentColor")
-            .attr("text-anchor", "start")
-            .text("↑ Y-Axis Placeholder"));
-            
-    // Here you would add your grid lines or initial elements if desired.
-    // The `updateDashboardScatterplot` function will be used later to add the actual data points.
+        .call(d3.axisLeft(y));
+    svg.append("text")
+        .attr("x", -marginLeft)
+        .attr("y", 15)
+        .attr("fill", "currentColor")
+        .attr("text-anchor", "start")
+        .text(`↑ ${yAccessor}`);
+        
+    // Add a group for the dots
+    svg.append("g")
+        .attr("class", "scatterplot-dots")
+        .attr("stroke", "steelblue")
+        .attr("fill", "steelblue")
+        .attr("fill-opacity", 0.5);
 
-    // 5. Return the finished SVG node.
-    return svg.node();
+    // Append the newly created SVG to the container
+    container.node().append(svg.node());
 }
 
+
 /**
- * Updates the scatterplot with data.
- * (This function will need to be adapted to work with the new structure if you use it later)
+ * Updates the data points in the scatterplot based on a new year.
+ * @param {number} currentYear - The year to display.
  */
-function updateDashboardScatterplot(data) {
-    console.log("updateDashboardScatterplot would be called with:", data);
-    // Future logic to update the chart will go here.
+function updateDashboardScatterplot(currentYear) {
+    if (!svg) { // Don't run if the chart hasn't been initialized
+        console.error("Scatterplot has not been initialized. Call initDashboardScatterplot first.");
+        return;
+    }
+    
+    // Filter the data for the given year
+    const chartData = fullData.filter(d => +d.Year === +currentYear);
+
+    // Select the dots group and update the data
+    svg.select(".scatterplot-dots")
+      .selectAll("circle")
+      .data(chartData, d => d.Name)
+      .join(
+          enter => enter.append("circle")
+              .attr("r", 4)
+              .style("opacity", 0)
+              .attr("cx", d => x(+d[xAccessor]))
+              .attr("cy", d => y(+d[yAccessor]))
+              .call(enter => enter.transition().duration(300).style("opacity", 1)),
+          update => update
+              .call(update => update.transition().duration(300)
+                  .attr("cx", d => x(+d[xAccessor]))
+                  .attr("cy", d => y(+d[yAccessor]))),
+          exit => exit
+              .call(exit => exit.transition().duration(300).style("opacity", 0).remove())
+      );
 }

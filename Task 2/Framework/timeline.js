@@ -272,4 +272,5 @@ function updateSlider() {
         .attr("x", xPos)
         .text(currentYear);
     updateMap();
+    updateDashboardScatterplot(currentYear); 
 }

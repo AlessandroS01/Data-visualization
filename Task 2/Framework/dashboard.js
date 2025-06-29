@@ -48,6 +48,8 @@ const colorListWorld = [
 ];
 let colorCountryMap = new Map();
 
+let scatterplotXAccessor = ''; 
+let scatterplotYAccessor = ''; 
 
 function initDashboardTask2(retrievedData) {
     fertilityData = retrievedData;
@@ -71,7 +73,16 @@ function initDashboardTask2(retrievedData) {
     createMap();
     createTimeline();
     initializeCountryContinentMap();
-    appendChartToContainer(".scatterplot", createDashboardScatterplot);
+
+    initDashboardScatterplot({
+        container: ".scatterplot",
+        data: retrievedData,
+        xCol: "Population",
+        yCol: "FertilityR"
+    });
+
+    // --- (NEW) Call the update function once to draw the initial state ---
+    updateDashboardScatterplot(startYear);
 }
 
 /**
