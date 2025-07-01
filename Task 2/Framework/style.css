@@ -337,30 +337,28 @@ div.tooltip {
 
 
 /* OTHER CHARTS */
-.bubble-chart {
+.dashboardGrid .charts {
+    padding: 10px;
+    height: 500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.parallel-chart {
     width: 60%;
     height: 100%;
-    background-color: white;
+    align-self: stretch;
+    background-color: lightgray;
+    border: 1px solid #bbbbbb;
+    box-shadow: 2px 2px 2px #bbbbbb;
+}
+.parallel-chart svg {
+    overflow: visible;
 }
 
 .scatterplot {
     width: 30%;
     height: 100%;
     background-color: lightgray;
-}
-
-.dashboardGrid .charts {
-    padding: 10px;
-    height: 500px;
-    display: flex;
-    flex-direction: row;
-    background-color: #777777;
-    justify-content: space-between;
-}
-
-/* In style.css */
-.scatterplot {
-  width: 100%; /* Make the container take up all available width */
-  max-width: 1000px; /* But don't let it get bigger than 800px */
-  margin: 0 auto; /* Center it */
 }

@@ -73,6 +73,7 @@ function initDashboardTask2(retrievedData) {
     createMap();
     createTimeline();
     initializeCountryContinentMap();
+    createParallelChart();
 
     initDashboardScatterplot({
         container: ".scatterplot",
