@@ -516,3 +516,22 @@ function getFertilityColor(value) {
     if (value <= 7.0) return "#238443";
     return "#005a32";
 }
+
+function getColorByContinent(continent) {
+    switch(continent) {
+        case "Africa":
+            return "#f4ff00";
+        case "Asia":
+            return "#00e2ff";
+        case "Europe":
+            return "#f10000";
+        case "North America":
+            return "#8600ff";
+        case "Oceania":
+            return "#00ff56";
+        case "South America":
+            return "#4600ff";
+        default:
+            return "#999"; // Default color for unknown continents
+    }
+}

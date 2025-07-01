@@ -1,6 +1,7 @@
 /* variables for parallel chart */
 let parallelChart;
 let gParallelChart;
+let yParallelScale;
 
 const viewBoxHeightParallel = 100;
 const viewBoxWidthParallel = 100;
@@ -10,7 +11,7 @@ let dimensionsParallelOrder;
 
 const tickLength = 2;
 
-function createParallelChart() {
+function createParallelChart(mapCountryContinent) {
     dimensionsParallelOrder = numericalColumnsData.filter(dim => !excludedDimensions.includes(dim));
 
     const container = d3.select(".parallel-chart");
@@ -24,9 +25,9 @@ function createParallelChart() {
     gParallelChart = parallelChart.append("g");
 
     // Define y-scales
-    const y = {};
+    yParallelScale = {};
     dimensionsParallelOrder.forEach(dim => {
-        y[dim] = d3.scaleLinear()
+        yParallelScale[dim] = d3.scaleLinear()
             .domain(domainScales.get(dim))
             .range([viewBoxHeightParallel, 0]);
     });
@@ -123,7 +124,7 @@ function createParallelChart() {
 
     // Fertility segments
     axisGroups.filter(d => d === "FertilityR")
-        .each(function(d) {
+        .each(function() {
             const fertilityDomain = domainScales.get("FertilityR");
             const segmentCount = 8;
             const fertilitySegments = [];
@@ -140,8 +141,8 @@ function createParallelChart() {
                 .attr("class", "fertility-segment")
                 .attr("x1", 0)
                 .attr("x2", 0)
-                .attr("y1", d => y["FertilityR"](d.valueEnd))
-                .attr("y2", d => y["FertilityR"](d.valueStart))
+                .attr("y1", d => yParallelScale["FertilityR"](d.valueEnd))
+                .attr("y2", d => yParallelScale["FertilityR"](d.valueStart))
                 .attr("stroke", d => getFertilityColor(d.valueStart))
                 .attr("stroke-width", 1);
         });
@@ -150,33 +151,77 @@ function createParallelChart() {
     axisGroups.each(function(d) {
         d3.select(this).attr("data-dim", d);
     });
+
+    drawDataLines(fertilityData.filter(d => +d.Year === +currentYear), mapCountryContinent);
 }
 
-// Helper: get index of axis position based on X coordinate
-function getClosestIndex(x) {
-    const step = viewBoxWidthParallel / (dimensionsParallelOrder.length - 1);
-    let index = Math.round(x / step);
-    index = Math.max(0, Math.min(index, dimensionsParallelOrder.length - 1));
-    return index;
+function drawDataLines(data, mapCountryContinent) {
+    const tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip-country")
+        .style("position", "absolute")
+        .style("background", "rgba(0, 0, 0, 0.75)")
+        .style("color", "#fff")
+        .style("padding", "4px 8px")
+        .style("font-size", "12px")
+        .style("border-radius", "4px")
+        .style("pointer-events", "none")
+        .style("opacity", 0);
+
+    // Filter data for countries present in the map
+    const filteredData = data.filter(d => mapCountryContinent.has(d.Name));
+
+
+    // Remove old lines before drawing new ones (optional but recommended)
+    gParallelChart.selectAll(".data-line").remove();
+
+    // Draw one path per country
+    gParallelChart.selectAll(".data-line")
+        .data(filteredData)
+        .enter()
+        .append("path")
+        .attr("class", "data-line")
+        .attr("fill", "none")
+        .attr("stroke", d => getColorByContinent(mapCountryContinent.get(d.Name))) // example coloring by continent
+        .attr("stroke-width", 0.3)
+        .attr("d", d => {
+            console.log("Drawing line for", d.Name);
+            // Build line path connecting each dimension point for this country
+            return d3.line()(dimensionsParallelOrder.map(dim => {
+                const x = (dimensionsParallelOrder.indexOf(dim) / (dimensionsParallelOrder.length - 1)) * viewBoxWidthParallel;
+                const yVal = d[dim];
+                const y = yParallelScale[dim](yVal); // your y scale for that dimension
+                return [x, y];
+            }));
+        })
+        .on("mouseover", function(event, d) {
+            tooltip
+                .style("opacity", 1)
+                .html(`<strong>${d.Name}</strong>`)
+                .style("left", `${event.pageX + 10}px`)
+                .style("top", `${event.pageY - 20}px`);
+
+            d3.select(this)
+                .attr("stroke-width", 1)
+                .attr("stroke", "black");
+        })
+        .on("mousemove", function(event) {
+            tooltip
+                .style("left", `${event.pageX + 10}px`)
+                .style("top", `${event.pageY - 20}px`);
+        })
+        .on("mouseout", function(event, d) {
+            tooltip
+                .style("opacity", 0);
+
+            d3.select(this)
+                .attr("stroke-width", 0.3)
+                .attr("stroke", d => getColorByContinent(mapCountryContinent.get(d.Name)));
+        });
 }
 
-function updateAxisPositions() {
-    gParallelChart.selectAll("g.axis-group")
-        .data(dimensionsParallelOrder, d => d)
-        .transition()
-        .duration(500)
-        .attr("transform", (_, i) => `translate(${(i / (dimensionsParallelOrder.length - 1)) * viewBoxWidthParallel},0)`);
-}
 
-function swapDimensions(dim1, dim2) {
-    const i1 = dimensionsParallelOrder.indexOf(dim1);
-    const i2 = dimensionsParallelOrder.indexOf(dim2);
-    if (i1 === -1 || i2 === -1) return;
-
-    [dimensionsParallelOrder[i1], dimensionsParallelOrder[i2]] = [dimensionsParallelOrder[i2], dimensionsParallelOrder[i1]];
-    updateAxisPositions();
-}
-
+// Dragging variables
 
 let draggedIndex = null;
 let dragStartX = null;

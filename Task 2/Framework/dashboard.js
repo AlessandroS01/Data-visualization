@@ -48,15 +48,15 @@ const colorListWorld = [
 ];
 let colorCountryMap = new Map();
 
-let scatterplotXAccessor = ''; 
-let scatterplotYAccessor = ''; 
 
-function initDashboardTask2(retrievedData) {
+async function initDashboardTask2(retrievedData) {
     fertilityData = retrievedData;
 
     startYear = d3.min(fertilityData, d => d.Year);
     currentYear = startYear;
     endYear = d3.max(fertilityData, d => d.Year);
+
+    await initializeCountryContinentMap();
 
     retrievedData.columns.forEach(column => {
         if (!isNaN(+fertilityData[0][column])) { // take first row and defines the domain for each numeric attribute
@@ -72,8 +72,6 @@ function initDashboardTask2(retrievedData) {
     });
     createMap();
     createTimeline();
-    initializeCountryContinentMap();
-    createParallelChart();
 
     initDashboardScatterplot({
         container: ".scatterplot",
@@ -82,8 +80,11 @@ function initDashboardTask2(retrievedData) {
         yCol: "FertilityR",
         sizeCol: "FertilityR"
     });
-
     updateDashboardScatterplot(startYear);
+
+    createParallelChart(mapCountryContinent);
+
+    createContinentLegend();
 }
 
 /**
@@ -246,7 +247,7 @@ function updateCountryList() {
  * Initialize map that maps the countries to their continent
  */
 function initializeCountryContinentMap() {
-    d3.csv("../data/continents.csv").then(function(countryContinentData) {
+    return d3.csv("../data/continents.csv").then(function(countryContinentData) {
         let setCountryNames = new Set();
         fertilityData.forEach(d => setCountryNames.add(d.Name));
 
@@ -257,11 +258,46 @@ function initializeCountryContinentMap() {
 
             if (region !== undefined) {
                 mapCountryContinent.set(countryName, region);
+
             }
         });
     }).catch(function(error) {
         console.error("Error loading the CSV file:", error);
     });
+}
+
+function createContinentLegend() {
+    const continentColors = {
+        "Africa": "#f4ff00",
+        "Asia": "#00e2ff",
+        "Europe": "#f10000",
+        "North America": "#8600ff",
+        "Oceania": "#00ff56",
+        "South America": "#4600ff",
+        "Other": "#999"
+    };
+
+    const legendContainer = d3.select(".continent-legend");
+
+    const legendItems = legendContainer.selectAll(".legend-item")
+        .data(Object.entries(continentColors))
+        .enter()
+        .append("div")
+        .attr("class", "legend-item")
+        .style("display", "flex")
+        .style("align-items", "center")
+        .style("margin-bottom", "4px");
+
+    legendItems.append("div")
+        .attr("class", "legend-color")
+        .style("width", "12px")
+        .style("height", "12px")
+        .style("margin-right", "6px")
+        .style("background-color", d => d[1])
+        .style("border", "1px solid #000");
+
+    legendItems.append("span")
+        .text(d => d[0]);
 }
 
 

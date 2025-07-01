@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Thinking of parallel coordinate chart rather than a normal bubble chart, in which we fix fertility rate as first axis">
-      <change afterPath="$PROJECT_DIR$/Task 2/Framework/parallel.js" afterDir="false" />
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Changed dataset (previous one without u5mortality). Added parallel chart. Implemented dragging of the lines. Still needing to add data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/parallel.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/parallel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/data/Dataset/FillingValuesProject/filledDataReduced.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/data/Dataset/FillingValuesProject/filling_values.py" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/FillingValuesProject/filling_values.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/data/Dataset/reduced_dataset.csv" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,15 +157,7 @@
       <workItem from="1750748543173" duration="273000" />
       <workItem from="1750749511349" duration="338000" />
       <workItem from="1750788042229" duration="275000" />
-      <workItem from="1751371431467" duration="7808000" />
-    </task>
-    <task id="LOCAL-00001" summary="Defined structure of the repository">
-      <option name="closed" value="true" />
-      <created>1747585080582</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1747585080582</updated>
+      <workItem from="1751371431467" duration="11492000" />
     </task>
     <task id="LOCAL-00002" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -552,7 +543,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750749841476</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Changed dataset (previous one without u5mortality). Added parallel chart. Implemented dragging of the lines. Still needing to add data">
+      <option name="closed" value="true" />
+      <created>1751379621653</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1751379621653</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -570,7 +569,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Map creation finished" />
     <MESSAGE value="Timeline half constructed, along with the legend and the playing button. I will continue with the creation of the slider" />
     <MESSAGE value="Slider finished" />
     <MESSAGE value="Retrieved data" />
@@ -595,6 +593,7 @@
     <MESSAGE value="Removed Cote Ivore bug" />
     <MESSAGE value="Presentation update with data interpolation slide" />
     <MESSAGE value="Thinking of parallel coordinate chart rather than a normal bubble chart, in which we fix fertility rate as first axis" />
-    <option name="LAST_COMMIT_MESSAGE" value="Thinking of parallel coordinate chart rather than a normal bubble chart, in which we fix fertility rate as first axis" />
+    <MESSAGE value="Changed dataset (previous one without u5mortality). Added parallel chart. Implemented dragging of the lines. Still needing to add data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed dataset (previous one without u5mortality). Added parallel chart. Implemented dragging of the lines. Still needing to add data" />
   </component>
 </project>
