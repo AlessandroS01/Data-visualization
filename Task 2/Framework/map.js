@@ -26,6 +26,9 @@ function createMap() {
     d3.json('../data/worldMap.geojson')
         .then(worldData => {
             const countriesFeature = worldData.features;
+            countriesFeature.find(feature => {
+                geoFeatureList.push(feature);
+            });
 
             gMap.selectAll('path')
                 .data(countriesFeature)
@@ -54,8 +57,8 @@ function createMap() {
                     const countryName = d.properties.name;
 
                     // Optional: prevent duplicates
-                    if (!selectedCountry.includes(countryName)) {
-                        if (selectedCountry.length === 8) {
+                    if (!selectedCountries.includes(countryName)) {
+                        if (selectedCountries.length === 8) {
                             window.confirm("You've selected the maximum number of countries. \n " +
                                 "To continue the selection remove at least one of them.");
                         } else {
@@ -114,7 +117,7 @@ function updateMap() {
         });
 
     // responsible for updating the values inside selected countries
-    selectedCountry.forEach(countryName => {
+    selectedCountries.forEach(countryName => {
         const textId = `label-${countryName.replace(/[\s.]/g, '_')}`;
 
         const matchedEntry = fertilityData.find(value =>

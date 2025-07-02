@@ -66,22 +66,11 @@ function creationTimelineLegend() {
                 const secondClass = hoveredClassLine.split(' ')[1];
                 hoveredTimelineInterval = `path.country.${secondClass}`;
 
-
-                const hoveredSelection = gMap.selectAll(`path.country.${secondClass}`);
-
-                // Dim all countries first
-                gMap.selectAll('path.country')
-                    .style('opacity', 0.2);
-
-                // Then reset opacity back to 1 for hovered group
-                hoveredSelection.style('opacity', 1);
+                chartsHighlighting();
             })
             .on("mouseout", function() {
                 hoveredTimelineInterval = "";
-
-
-                gMap.selectAll('path.country')
-                    .style('opacity', 1);
+                chartsHighlighting();
             });
 
         if (isFirst) {
@@ -278,5 +267,6 @@ function updateSlider() {
         .attr("x", xPos)
         .text(currentYear);
     updateMap();
-    updateDashboardScatterplot(currentYear); 
+    updateDashboardScatterplot(currentYear);
+    drawDataLines(mapCountryContinent, true);
 }

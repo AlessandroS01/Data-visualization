@@ -26,7 +26,7 @@ const classNames = [
     "timeline-range seventh-interval",
     "timeline-range eighth-interval"
 ];
-
+let geoFeatureList = []; // list of geo features for the map
 
 /* data variables */
 let fertilityData = [];
@@ -101,17 +101,10 @@ async function initDashboardTask2(retrievedData) {
  * @param geoFeature the geo feature of the country to add the center label
  */
 function addSelectedCountry(countryName, geoFeature) {
-    selectedCountry.push(countryName);
+    selectedCountries.push(countryName);
+    const replaceCountryName = countryName.replace(/[\s.]/g, '_');
     if(colorCountryMap.size === 0) { // no other element selected
-        // TODO: add here how to handle addition of new selected country from the charts (look comment below)
-        /*d3.select("#point"+countryName)
-            .transition()
-            .duration(300)
-            .attr("fill",colorListWorld)
-            .attr("opacity", 1);
-
-         */
-        colorCountryMap.set(countryName, colorListWorld[0]);
+        colorCountryMap.set(replaceCountryName, colorListWorld[0]);
     } else {
         let newColor = "";
         let usedColors = new Set(colorCountryMap.values()); // set of colors already used
@@ -121,18 +114,19 @@ function addSelectedCountry(countryName, geoFeature) {
                 break;
             }
         }
-        // TODO: add here how to handle addition of new selected country from the charts (look comment below)
-        /*d3.select("#point"+countryName)
-            .transition()
-            .duration(300)
-            .attr("fill",newColor)
-            .attr("opacity", 1);
-
-         */
-        colorCountryMap.set(countryName, newColor);
+        colorCountryMap.set(replaceCountryName, newColor);
     }
+
+    if (geoFeature === null) {
+        geoFeatureList.forEach(feature => {
+            if (feature.properties?.name === countryName) {
+                geoFeature = feature;
+            }
+        });
+    }
+
     const countryCentroid = getMainlandCentroid(geoFeature);
-    const textId = `label-${countryName.replace(/[\s.]/g, '_')}`;
+    const textId = `label-${replaceCountryName}`;
     const matchedEntry = fertilityData.find(value =>
         +value.Year === +currentYear && value.Name === countryName
     );
@@ -196,11 +190,9 @@ function getMainlandCentroid(feature) {
  * @param countryName of the country to be removed
  */
 function removeSelectedCountry(countryName) {
-    selectedCountry = selectedCountry.filter(country => country !== countryName);
-    colorCountryMap.delete(countryName);
+    selectedCountries = selectedCountries.filter(country => country !== countryName);
+    colorCountryMap.delete(countryName.replace(/[\s.]/g, '_'));
 
-    gMap.selectAll('path.country')
-        .style('opacity', 1); // Reset opacity for all countries or bug occurs
     d3.select(`#label-${countryName.replace(/[\s.]/g, '_')}`).remove();
 
     updateCountryList();
@@ -215,27 +207,22 @@ function updateCountryList() {
     countryList.selectAll('div').remove();
 
     const divs = countryList.selectAll('div')
-        .data(selectedCountry)
+        .data(selectedCountries)
         .enter()
         .append('div')
         .attr("class", "map-legend")
+        .attr("id", d => `${d.replace(/[\s.]/g, '_')}`)
         .attr('width', '100%')
-        .style("background-color", d => colorCountryMap.get(d));
+        .style("background-color", d => colorCountryMap.get(d.replace(/[\s.]/g, '_')));
 
     divs
         .on("mouseover", function (event, countryName) {
-            const hoveredSelection = gMap.select(`#${countryName.replace(/[\s.]/g, '_')}`);
-
-            // Dim all countries first
-            gMap.selectAll('path.country')
-                .style('opacity', 0.2);
-
-            // Then reset opacity back to 1 for hovered group
-            hoveredSelection.style('opacity', 1);
+            hoveredCountry = countryName;
+            chartsHighlighting();
         })
         .on("mouseout", function(event, countryName) {
-            gMap.selectAll('path.country')
-                .style('opacity', 1);
+            hoveredCountry = "";
+            chartsHighlighting();
         });
 
     divs.append('button')
@@ -243,6 +230,8 @@ function updateCountryList() {
         .text("X")
         .on('click', function(event, countryName) {
             removeSelectedCountry(countryName);
+            hoveredCountry = "";
+            chartsHighlighting();
         });
     divs.append('text')
         .text(d => d)
@@ -339,7 +328,7 @@ function clearDashboardTask2() {
     d3.select(".scatterplot").selectAll("*").remove();
 
     currentYear = startYear;
-    selectedCountry = [];
+    selectedCountries = [];
     fertilityData = [];
     numericalColumnsData = [];
     domainScales.clear();

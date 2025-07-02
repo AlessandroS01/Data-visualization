@@ -81,7 +81,7 @@ function createParallelChart(mapCountryContinent) {
 
             brushG.call(
                 d3.brushY()
-                    .extent([[-5, 0], [5, viewBoxHeightParallel]])
+                    .extent([[-2, 0], [2, viewBoxHeightParallel]])
                     .on("start brush end", (event) => {
                         event.sourceEvent.stopPropagation();
                         brushChanged(event, dim);
@@ -196,12 +196,14 @@ function createParallelChart(mapCountryContinent) {
         d3.select(this).attr("data-dim", d);
     });
 
-
-    drawDataLines(fertilityData.filter(d => +d.Year === +currentYear), mapCountryContinent);
+    drawDataLines(mapCountryContinent, false);
 }
 
 
-function drawDataLines(data, mapCountryContinent) {
+function drawDataLines(mapCountryContinent, update) {
+    let data = fertilityData.filter(d => +d.Year === +currentYear);
+    d3.selectAll(".tooltip-country").remove(); // Remove old tooltip if exists
+
     const tooltip = d3.select("body")
         .append("div")
         .attr("class", "tooltip-country")
@@ -217,21 +219,28 @@ function drawDataLines(data, mapCountryContinent) {
     // Filter data for countries present in the map
     const filteredData = data.filter(d => mapCountryContinent.has(d.Name));
 
-
     // Remove old lines before drawing new ones (optional but recommended)
     gParallelChart.selectAll(".data-line").remove();
 
-    // Draw one path per country
-    gParallelChart.selectAll(".data-line")
-        .data(filteredData)
-        .enter()
+    const lines = gParallelChart.selectAll(".data-line")
+        .data(filteredData, d => d.Name); // Use 'Name' as the key to track items
+
+// EXIT: remove paths that are no longer needed
+    lines.exit().remove();
+
+// UPDATE: update attributes for existing lines
+    lines
+        .attr("d", d => buildLinePath(d));
+
+// ENTER: create new paths as needed
+    lines.enter()
         .append("path")
         .attr("class", d => `data-line ${mapCountryContinent.get(d.Name).replace(/[\s.]/g, '_')}`)
-        .attr("id", d => `line-${d.Name.replace(/[\s.]/g, '_')}`) // replace spaces and dots for valid IDs
+        .attr("id", d => `line-${d.Name.replace(/[\s.]/g, '_')}`)
         .attr("fill", "none")
-        .attr("stroke", d => getColorByContinent(mapCountryContinent.get(d.Name))) // example coloring by continent
+        .attr("stroke", d => getColorByContinent(mapCountryContinent.get(d.Name)))
         .attr("stroke-width", 0.3)
-        .attr("d", d => buildLinePath(d)) // Build line path connecting each dimension point for this country
+        .attr("d", d => buildLinePath(d))
         .on("mouseover", function(event, d) {
             hoveredCountry = d.Name;
             const fRate = d.FertilityR ? d.FertilityR : "N/A";
@@ -241,15 +250,15 @@ function drawDataLines(data, mapCountryContinent) {
 
             tooltip
                 .style("opacity", 1)
-                .html(
-                    `<strong>
-                        ${d.Name} <br> <br>
-                        Fertility rate: ${fRate} <br>
-                        Life expectancy: ${lExpB} <br>
-                        Growth rate: ${gR} <br>
-                        Infant mortality: ${iMort} <br>
-                    </strong>`
-                )
+                .html(`
+                <strong>
+                ${d.Name} <br><br>
+                Fertility rate: ${fRate} <br>
+                Life expectancy: ${lExpB} <br>
+                Growth rate: ${gR} <br>
+                Infant mortality: ${iMort} <br>
+                </strong>
+            `)
                 .style("left", `${event.pageX + 10}px`)
                 .style("top", `${event.pageY - 20}px`);
 
@@ -263,9 +272,24 @@ function drawDataLines(data, mapCountryContinent) {
         .on("mouseout", function(event, d) {
             hoveredCountry = "";
             chartsHighlighting();
-            tooltip
-                .style("opacity", 0);
+            tooltip.style("opacity", 0);
+        })
+        .on("click", function(event, d) {
+            const countryName = d.Name;
+
+            if (!selectedCountries.includes(countryName)) {
+                if (selectedCountries.length === 8) {
+                    window.confirm("You've selected the maximum number of countries.\nTo continue the selection remove at least one of them.");
+                } else {
+                    addSelectedCountry(countryName, null);
+                    chartsHighlighting();
+                }
+            } else {
+                removeSelectedCountry(countryName);
+                chartsHighlighting();
+            }
         });
+    chartsHighlighting();
 }
 
 
