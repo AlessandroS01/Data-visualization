@@ -146,6 +146,9 @@ function timelineHighlighting() {
 
     let maxFertValue = 0;
     switch (hoveredTimelineInterval.split(".")[2]) {
+        case "no-data":
+            maxFertValue = -1;
+            break;
         case "first-interval":
             maxFertValue = 1;
             break;

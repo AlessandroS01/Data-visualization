@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Started implementation of full-connected highlight charts">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Parallel chart completed. Needing logic for brushing and highlighting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/map.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/parallel.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/parallel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/timeline.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/timeline.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/data/Dataset/FillingValuesProject/filledDataReduced.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/FillingValuesProject/filledDataReduced.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,15 +152,7 @@
       <workItem from="1750749511349" duration="338000" />
       <workItem from="1750788042229" duration="275000" />
       <workItem from="1751371431467" duration="11827000" />
-      <workItem from="1751437554865" duration="26857000" />
-    </task>
-    <task id="LOCAL-00004" summary="Assigned values of csv numeric headers to chart">
-      <option name="closed" value="true" />
-      <created>1747652109437</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1747652109437</updated>
+      <workItem from="1751437554865" duration="27192000" />
     </task>
     <task id="LOCAL-00005" summary="Defined gray line for the radar chart">
       <option name="closed" value="true" />
@@ -552,7 +538,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751453368454</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Parallel chart completed. Needing logic for brushing and highlighting">
+      <option name="closed" value="true" />
+      <created>1751472636149</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1751472636149</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -570,7 +564,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Retrieved data" />
     <MESSAGE value="Created reduced dataset for a shorter period analysis (1980-2023)" />
     <MESSAGE value="Changed timeline ranges and added a new dataset that has all the fertility rate data" />
     <MESSAGE value="Timeline range finished. Linked data finished." />
@@ -595,6 +588,7 @@
     <MESSAGE value="Changed dataset (previous one without u5mortality). Added parallel chart. Implemented dragging of the lines. Still needing to add data" />
     <MESSAGE value="Created continent legend on the bottom of the parallel chart" />
     <MESSAGE value="Started implementation of full-connected highlight charts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started implementation of full-connected highlight charts" />
+    <MESSAGE value="Parallel chart completed. Needing logic for brushing and highlighting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Parallel chart completed. Needing logic for brushing and highlighting" />
   </component>
 </project>
