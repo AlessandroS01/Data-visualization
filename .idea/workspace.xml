@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Changed dataset (previous one without u5mortality). Added parallel chart. Implemented dragging of the lines. Still needing to add data">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Created continent legend on the bottom of the parallel chart">
+      <change afterPath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dataVis.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/map.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/parallel.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/parallel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/timeline.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/timeline.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,30 +55,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JavaScript Debug.Task 1.executor": "Run",
-    "JavaScript Debug.Task 2.executor": "Run",
-    "JavaScript Debug.index.html (1).executor": "Run",
-    "JavaScript Debug.index.html.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Node.js.dataVis.js.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/parallel-chart",
-    "grid.search.filter.rows": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Users/Lenovo/Desktop/University/Master University/Passau University/Studies/Sommersemester 2025/Data Visualization/Uebung/Project",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JavaScript Debug.Task 1.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.Task 2.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.index.html (1).executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.index.html.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Node.js.dataVis.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/parallel-chart&quot;,
+    &quot;grid.search.filter.rows&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lenovo/Desktop/University/Master University/Passau University/Studies/Sommersemester 2025/Data Visualization/Uebung/Project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2025.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Lenovo\Desktop\University\Master University\Passau University\Studies\Sommersemester 2025\Data Visualization\Uebung\Project\Task 2" />
@@ -157,15 +158,8 @@
       <workItem from="1750748543173" duration="273000" />
       <workItem from="1750749511349" duration="338000" />
       <workItem from="1750788042229" duration="275000" />
-      <workItem from="1751371431467" duration="11492000" />
-    </task>
-    <task id="LOCAL-00002" summary="Defined structure of the repository">
-      <option name="closed" value="true" />
-      <created>1747585309576</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1747585309576</updated>
+      <workItem from="1751371431467" duration="11827000" />
+      <workItem from="1751437554865" duration="14329000" />
     </task>
     <task id="LOCAL-00003" summary="Defined structure of the repository">
       <option name="closed" value="true" />
@@ -551,7 +545,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751379621653</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Created continent legend on the bottom of the parallel chart">
+      <option name="closed" value="true" />
+      <created>1751383421008</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1751383421008</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -569,7 +571,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Timeline half constructed, along with the legend and the playing button. I will continue with the creation of the slider" />
     <MESSAGE value="Slider finished" />
     <MESSAGE value="Retrieved data" />
     <MESSAGE value="Created reduced dataset for a shorter period analysis (1980-2023)" />
@@ -594,6 +595,7 @@
     <MESSAGE value="Presentation update with data interpolation slide" />
     <MESSAGE value="Thinking of parallel coordinate chart rather than a normal bubble chart, in which we fix fertility rate as first axis" />
     <MESSAGE value="Changed dataset (previous one without u5mortality). Added parallel chart. Implemented dragging of the lines. Still needing to add data" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed dataset (previous one without u5mortality). Added parallel chart. Implemented dragging of the lines. Still needing to add data" />
+    <MESSAGE value="Created continent legend on the bottom of the parallel chart" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created continent legend on the bottom of the parallel chart" />
   </component>
 </project>

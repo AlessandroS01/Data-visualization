@@ -9,9 +9,6 @@ const path = d3.geoPath(projection); // generate paths according to the projecti
 let xScale, yFertilityScale, yPopulationScale;
 const chartHeight = 110;
 
-/* variables for map tooltip */
-let hoveredCountry = "";
-
 /**
  * Creates the map of the world with countries
  */
@@ -39,6 +36,7 @@ function createMap() {
                 .attr('d', path)
                 .on('mouseover', function(event, d) {
                     createPopulationLineChart(d.properties.name);
+                    chartsHighlighting();
                 })
                 .on('mousemove', function(event) {
                     // Update position if mouse moves
@@ -50,6 +48,7 @@ function createMap() {
                     // Remove tooltip on mouse out
                     d3.select(".map-tooltip").remove();
                     hoveredCountry = "";
+                    chartsHighlighting();
                 })
                 .on('click', (event, d) => {
                     const countryName = d.properties.name;
@@ -135,7 +134,6 @@ function updateMap() {
  * Generate line charts when hovering over a country
  */
 function createPopulationLineChart(countryName) {
-    hoveredCountry = "";
     hoveredCountry = countryName;
 
     // Create the tooltip on hover

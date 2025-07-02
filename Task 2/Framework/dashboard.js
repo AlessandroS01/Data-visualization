@@ -30,12 +30,11 @@ const classNames = [
 
 /* data variables */
 let fertilityData = [];
-let mapCountryContinent = new Map();
 let numericalColumnsData = [];
 let domainScales = new Map();
 
+
 /* data for visualization interaction */
-let selectedCountry = [];
 const colorListWorld = [
     "#ffcdc8",
     "#c8e7ff",
@@ -47,6 +46,15 @@ const colorListWorld = [
     "#ffd3eb"
 ];
 let colorCountryMap = new Map();
+let mapCountryContinent = new Map();
+const continentColors = {
+    "Africa": "#f4ff00",
+    "Asia": "#00e2ff",
+    "Europe": "#f10000",
+    "North America": "#8600ff",
+    "Oceania": "#00ff56",
+    "South America": "#4600ff"
+};
 
 
 async function initDashboardTask2(retrievedData) {
@@ -267,16 +275,6 @@ function initializeCountryContinentMap() {
 }
 
 function createContinentLegend() {
-    const continentColors = {
-        "Africa": "#f4ff00",
-        "Asia": "#00e2ff",
-        "Europe": "#f10000",
-        "North America": "#8600ff",
-        "Oceania": "#00ff56",
-        "South America": "#4600ff",
-        "Other": "#999"
-    };
-
     const legendContainer = d3.select(".continent-legend");
 
     const legendItems = legendContainer.selectAll(".legend-item")
@@ -286,7 +284,40 @@ function createContinentLegend() {
         .attr("class", "legend-item")
         .style("display", "flex")
         .style("align-items", "center")
-        .style("margin-bottom", "4px");
+        .style("margin-bottom", "4px")
+        .on("mouseover", function(event, d) {
+            const continent = d[0]; // e.g., "Asia"
+            continentHovered = continent; // store hovered continent for later use
+            chartsHighlighting();
+
+
+            const className = continent.replace(/[\s.]/g, '_'); // sanitize class
+
+            // Dim all lines
+            d3.selectAll(".data-line")
+                .style("opacity", 0.1);
+
+            // Highlight only the lines for that continent
+            d3.selectAll(`.data-line.${className}`)
+                .style("opacity", 1);
+
+            // Dim all legend items
+            d3.selectAll(".legend-item")
+                .style("opacity", 0.3);
+
+            // Highlight the hovered legend item
+            d3.select(this)
+                .style("opacity", 1);
+        })
+        .on("mouseout", function(event, d) {
+            continentHovered = "";
+            chartsHighlighting();
+            d3.selectAll(".data-line")
+                .style("opacity", 1);
+
+            d3.selectAll(".legend-item")
+                .style("opacity", 1);
+        });
 
     legendItems.append("div")
         .attr("class", "legend-color")

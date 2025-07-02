@@ -11,6 +11,7 @@ let dimensionsParallelOrder;
 
 const tickLength = 2;
 
+
 function createParallelChart(mapCountryContinent) {
     dimensionsParallelOrder = numericalColumnsData.filter(dim => !excludedDimensions.includes(dim));
 
@@ -38,14 +39,10 @@ function createParallelChart(mapCountryContinent) {
         .enter()
         .append("g")
         .attr("class", "axis-group")
+        .attr("id", d => `axis-${d}`)
         .attr("transform", (_, i) =>
             `translate(${(i / (dimensionsParallelOrder.length - 1)) * viewBoxWidthParallel},0)`)
-        .call(
-            d3.drag()
-                .on("start", dragStarted)
-                .on("drag", dragged)
-                .on("end", dragEnded)
-        );
+        .style("pointer-events", "bounding-box");
 
     // Draw vertical axis line inside each group
     axisGroups.append("line")
@@ -61,9 +58,9 @@ function createParallelChart(mapCountryContinent) {
     axisGroups.append("text")
         .attr("class", "dimension-label")
         .attr("x", 0)
-        .attr("y", -1)
+        .attr("y", -2)
         .attr("text-anchor", "middle")
-        .attr("font-size", 2)
+        .attr("font-size", 2.5)
         .attr("fill", "black")
         .style("cursor", "grab")
         .text(d => {
@@ -75,6 +72,75 @@ function createParallelChart(mapCountryContinent) {
                 default: return d;
             }
         });
+
+    // Add brush to each axis group
+    axisGroups.append("g")
+        .attr("class", "brush")
+        .each(function(dim) {
+            const brushG = d3.select(this);
+
+            brushG.call(
+                d3.brushY()
+                    .extent([[-5, 0], [5, viewBoxHeightParallel]])
+                    .on("start brush end", (event) => {
+                        event.sourceEvent.stopPropagation();
+                        brushChanged(event, dim);
+                    })
+            );
+
+            const axisGroup = gParallelChart.select(`#axis-${dim}`);
+
+            // Right-click handler to clear brush
+            brushG.on("contextmenu", (event) => {
+                event.preventDefault();  // prevent default context menu
+
+                // Clear the brush programmatically
+                brushG.call(d3.brushY().move, null);
+                brushingAppliedIntervals.delete(dim);
+
+                // Optionally reset your brush labels and line opacity here:
+                axisGroup.select(`#brush-max-${dim}`)
+                    .style("opacity", 0)
+                    .text("");
+                axisGroup.select(`#brush-min-${dim}`)
+                    .style("opacity", 0)
+                    .text("");
+
+                chartsHighlighting();
+            });
+
+
+            axisGroup.append("text")
+                .attr("class", "brush-max-label")
+                .attr("id", `brush-max-${dim}`)
+                .style("font-size", "2.2")
+                .attr("x", 0)
+                .attr("pointer-events", "none")
+                .text("");
+            axisGroup.append("text")
+                .attr("class", "brush-min-label")
+                .attr("id", `brush-min-${dim}`)
+                .style("font-size", "2.2")
+                .attr("x", 0)
+                .attr("pointer-events", "none")
+                .text("");
+        });
+
+    axisGroups.call(d3.drag()
+        .filter(function(event) {
+            const target = event.target;
+            if (!target) return true;  // Allow drag if no target (should not happen)
+            return !(
+                target.closest(".brush") ||
+                target.classList.contains("brush") ||
+                target.classList.contains("selection") ||
+                target.classList.contains("handle")
+            );
+        })
+        .on("start", dragStarted)
+        .on("drag", dragged)
+        .on("end", dragEnded));
+
 
     // Min tick (bottom)
     axisGroups.append("line")
@@ -103,8 +169,10 @@ function createParallelChart(mapCountryContinent) {
         .attr("text-anchor", "end")
         .attr("font-size", 2)
         .attr("fill", "black")
+        .attr("pointer-events", "none")
         .text(d => {
             const domain = domainScales.get(d);
+            if (domain[0] === 0 ) return "N/A";
             return domain ? domain[0].toFixed(2) : "";
         });
 
@@ -117,34 +185,10 @@ function createParallelChart(mapCountryContinent) {
         .attr("text-anchor", "end")
         .attr("font-size", 2)
         .attr("fill", "black")
+        .attr("pointer-events", "none")
         .text(d => {
             const domain = domainScales.get(d);
             return domain ? domain[1].toFixed(2) : "";
-        });
-
-    // Fertility segments
-    axisGroups.filter(d => d === "FertilityR")
-        .each(function() {
-            const fertilityDomain = domainScales.get("FertilityR");
-            const segmentCount = 8;
-            const fertilitySegments = [];
-            for (let i = 0; i < segmentCount; i++) {
-                const valueStart = fertilityDomain[0] + (i / segmentCount) * (fertilityDomain[1] - fertilityDomain[0]);
-                const valueEnd = fertilityDomain[0] + ((i + 1) / segmentCount) * (fertilityDomain[1] - fertilityDomain[0]);
-                fertilitySegments.push({ valueStart, valueEnd });
-            }
-
-            d3.select(this).selectAll("line.fertility-segment")
-                .data(fertilitySegments)
-                .enter()
-                .append("line")
-                .attr("class", "fertility-segment")
-                .attr("x1", 0)
-                .attr("x2", 0)
-                .attr("y1", d => yParallelScale["FertilityR"](d.valueEnd))
-                .attr("y2", d => yParallelScale["FertilityR"](d.valueStart))
-                .attr("stroke", d => getFertilityColor(d.valueStart))
-                .attr("stroke-width", 1);
         });
 
     // Keep reference for drag
@@ -152,8 +196,10 @@ function createParallelChart(mapCountryContinent) {
         d3.select(this).attr("data-dim", d);
     });
 
+
     drawDataLines(fertilityData.filter(d => +d.Year === +currentYear), mapCountryContinent);
 }
+
 
 function drawDataLines(data, mapCountryContinent) {
     const tooltip = d3.select("body")
@@ -180,30 +226,34 @@ function drawDataLines(data, mapCountryContinent) {
         .data(filteredData)
         .enter()
         .append("path")
-        .attr("class", "data-line")
+        .attr("class", d => `data-line ${mapCountryContinent.get(d.Name).replace(/[\s.]/g, '_')}`)
+        .attr("id", d => `line-${d.Name.replace(/[\s.]/g, '_')}`) // replace spaces and dots for valid IDs
         .attr("fill", "none")
         .attr("stroke", d => getColorByContinent(mapCountryContinent.get(d.Name))) // example coloring by continent
         .attr("stroke-width", 0.3)
-        .attr("d", d => {
-            console.log("Drawing line for", d.Name);
-            // Build line path connecting each dimension point for this country
-            return d3.line()(dimensionsParallelOrder.map(dim => {
-                const x = (dimensionsParallelOrder.indexOf(dim) / (dimensionsParallelOrder.length - 1)) * viewBoxWidthParallel;
-                const yVal = d[dim];
-                const y = yParallelScale[dim](yVal); // your y scale for that dimension
-                return [x, y];
-            }));
-        })
+        .attr("d", d => buildLinePath(d)) // Build line path connecting each dimension point for this country
         .on("mouseover", function(event, d) {
+            hoveredCountry = d.Name;
+            const fRate = d.FertilityR ? d.FertilityR : "N/A";
+            const lExpB = d.LifeExpectacyB ? d.LifeExpectacyB : "N/A";
+            const gR = d.GR ? d.GR : "N/A";
+            const iMort = d.U5MortalityR ? d.U5MortalityR : "N/A";
+
             tooltip
                 .style("opacity", 1)
-                .html(`<strong>${d.Name}</strong>`)
+                .html(
+                    `<strong>
+                        ${d.Name} <br> <br>
+                        Fertility rate: ${fRate} <br>
+                        Life expectancy: ${lExpB} <br>
+                        Growth rate: ${gR} <br>
+                        Infant mortality: ${iMort} <br>
+                    </strong>`
+                )
                 .style("left", `${event.pageX + 10}px`)
                 .style("top", `${event.pageY - 20}px`);
 
-            d3.select(this)
-                .attr("stroke-width", 1)
-                .attr("stroke", "black");
+            chartsHighlighting();
         })
         .on("mousemove", function(event) {
             tooltip
@@ -211,12 +261,82 @@ function drawDataLines(data, mapCountryContinent) {
                 .style("top", `${event.pageY - 20}px`);
         })
         .on("mouseout", function(event, d) {
+            hoveredCountry = "";
+            chartsHighlighting();
             tooltip
                 .style("opacity", 0);
+        });
+}
 
-            d3.select(this)
-                .attr("stroke-width", 0.3)
-                .attr("stroke", d => getColorByContinent(mapCountryContinent.get(d.Name)));
+
+/**
+ * Builds the path string for a line connecting points in the parallel coordinates chart.
+ * @param d {Object} Data object for a country containing values for each dimension.
+ * @returns {string}
+ */
+function buildLinePath(d) {
+    const lineGenerator = d3.line()
+        .x(p => p.x)
+        .y(p => p.y);
+
+    const points = dimensionsParallelOrder.map((dim, i) => {
+        const val = d[dim];
+        const x = (i / (dimensionsParallelOrder.length - 1)) * viewBoxWidthParallel;
+
+        if (val === null || val === undefined || isNaN(val)) {
+            return { x, y: null, value: null }; // mark as missing
+        }
+
+        return {
+            x,
+            y: yParallelScale[dim](val),
+            value: val
+        };
+    });
+
+    return lineGenerator(points);
+}
+
+
+// Brushing
+
+function brushChanged(event, dim) {
+    const maxLabel = d3.select(`#brush-max-${dim}`);
+    const minLabel = d3.select(`#brush-min-${dim}`);
+
+    if (!event.selection) {
+        maxLabel.style("opacity", 0);
+        minLabel.style("opacity", 0);
+        gParallelChart.selectAll(".data-line").style("opacity", 1);
+        return;
+    }
+
+    const [y0, y1] = event.selection;
+
+    const maxVal = yParallelScale[dim].invert(y0);
+    const minVal = yParallelScale[dim].invert(y1);
+    brushingAppliedIntervals.set(dim, [minVal, maxVal]);
+
+    // Show labels at top and bottom of brush rectangle with small offsets
+    maxLabel
+        .style("opacity", 1)
+        .attr("y", y0 - 2)
+        .text(maxVal.toFixed(4));
+
+    minLabel
+        .style("opacity", 1)
+        .attr("y", y1 + 4)
+        .text(minVal.toFixed(2));
+
+    chartsHighlighting();
+
+    // Filter lines based on brush
+    gParallelChart.selectAll(".data-line")
+        .style("opacity", d => {
+            const val = d[dim];
+            if (val === null || val === undefined) return 0.1;
+            const y = yParallelScale[dim](val);
+            return (y >= y0 && y <= y1) ? 1 : 0.1;
         });
 }
 
@@ -293,4 +413,9 @@ function dragEnded(event, d) {
         .transition()
         .duration(300)
         .attr("transform", (_, i) => `translate(${positions[i]},0)`);
+
+    gParallelChart.selectAll(".data-line")
+        .transition()
+        .duration(300)
+        .attr("d", d => buildLinePath(d));
 }

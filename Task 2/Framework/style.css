@@ -356,6 +356,9 @@ div.tooltip {
 .parallel-chart svg {
     overflow: visible;
 }
+.data-line {
+    cursor: pointer;
+}
 
 .scatterplot {
     width: 30%;
@@ -380,6 +383,7 @@ div.tooltip {
     display: flex;
     align-items: center;
     gap: 6px;
+    cursor: pointer;
 }
 
 .legend-line {
