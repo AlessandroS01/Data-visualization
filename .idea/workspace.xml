@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Parallel chart completed. Needing logic for brushing and highlighting">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Added brushing effect and linked with the the map, the selected countries, the timeline range, and continent hovering">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/parallel.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/parallel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/data/worldMap.geojson" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/worldMap.geojson" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,15 +157,7 @@
       <workItem from="1751371431467" duration="11827000" />
       <workItem from="1751437554865" duration="27192000" />
       <workItem from="1751472900318" duration="167000" />
-      <workItem from="1751522174239" duration="4510000" />
-    </task>
-    <task id="LOCAL-00006" summary="Bugs for gray lines as well as domains">
-      <option name="closed" value="true" />
-      <created>1747653524005</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1747653524005</updated>
+      <workItem from="1751522174239" duration="6556000" />
     </task>
     <task id="LOCAL-00007" summary="Table creation complete. Hovering effect done as well">
       <option name="closed" value="true" />
@@ -550,7 +543,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751473052488</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Added brushing effect and linked with the the map, the selected countries, the timeline range, and continent hovering">
+      <option name="closed" value="true" />
+      <created>1751526843056</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1751526843056</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -568,7 +569,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Created reduced dataset for a shorter period analysis (1980-2023)" />
     <MESSAGE value="Changed timeline ranges and added a new dataset that has all the fertility rate data" />
     <MESSAGE value="Timeline range finished. Linked data finished." />
     <MESSAGE value="Change name of the dataset to use, since it is the one in which all fertility rate data are defined" />
@@ -593,6 +593,7 @@
     <MESSAGE value="Created continent legend on the bottom of the parallel chart" />
     <MESSAGE value="Started implementation of full-connected highlight charts" />
     <MESSAGE value="Parallel chart completed. Needing logic for brushing and highlighting" />
-    <option name="LAST_COMMIT_MESSAGE" value="Parallel chart completed. Needing logic for brushing and highlighting" />
+    <MESSAGE value="Added brushing effect and linked with the the map, the selected countries, the timeline range, and continent hovering" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added brushing effect and linked with the the map, the selected countries, the timeline range, and continent hovering" />
   </component>
 </project>

@@ -152,6 +152,9 @@ function addSelectedCountry(countryName, geoFeature) {
  * @returns {[number, number]|number[]} centroid x and y coordinates of the mainland of the country
  */
 function getMainlandCentroid(feature) {
+    if (!feature.geometry) {
+        console.log(feature);
+    }
     const geometry = feature.geometry;
 
     if (geometry.type === "Polygon") {
