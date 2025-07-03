@@ -337,10 +337,27 @@ div.tooltip {
 
 
 /* OTHER CHARTS */
-.bubble-chart {
+.dashboardGrid .charts {
+    padding: 10px;
+    height: 500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.parallel-chart {
     width: 60%;
     height: 100%;
-    background-color: white;
+    align-self: stretch;
+    background-color: lightgray;
+    border: 1px solid #bbbbbb;
+    box-shadow: 2px 2px 2px #bbbbbb;
+}
+.parallel-chart svg {
+    overflow: visible;
+}
+.data-line {
+    cursor: pointer;
 }
 
 .scatterplot {
@@ -349,11 +366,28 @@ div.tooltip {
     background-color: lightgray;
 }
 
-.dashboardGrid .charts {
-    padding: 10px;
-    height: 500px;
+/* CONTINENT LEGEND */
+.continent-legend {
     display: flex;
-    flex-direction: row;
-    background-color: #777777;
-    justify-content: space-between;
+    justify-content: space-evenly; /* Even spacing between items */
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px 0;
+    font-family: sans-serif;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.legend-line {
+    width: 30px;
+    height: 2px;
+    background-color: black; /* default color, will be overridden */
 }

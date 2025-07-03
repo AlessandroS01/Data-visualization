@@ -1,11 +1,11 @@
 import pandas as pd
 
-df = pd.read_csv(r"C:\Users\Lenovo\Desktop\University\Master University\Passau University\Studies\Sommersemester 2025\Data Visualization\Uebung\Project\Task 2\data\Dataset\dataToUse.csv", encoding='latin1')
+df = pd.read_csv(r"C:\Users\Lenovo\Desktop\University\Master University\Passau University\Studies\Sommersemester 2025\Data Visualization\Uebung\Project\Task 2\data\Dataset\dataToUseComplete.csv", encoding='latin1')
 
 
 df = df.sort_values(by=["Name", "Year"])
 
-cols_to_interp = ["GiniC", "GR", "LifeExpectacyB", "GDP"]
+cols_to_interp = ["GiniC", "GR", "LifeExpectacyB", "GDP", "U5MortalityR"]
 
 def interp_with_prev_only(group):
     for col in cols_to_interp:

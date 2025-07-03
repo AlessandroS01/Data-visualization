@@ -64,18 +64,13 @@ function creationTimelineLegend() {
                 const hoveredClassLine = d3.select(this).attr("class") || "";
                 // If multiple classes, take the one you want; if single class, just use it directly
                 const secondClass = hoveredClassLine.split(' ')[1];
-                const hoveredSelection = gMap.selectAll(`path.country.${secondClass}`);
+                hoveredTimelineInterval = `path.country.${secondClass}`;
 
-                // Dim all countries first
-                gMap.selectAll('path.country')
-                    .style('opacity', 0.2);
-
-                // Then reset opacity back to 1 for hovered group
-                hoveredSelection.style('opacity', 1);
+                chartsHighlighting();
             })
             .on("mouseout", function() {
-                gMap.selectAll('path.country')
-                    .style('opacity', 1);
+                hoveredTimelineInterval = "";
+                chartsHighlighting();
             });
 
         if (isFirst) {
@@ -272,4 +267,6 @@ function updateSlider() {
         .attr("x", xPos)
         .text(currentYear);
     updateMap();
+    updateDashboardScatterplot(currentYear);
+    drawDataLines(mapCountryContinent, true);
 }

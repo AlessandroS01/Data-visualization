@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Presentation update with data interpolation slide">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Added brushing effect and linked with the the map, the selected countries, the timeline range, and continent hovering">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/data/worldMap.geojson" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/worldMap.geojson" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="selection" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -58,7 +61,7 @@
     &quot;Node.js.dataVis.js.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/parallel-chart&quot;,
     &quot;grid.search.filter.rows&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Lenovo/Desktop/University/Master University/Passau University/Studies/Sommersemester 2025/Data Visualization/Uebung/Project&quot;,
@@ -149,54 +152,12 @@
       <workItem from="1750659950420" duration="7441000" />
       <workItem from="1750746561940" duration="1848000" />
       <workItem from="1750748543173" duration="273000" />
-    </task>
-    <task id="LOCAL-00001" summary="Defined structure of the repository">
-      <option name="closed" value="true" />
-      <created>1747585080582</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1747585080582</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Defined structure of the repository">
-      <option name="closed" value="true" />
-      <created>1747585309576</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1747585309576</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Defined structure of the repository">
-      <option name="closed" value="true" />
-      <created>1747590609603</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1747590609603</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Assigned values of csv numeric headers to chart">
-      <option name="closed" value="true" />
-      <created>1747652109437</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1747652109437</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Defined gray line for the radar chart">
-      <option name="closed" value="true" />
-      <created>1747652252522</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1747652252522</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Bugs for gray lines as well as domains">
-      <option name="closed" value="true" />
-      <created>1747653524005</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1747653524005</updated>
+      <workItem from="1750749511349" duration="338000" />
+      <workItem from="1750788042229" duration="275000" />
+      <workItem from="1751371431467" duration="11827000" />
+      <workItem from="1751437554865" duration="27192000" />
+      <workItem from="1751472900318" duration="167000" />
+      <workItem from="1751522174239" duration="6556000" />
     </task>
     <task id="LOCAL-00007" summary="Table creation complete. Hovering effect done as well">
       <option name="closed" value="true" />
@@ -534,7 +495,63 @@
       <option name="project" value="LOCAL" />
       <updated>1750748432624</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="Thinking of parallel coordinate chart rather than a normal bubble chart, in which we fix fertility rate as first axis">
+      <option name="closed" value="true" />
+      <created>1750749841476</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1750749841476</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Changed dataset (previous one without u5mortality). Added parallel chart. Implemented dragging of the lines. Still needing to add data">
+      <option name="closed" value="true" />
+      <created>1751379621653</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1751379621653</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Created continent legend on the bottom of the parallel chart">
+      <option name="closed" value="true" />
+      <created>1751383421008</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1751383421008</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Started implementation of full-connected highlight charts">
+      <option name="closed" value="true" />
+      <created>1751453368454</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1751453368454</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Parallel chart completed. Needing logic for brushing and highlighting">
+      <option name="closed" value="true" />
+      <created>1751472636149</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1751472636149</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Parallel chart completed. Needing logic for brushing and highlighting">
+      <option name="closed" value="true" />
+      <created>1751473052488</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1751473052488</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Added brushing effect and linked with the the map, the selected countries, the timeline range, and continent hovering">
+      <option name="closed" value="true" />
+      <created>1751526843056</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1751526843056</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -552,12 +569,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started implementation of map in Task 2" />
-    <MESSAGE value="Map creation finished" />
-    <MESSAGE value="Timeline half constructed, along with the legend and the playing button. I will continue with the creation of the slider" />
-    <MESSAGE value="Slider finished" />
-    <MESSAGE value="Retrieved data" />
-    <MESSAGE value="Created reduced dataset for a shorter period analysis (1980-2023)" />
     <MESSAGE value="Changed timeline ranges and added a new dataset that has all the fertility rate data" />
     <MESSAGE value="Timeline range finished. Linked data finished." />
     <MESSAGE value="Change name of the dataset to use, since it is the one in which all fertility rate data are defined" />
@@ -577,6 +588,12 @@
     <MESSAGE value="Added labels to line charts" />
     <MESSAGE value="Removed Cote Ivore bug" />
     <MESSAGE value="Presentation update with data interpolation slide" />
-    <option name="LAST_COMMIT_MESSAGE" value="Presentation update with data interpolation slide" />
+    <MESSAGE value="Thinking of parallel coordinate chart rather than a normal bubble chart, in which we fix fertility rate as first axis" />
+    <MESSAGE value="Changed dataset (previous one without u5mortality). Added parallel chart. Implemented dragging of the lines. Still needing to add data" />
+    <MESSAGE value="Created continent legend on the bottom of the parallel chart" />
+    <MESSAGE value="Started implementation of full-connected highlight charts" />
+    <MESSAGE value="Parallel chart completed. Needing logic for brushing and highlighting" />
+    <MESSAGE value="Added brushing effect and linked with the the map, the selected countries, the timeline range, and continent hovering" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added brushing effect and linked with the the map, the selected countries, the timeline range, and continent hovering" />
   </component>
 </project>

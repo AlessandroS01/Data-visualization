@@ -9,9 +9,6 @@ const path = d3.geoPath(projection); // generate paths according to the projecti
 let xScale, yFertilityScale, yPopulationScale;
 const chartHeight = 110;
 
-/* variables for map tooltip */
-let hoveredCountry = "";
-
 /**
  * Creates the map of the world with countries
  */
@@ -29,6 +26,9 @@ function createMap() {
     d3.json('../data/worldMap.geojson')
         .then(worldData => {
             const countriesFeature = worldData.features;
+            countriesFeature.find(feature => {
+                geoFeatureList.push(feature);
+            });
 
             gMap.selectAll('path')
                 .data(countriesFeature)
@@ -39,6 +39,7 @@ function createMap() {
                 .attr('d', path)
                 .on('mouseover', function(event, d) {
                     createPopulationLineChart(d.properties.name);
+                    chartsHighlighting();
                 })
                 .on('mousemove', function(event) {
                     // Update position if mouse moves
@@ -50,13 +51,14 @@ function createMap() {
                     // Remove tooltip on mouse out
                     d3.select(".map-tooltip").remove();
                     hoveredCountry = "";
+                    chartsHighlighting();
                 })
                 .on('click', (event, d) => {
                     const countryName = d.properties.name;
 
                     // Optional: prevent duplicates
-                    if (!selectedCountry.includes(countryName)) {
-                        if (selectedCountry.length === 8) {
+                    if (!selectedCountries.includes(countryName)) {
+                        if (selectedCountries.length === 8) {
                             window.confirm("You've selected the maximum number of countries. \n " +
                                 "To continue the selection remove at least one of them.");
                         } else {
@@ -115,7 +117,7 @@ function updateMap() {
         });
 
     // responsible for updating the values inside selected countries
-    selectedCountry.forEach(countryName => {
+    selectedCountries.forEach(countryName => {
         const textId = `label-${countryName.replace(/[\s.]/g, '_')}`;
 
         const matchedEntry = fertilityData.find(value =>
@@ -135,7 +137,6 @@ function updateMap() {
  * Generate line charts when hovering over a country
  */
 function createPopulationLineChart(countryName) {
-    hoveredCountry = "";
     hoveredCountry = countryName;
 
     // Create the tooltip on hover
@@ -440,64 +441,70 @@ function createPopulationLineChart(countryName) {
  */
 function updateTooltipData() {
     if (hoveredCountry !== "") {
-        let tooltipHeader = d3.select(".map-tooltip-header");
-        tooltipHeader.select("text").text(currentYear);
+        // to understand whether a line is hovered or the a country in the map
+        const countryId = hoveredCountry.replace(/[\s.]/g, '_');
+        const isMapHovered = d3.select(`path#${countryId}`).node()?.matches(':hover') || false;
 
-        const currentData = fertilityData.find(entry =>
-            entry.Name === hoveredCountry && +entry.Year === +currentYear
-        );
+        if (isMapHovered) {
+            let tooltipHeader = d3.select(".map-tooltip-header");
+            tooltipHeader.select("text").text(currentYear);
 
-        let linecharts = d3
-            .select(".map-tooltip-charts-container");
+            const currentData = fertilityData.find(entry =>
+                entry.Name === hoveredCountry && +entry.Year === +currentYear
+            );
 
-        const countryPopulationData = currentData.Population;
-        const countryFertilityData = currentData.FertilityR;
+            let linecharts = d3
+                .select(".map-tooltip-charts-container");
 
-        if (countryFertilityData) {
-            linecharts
-                .select("#fertility")
-                .html(`
+            const countryPopulationData = currentData.Population;
+            const countryFertilityData = currentData.FertilityR;
+
+            if (countryFertilityData) {
+                linecharts
+                    .select("#fertility")
+                    .html(`
                 <span style="color: whitesmoke; font-weight: bold">Fertility rate: </span>
                 <span style="color: ${getFertilityColor(countryFertilityData)}; font-weight: bold;">
                   ${countryFertilityData}
                 </span>
             `);
-        } else {
-            linecharts
-                .select("#fertility")
-                .text("No fertility data").style("fill", "whitesmoke");
+            } else {
+                linecharts
+                    .select("#fertility")
+                    .text("No fertility data").style("fill", "whitesmoke");
+            }
+
+            if (countryPopulationData) {
+                linecharts.select("#population").text("Population: " + d3.format(".2s")(countryPopulationData).replace("G", "B"));
+            } else {
+                linecharts.select("#population").text("No population data").style("fill", "whitesmoke");
+            }
+
+            const xVal = xScale(currentYear);
+            const yValFertility = yFertilityScale(countryFertilityData);
+            const yValPopulation = yPopulationScale(countryPopulationData);
+
+            d3.select("#fer-highlight-line")
+                .attr("x1", xVal)
+                .attr("x2", xVal)
+                .attr("y1", 0)
+                .attr("y2", chartHeight);
+
+            d3.select("#fer-highlight-circle")
+                .attr("cx", xVal)
+                .attr("cy", yValFertility)
+                .attr("fill", getFertilityColor(countryFertilityData));
+
+            d3.select("#pop-highlight-line")
+                .attr("x1", xVal)
+                .attr("x2", xVal)
+                .attr("y1", 0)
+                .attr("y2", chartHeight);
+
+            d3.select("#pop-highlight-circle")
+                .attr("cx", xVal)
+                .attr("cy", yValPopulation);
         }
-
-        if (countryPopulationData) {
-            linecharts.select("#population").text("Population: " + d3.format(".2s")(countryPopulationData).replace("G", "B"));
-        } else {
-            linecharts.select("#population").text("No population data").style("fill", "whitesmoke");
-        }
-
-        const xVal = xScale(currentYear);
-        const yValFertility = yFertilityScale(countryFertilityData);
-        const yValPopulation = yPopulationScale(countryPopulationData);
-
-        d3.select("#fer-highlight-line")
-            .attr("x1", xVal)
-            .attr("x2", xVal)
-            .attr("y1", 0)
-            .attr("y2", chartHeight);
-
-        d3.select("#fer-highlight-circle")
-            .attr("cx", xVal)
-            .attr("cy", yValFertility)
-            .attr("fill", getFertilityColor(countryFertilityData));
-
-        d3.select("#pop-highlight-line")
-            .attr("x1", xVal)
-            .attr("x2", xVal)
-            .attr("y1", 0)
-            .attr("y2", chartHeight);
-
-        d3.select("#pop-highlight-circle")
-            .attr("cx", xVal)
-            .attr("cy", yValPopulation);
     }
 }
 
@@ -515,4 +522,23 @@ function getFertilityColor(value) {
     if (value <= 6.0) return "#41ab5d";
     if (value <= 7.0) return "#238443";
     return "#005a32";
+}
+
+function getColorByContinent(continent) {
+    switch(continent) {
+        case "Africa":
+            return "#f4ff00";
+        case "Asia":
+            return "#00e2ff";
+        case "Europe":
+            return "#f10000";
+        case "North America":
+            return "#8600ff";
+        case "Oceania":
+            return "#00ff56";
+        case "South America":
+            return "#4600ff";
+        default:
+            return "#999"; // Default color for unknown continents
+    }
 }

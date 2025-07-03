@@ -26,16 +26,15 @@ const classNames = [
     "timeline-range seventh-interval",
     "timeline-range eighth-interval"
 ];
-
+let geoFeatureList = []; // list of geo features for the map
 
 /* data variables */
 let fertilityData = [];
-let mapCountryContinent = new Map();
 let numericalColumnsData = [];
 let domainScales = new Map();
 
+
 /* data for visualization interaction */
-let selectedCountry = [];
 const colorListWorld = [
     "#ffcdc8",
     "#c8e7ff",
@@ -47,14 +46,25 @@ const colorListWorld = [
     "#ffd3eb"
 ];
 let colorCountryMap = new Map();
+let mapCountryContinent = new Map();
+const continentColors = {
+    "Africa": "#f4ff00",
+    "Asia": "#00e2ff",
+    "Europe": "#f10000",
+    "North America": "#8600ff",
+    "Oceania": "#00ff56",
+    "South America": "#4600ff"
+};
 
 
-function initDashboardTask2(retrievedData) {
+async function initDashboardTask2(retrievedData) {
     fertilityData = retrievedData;
 
     startYear = d3.min(fertilityData, d => d.Year);
     currentYear = startYear;
     endYear = d3.max(fertilityData, d => d.Year);
+
+    await initializeCountryContinentMap();
 
     retrievedData.columns.forEach(column => {
         if (!isNaN(+fertilityData[0][column])) { // take first row and defines the domain for each numeric attribute
@@ -70,7 +80,19 @@ function initDashboardTask2(retrievedData) {
     });
     createMap();
     createTimeline();
-    initializeCountryContinentMap();
+
+    initDashboardScatterplot({
+        container: ".scatterplot",
+        data: retrievedData,
+        xCol: "Population",
+        yCol: "FertilityR",
+        sizeCol: "FertilityR"
+    });
+    updateDashboardScatterplot(startYear);
+
+    createParallelChart(mapCountryContinent);
+
+    createContinentLegend();
 }
 
 /**
@@ -79,17 +101,10 @@ function initDashboardTask2(retrievedData) {
  * @param geoFeature the geo feature of the country to add the center label
  */
 function addSelectedCountry(countryName, geoFeature) {
-    selectedCountry.push(countryName);
+    selectedCountries.push(countryName);
+    const replaceCountryName = countryName.replace(/[\s.]/g, '_');
     if(colorCountryMap.size === 0) { // no other element selected
-        // TODO: add here how to handle addition of new selected country from the charts (look comment below)
-        /*d3.select("#point"+countryName)
-            .transition()
-            .duration(300)
-            .attr("fill",colorListWorld)
-            .attr("opacity", 1);
-
-         */
-        colorCountryMap.set(countryName, colorListWorld[0]);
+        colorCountryMap.set(replaceCountryName, colorListWorld[0]);
     } else {
         let newColor = "";
         let usedColors = new Set(colorCountryMap.values()); // set of colors already used
@@ -99,18 +114,19 @@ function addSelectedCountry(countryName, geoFeature) {
                 break;
             }
         }
-        // TODO: add here how to handle addition of new selected country from the charts (look comment below)
-        /*d3.select("#point"+countryName)
-            .transition()
-            .duration(300)
-            .attr("fill",newColor)
-            .attr("opacity", 1);
-
-         */
-        colorCountryMap.set(countryName, newColor);
+        colorCountryMap.set(replaceCountryName, newColor);
     }
+
+    if (geoFeature === null) {
+        geoFeatureList.forEach(feature => {
+            if (feature.properties?.name === countryName) {
+                geoFeature = feature;
+            }
+        });
+    }
+
     const countryCentroid = getMainlandCentroid(geoFeature);
-    const textId = `label-${countryName.replace(/[\s.]/g, '_')}`;
+    const textId = `label-${replaceCountryName}`;
     const matchedEntry = fertilityData.find(value =>
         +value.Year === +currentYear && value.Name === countryName
     );
@@ -136,6 +152,9 @@ function addSelectedCountry(countryName, geoFeature) {
  * @returns {[number, number]|number[]} centroid x and y coordinates of the mainland of the country
  */
 function getMainlandCentroid(feature) {
+    if (!feature.geometry) {
+        console.log(feature);
+    }
     const geometry = feature.geometry;
 
     if (geometry.type === "Polygon") {
@@ -174,11 +193,9 @@ function getMainlandCentroid(feature) {
  * @param countryName of the country to be removed
  */
 function removeSelectedCountry(countryName) {
-    selectedCountry = selectedCountry.filter(country => country !== countryName);
-    colorCountryMap.delete(countryName);
+    selectedCountries = selectedCountries.filter(country => country !== countryName);
+    colorCountryMap.delete(countryName.replace(/[\s.]/g, '_'));
 
-    gMap.selectAll('path.country')
-        .style('opacity', 1); // Reset opacity for all countries or bug occurs
     d3.select(`#label-${countryName.replace(/[\s.]/g, '_')}`).remove();
 
     updateCountryList();
@@ -193,27 +210,22 @@ function updateCountryList() {
     countryList.selectAll('div').remove();
 
     const divs = countryList.selectAll('div')
-        .data(selectedCountry)
+        .data(selectedCountries)
         .enter()
         .append('div')
         .attr("class", "map-legend")
+        .attr("id", d => `${d.replace(/[\s.]/g, '_')}`)
         .attr('width', '100%')
-        .style("background-color", d => colorCountryMap.get(d));
+        .style("background-color", d => colorCountryMap.get(d.replace(/[\s.]/g, '_')));
 
     divs
         .on("mouseover", function (event, countryName) {
-            const hoveredSelection = gMap.select(`#${countryName.replace(/[\s.]/g, '_')}`);
-
-            // Dim all countries first
-            gMap.selectAll('path.country')
-                .style('opacity', 0.2);
-
-            // Then reset opacity back to 1 for hovered group
-            hoveredSelection.style('opacity', 1);
+            hoveredCountry = countryName;
+            chartsHighlighting();
         })
         .on("mouseout", function(event, countryName) {
-            gMap.selectAll('path.country')
-                .style('opacity', 1);
+            hoveredCountry = "";
+            chartsHighlighting();
         });
 
     divs.append('button')
@@ -221,6 +233,8 @@ function updateCountryList() {
         .text("X")
         .on('click', function(event, countryName) {
             removeSelectedCountry(countryName);
+            hoveredCountry = "";
+            chartsHighlighting();
         });
     divs.append('text')
         .text(d => d)
@@ -233,7 +247,7 @@ function updateCountryList() {
  * Initialize map that maps the countries to their continent
  */
 function initializeCountryContinentMap() {
-    d3.csv("../data/continents.csv").then(function(countryContinentData) {
+    return d3.csv("../data/continents.csv").then(function(countryContinentData) {
         let setCountryNames = new Set();
         fertilityData.forEach(d => setCountryNames.add(d.Name));
 
@@ -244,6 +258,7 @@ function initializeCountryContinentMap() {
 
             if (region !== undefined) {
                 mapCountryContinent.set(countryName, region);
+
             }
         });
     }).catch(function(error) {
@@ -251,14 +266,72 @@ function initializeCountryContinentMap() {
     });
 }
 
+function createContinentLegend() {
+    const legendContainer = d3.select(".continent-legend");
+
+    const legendItems = legendContainer.selectAll(".legend-item")
+        .data(Object.entries(continentColors))
+        .enter()
+        .append("div")
+        .attr("class", "legend-item")
+        .style("display", "flex")
+        .style("align-items", "center")
+        .style("margin-bottom", "4px")
+        .on("mouseover", function(event, d) {
+            const continent = d[0]; // e.g., "Asia"
+            continentHovered = continent; // store hovered continent for later use
+            chartsHighlighting();
+
+
+            const className = continent.replace(/[\s.]/g, '_'); // sanitize class
+
+            // Dim all lines
+            d3.selectAll(".data-line")
+                .style("opacity", 0.1);
+
+            // Highlight only the lines for that continent
+            d3.selectAll(`.data-line.${className}`)
+                .style("opacity", 1);
+
+            // Dim all legend items
+            d3.selectAll(".legend-item")
+                .style("opacity", 0.3);
+
+            // Highlight the hovered legend item
+            d3.select(this)
+                .style("opacity", 1);
+        })
+        .on("mouseout", function(event, d) {
+            continentHovered = "";
+            chartsHighlighting();
+            d3.selectAll(".data-line")
+                .style("opacity", 1);
+
+            d3.selectAll(".legend-item")
+                .style("opacity", 1);
+        });
+
+    legendItems.append("div")
+        .attr("class", "legend-color")
+        .style("width", "12px")
+        .style("height", "12px")
+        .style("margin-right", "6px")
+        .style("background-color", d => d[1])
+        .style("border", "1px solid #000");
+
+    legendItems.append("span")
+        .text(d => d[0]);
+}
+
 
 // clear files if changes (dataset) occur
 function clearDashboardTask2() {
     mapChart.selectAll("*").remove();
     timeline.selectAll("*").remove();
+    d3.select(".scatterplot").selectAll("*").remove();
 
     currentYear = startYear;
-    selectedCountry = [];
+    selectedCountries = [];
     fertilityData = [];
     numericalColumnsData = [];
     domainScales.clear();
