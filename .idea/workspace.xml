@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Parallel chart completed. Needing logic for brushing and highlighting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/parallel.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/parallel.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,14 +155,8 @@
       <workItem from="1750788042229" duration="275000" />
       <workItem from="1751371431467" duration="11827000" />
       <workItem from="1751437554865" duration="27192000" />
-    </task>
-    <task id="LOCAL-00005" summary="Defined gray line for the radar chart">
-      <option name="closed" value="true" />
-      <created>1747652252522</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1747652252522</updated>
+      <workItem from="1751472900318" duration="167000" />
+      <workItem from="1751522174239" duration="4510000" />
     </task>
     <task id="LOCAL-00006" summary="Bugs for gray lines as well as domains">
       <option name="closed" value="true" />
@@ -546,7 +542,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751472636149</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="Parallel chart completed. Needing logic for brushing and highlighting">
+      <option name="closed" value="true" />
+      <created>1751473052488</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1751473052488</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

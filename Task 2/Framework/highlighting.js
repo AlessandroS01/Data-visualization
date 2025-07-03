@@ -24,14 +24,7 @@ function chartsHighlighting() {
         hoveredCountryEmpty &&
         hoveredTimelineEmpty
     ) {
-        d3.selectAll('path.country')
-            .style('opacity', 1);
-        d3.selectAll('.data-line')
-            .style("display", "inline")
-            .style("stroke",
-                (d) => getColorByContinent(mapCountryContinent.get(d.Name))
-            )
-            .style("stroke-width", 0.3);
+        resetHighlighting();
     }
     // if a country is selected, highlight it
     if (
@@ -94,6 +87,45 @@ function chartsHighlighting() {
 
         timelineHighlighting();
     }
+
+    // BRUSHING INTERVALS NOT EMPTY
+    if (
+        selectedCountryEmpty &&
+        !brushingIntervalsEmpty &&
+        continentHoveringEmpty &&
+        hoveredCountryEmpty &&
+        hoveredTimelineEmpty
+    ) {
+        brushingEffect();
+    }
+    if (
+        !selectedCountryEmpty &&
+        !brushingIntervalsEmpty &&
+        continentHoveringEmpty &&
+        hoveredCountryEmpty &&
+        hoveredTimelineEmpty
+    ) {
+        brushingEffect();
+        selectedCountries.forEach(country => {
+            d3.select(`path#${country.replace(/[\s.]/g, '_')}`)
+                .style("opacity", 1);
+            d3.select(`.data-line#line-${country.replace(/[\s.]/g, '_')}`)
+                .style("stroke", colorCountryMap.get(country.replace(/[\s.]/g, '_')))
+                .style("stroke-width", 1.5)
+                .style("display", "inline");
+        });
+    }
+}
+
+function resetHighlighting() {
+    d3.selectAll('path.country')
+        .style('opacity', 1);
+    d3.selectAll('.data-line')
+        .style("display", "inline")
+        .style("stroke",
+            (d) => getColorByContinent(mapCountryContinent.get(d.Name))
+        )
+        .style("stroke-width", 0.3);
 }
 
 /**
@@ -192,4 +224,38 @@ function timelineHighlighting() {
         .style("stroke-width", 1)
         .style("display", "inline")
         .style("stroke", d => getColorByContinent(mapCountryContinent.get(d.Name)));
+}
+
+function brushingEffect() {
+    let idList = [];
+    gParallelChart.selectAll(".data-line")
+        .each(function(d) {
+            const elementId = this.id; // or d3.select(this).attr("id");
+            let visible = true;
+
+            for (const [dim, [minVal, maxVal]] of brushingAppliedIntervals) {
+                const val = d[dim];
+                if (val === null || val === undefined || val < minVal || val > maxVal) {
+                    visible = false;
+                    break;
+                }
+            }
+
+            d3.select(this).style("display", visible ? "inline" : "none");
+            d3.select(this).style("stroke-width", "0.3");
+            d3.select(this).style("stroke", colorCountryMap.get(elementId));
+            if (visible) {
+                const countryId = elementId.split("-")[1]; // line-countryId
+                idList.push(countryId); // only push if line is visible
+            }
+        });
+
+    const idSet = new Set(idList);
+
+    d3.selectAll("path.country")
+        .each(function(d) {
+            const countryId = d.properties.name.replace(/[\s.]/g, '_');
+
+            d3.select(this).style("opacity", idSet.has(countryId) ? 1 : 0.2);
+        })
 }

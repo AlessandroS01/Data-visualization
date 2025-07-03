@@ -85,6 +85,7 @@ function createParallelChart(mapCountryContinent) {
                     .on("start brush end", (event) => {
                         event.sourceEvent.stopPropagation();
                         brushChanged(event, dim);
+                        chartsHighlighting();
                     })
             );
 
@@ -97,6 +98,7 @@ function createParallelChart(mapCountryContinent) {
                 // Clear the brush programmatically
                 brushG.call(d3.brushY().move, null);
                 brushingAppliedIntervals.delete(dim);
+                chartsHighlighting();
 
                 // Optionally reset your brush labels and line opacity here:
                 axisGroup.select(`#brush-max-${dim}`)
@@ -351,17 +353,6 @@ function brushChanged(event, dim) {
         .style("opacity", 1)
         .attr("y", y1 + 4)
         .text(minVal.toFixed(2));
-
-    chartsHighlighting();
-
-    // Filter lines based on brush
-    gParallelChart.selectAll(".data-line")
-        .style("opacity", d => {
-            const val = d[dim];
-            if (val === null || val === undefined) return 0.1;
-            const y = yParallelScale[dim](val);
-            return (y >= y0 && y <= y1) ? 1 : 0.1;
-        });
 }
 
 
