@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Added brushing effect and linked with the the map, the selected countries, the timeline range, and continent hovering">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Solved little bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/map.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/data/worldMap.geojson" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/worldMap.geojson" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/parallel.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/parallel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/data/Dataset/FillingValuesProject/filledDataReduced.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/data/Dataset/FillingValuesProject/filledDataReduced.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +63,7 @@
     &quot;Node.js.dataVis.js.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/parallel-chart&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;grid.search.filter.rows&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Lenovo/Desktop/University/Master University/Passau University/Studies/Sommersemester 2025/Data Visualization/Uebung/Project&quot;,
@@ -99,6 +101,7 @@
       <list>
         <item itemvalue="JavaScript Debug.Task 2" />
         <item itemvalue="JavaScript Debug.Task 1" />
+        <item itemvalue="JavaScript Debug.Task 2" />
         <item itemvalue="JavaScript Debug.Task 1" />
         <item itemvalue="JavaScript Debug.Task 1" />
       </list>
@@ -158,6 +161,8 @@
       <workItem from="1751437554865" duration="27192000" />
       <workItem from="1751472900318" duration="167000" />
       <workItem from="1751522174239" duration="6556000" />
+      <workItem from="1751870370064" duration="6548000" />
+      <workItem from="1751895438466" duration="1970000" />
     </task>
     <task id="LOCAL-00007" summary="Table creation complete. Hovering effect done as well">
       <option name="closed" value="true" />

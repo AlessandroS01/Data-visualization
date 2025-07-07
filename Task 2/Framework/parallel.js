@@ -219,7 +219,13 @@ function drawDataLines(mapCountryContinent, update) {
         .style("opacity", 0);
 
     // Filter data for countries present in the map
-    const filteredData = data.filter(d => mapCountryContinent.has(d.Name));
+    const filteredData = data.filter(d =>
+        mapCountryContinent.has(d.Name) &&
+        !isInvalid(d.FertilityR) &&
+        !isInvalid(d.LifeExpectacyB) &&
+        !isInvalid(d.GR) &&
+        !isInvalid(d.U5MortalityR)
+    );
 
     // Remove old lines before drawing new ones (optional but recommended)
     gParallelChart.selectAll(".data-line").remove();
@@ -280,7 +286,7 @@ function drawDataLines(mapCountryContinent, update) {
             const countryName = d.Name;
 
             if (!selectedCountries.includes(countryName)) {
-                if (selectedCountries.length === 8) {
+                if (selectedCountries.length === colorListWorld.length) {
                     window.confirm("You've selected the maximum number of countries.\nTo continue the selection remove at least one of them.");
                 } else {
                     addSelectedCountry(countryName, null);
@@ -307,9 +313,10 @@ function buildLinePath(d) {
 
     const points = dimensionsParallelOrder.map((dim, i) => {
         const val = d[dim];
+
         const x = (i / (dimensionsParallelOrder.length - 1)) * viewBoxWidthParallel;
 
-        if (val === null || val === undefined || isNaN(val)) {
+        if (val === null || val === undefined || Number.isNaN(val)) {
             return { x, y: null, value: null }; // mark as missing
         }
 
@@ -321,6 +328,10 @@ function buildLinePath(d) {
     });
 
     return lineGenerator(points);
+}
+
+function isInvalid(val) {
+    return val === null || val === undefined || val === "" || val === "NA" || Number.isNaN(Number(val));
 }
 
 

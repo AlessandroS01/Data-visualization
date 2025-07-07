@@ -36,24 +36,22 @@ let domainScales = new Map();
 
 /* data for visualization interaction */
 const colorListWorld = [
-    "#ffcdc8",
-    "#c8e7ff",
-    "#c6cbbe",
-    "#fedcff",
-    "#fff0dc",
-    "#fff5a4",
-    "#dcd5ff",
-    "#ffd3eb"
+    "#fdb863",
+    "#fee0b6",
+    "#d8daeb",
+    "#b2abd2",
+    "#8073ac",
+    "#542788"
 ];
 let colorCountryMap = new Map();
 let mapCountryContinent = new Map();
 const continentColors = {
-    "Africa": "#f4ff00",
-    "Asia": "#00e2ff",
-    "Europe": "#f10000",
-    "North America": "#8600ff",
-    "Oceania": "#00ff56",
-    "South America": "#4600ff"
+    "Africa": "#8c510a",
+    "Asia": "#dfc27d",
+    "Europe": "#c7eae5",
+    "North America": "#80cdc1",
+    "Oceania": "#35978f",
+    "South America": "#01665e"
 };
 
 
@@ -274,41 +272,17 @@ function createContinentLegend() {
         .enter()
         .append("div")
         .attr("class", "legend-item")
+        .attr("id", d => `legend-${d[0].replace(/[\s.]/g, '_')}`)
         .style("display", "flex")
         .style("align-items", "center")
         .style("margin-bottom", "4px")
         .on("mouseover", function(event, d) {
-            const continent = d[0]; // e.g., "Asia"
-            continentHovered = continent; // store hovered continent for later use
+            continentHovered = d[0]; // store hovered continent
             chartsHighlighting();
-
-
-            const className = continent.replace(/[\s.]/g, '_'); // sanitize class
-
-            // Dim all lines
-            d3.selectAll(".data-line")
-                .style("opacity", 0.1);
-
-            // Highlight only the lines for that continent
-            d3.selectAll(`.data-line.${className}`)
-                .style("opacity", 1);
-
-            // Dim all legend items
-            d3.selectAll(".legend-item")
-                .style("opacity", 0.3);
-
-            // Highlight the hovered legend item
-            d3.select(this)
-                .style("opacity", 1);
         })
         .on("mouseout", function(event, d) {
             continentHovered = "";
             chartsHighlighting();
-            d3.selectAll(".data-line")
-                .style("opacity", 1);
-
-            d3.selectAll(".legend-item")
-                .style("opacity", 1);
         });
 
     legendItems.append("div")
@@ -321,6 +295,27 @@ function createContinentLegend() {
 
     legendItems.append("span")
         .text(d => d[0]);
+}
+
+
+
+function getColorByContinent(continent) {
+    switch(continent) {
+        case "Africa":
+            return "#8c510a";
+        case "Asia":
+            return "#dfc27d";
+        case "Europe":
+            return "#c7eae5";
+        case "North America":
+            return "#80cdc1";
+        case "Oceania":
+            return "#35978f";
+        case "South America":
+            return "#01665e";
+        default:
+            return "#999"; // Default color for unknown continents
+    }
 }
 
 

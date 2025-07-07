@@ -7,7 +7,7 @@ let hoveredTimelineInterval = "";
 /**
  * Handles the highlighting complete logic
  */
-function chartsHighlighting() {
+function chartsHighlighting(node, name) {
     const selectedCountryEmpty = selectedCountries.length === 0;
     const brushingIntervalsEmpty = brushingAppliedIntervals.size === 0;
     const continentHoveringEmpty = continentHovered.length === 0;
@@ -35,7 +35,6 @@ function chartsHighlighting() {
         hoveredTimelineEmpty
     ) {
         highCountryParallel();
-
     }
 
     // if timeline legend is hovered, highlight all countries in that interval
@@ -47,6 +46,17 @@ function chartsHighlighting() {
         !hoveredTimelineEmpty
     ) {
         timelineHighlighting();
+    }
+
+    // if continent legend is hovered, highlight all countries in that continent
+    if (
+        selectedCountryEmpty &&
+        brushingIntervalsEmpty &&
+        !continentHoveringEmpty &&
+        hoveredCountryEmpty &&
+        hoveredTimelineEmpty
+    ) {
+        continentHighlighting();
     }
 
     // SELECTED COUNTRY NOT EMPTY
@@ -126,6 +136,8 @@ function resetHighlighting() {
             (d) => getColorByContinent(mapCountryContinent.get(d.Name))
         )
         .style("stroke-width", 0.3);
+    d3.selectAll('.legend-item')
+        .style('opacity', 1);
 }
 
 /**
@@ -142,12 +154,21 @@ function highCountryParallel() {
 
     d3.selectAll('.data-line')
         .style("display", "none");
+
     d3.select(`#${parallelLine}`)
         .style("display", "inline")
-        .style('stroke', "black")
-        .attr("stroke-width", 1);
+        .style('stroke', getColorByContinent(mapCountryContinent.get(hoveredCountry)));
+
+    if (selectedCountries.filter(country => country.replace(/[\s.]/g, '_') === countryID).length > 0) {
+        d3.select(`#${parallelLine}`)
+            .style('stroke', colorCountryMap.get(countryID));
+    }
 }
 
+/**
+ * Colors the parallel lines based on the hovered country.
+ * @param hoveredCountryEmpty - boolean indicating if hoveredCountry is empty
+ */
 function colorParallelLines(hoveredCountryEmpty) {
     const legendIds = d3.selectAll('.map-legend')
         .nodes()                     // Get array of DOM nodes
@@ -167,6 +188,9 @@ function colorParallelLines(hoveredCountryEmpty) {
     })
 }
 
+/**
+ * Highlights the countries associated to the timeline intervals when hovered
+ */
 function timelineHighlighting() {
     // Dim all countries first
     gMap.selectAll('path.country')
@@ -226,11 +250,38 @@ function timelineHighlighting() {
         .style("stroke", d => getColorByContinent(mapCountryContinent.get(d.Name)));
 }
 
+/**
+ * Highlights the countries associated to the hovered continent
+ */
+function continentHighlighting() {
+    const continentName = continentHovered.replace(/[\s.]/g, '_');
+    // Dim all countries first
+    d3.selectAll(".data-line")
+        .style("display", "none");
+
+    // Highlight only the lines for that continent
+    d3.selectAll(`.data-line.${continentName}`)
+        .style("display", "inline");
+
+    const legendID = `legend-${continentName}`
+
+    // Dim all legend items
+    d3.selectAll(".legend-item")
+        .style("opacity", 0.1);
+
+    // Highlight the hovered legend item
+    d3.select(`#${legendID}`)
+        .style("opacity", 1);
+}
+
+/**
+ * Applies the highlight effect according to the brushing effect of the parallel chart
+ */
 function brushingEffect() {
     let idList = [];
     gParallelChart.selectAll(".data-line")
         .each(function(d) {
-            const elementId = this.id; // or d3.select(this).attr("id");
+            const countryId = this.id.split("-")[1];
             let visible = true;
 
             for (const [dim, [minVal, maxVal]] of brushingAppliedIntervals) {
@@ -243,9 +294,8 @@ function brushingEffect() {
 
             d3.select(this).style("display", visible ? "inline" : "none");
             d3.select(this).style("stroke-width", "0.3");
-            d3.select(this).style("stroke", colorCountryMap.get(elementId));
+            d3.select(this).style("stroke", colorCountryMap.get(countryId));
             if (visible) {
-                const countryId = elementId.split("-")[1]; // line-countryId
                 idList.push(countryId); // only push if line is visible
             }
         });
