@@ -60,7 +60,7 @@ function createParallelChart(mapCountryContinent) {
         .attr("x", 0)
         .attr("y", -2)
         .attr("text-anchor", "middle")
-        .attr("font-size", 2.5)
+        .attr("font-size", 2)
         .attr("fill", "black")
         .style("cursor", "grab")
         .text(d => {
@@ -174,8 +174,7 @@ function createParallelChart(mapCountryContinent) {
         .attr("pointer-events", "none")
         .text(d => {
             const domain = domainScales.get(d);
-            if (domain[0] === 0 ) return "N/A";
-            return domain ? domain[0].toFixed(2) : "";
+            return domain[0].toFixed(2);
         });
 
     // Max value label
@@ -247,7 +246,7 @@ function drawDataLines(mapCountryContinent, update) {
         .attr("id", d => `line-${d.Name.replace(/[\s.]/g, '_')}`)
         .attr("fill", "none")
         .attr("stroke", d => getColorByContinent(mapCountryContinent.get(d.Name)))
-        .attr("stroke-width", 0.3)
+        .style("stroke-width", 0.5)
         .attr("d", d => buildLinePath(d))
         .on("mouseover", function(event, d) {
             hoveredCountry = d.Name;
