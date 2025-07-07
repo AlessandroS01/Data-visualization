@@ -98,7 +98,6 @@ function createParallelChart(mapCountryContinent) {
                 // Clear the brush programmatically
                 brushG.call(d3.brushY().move, null);
                 brushingAppliedIntervals.delete(dim);
-                chartsHighlighting();
 
                 // Optionally reset your brush labels and line opacity here:
                 axisGroup.select(`#brush-max-${dim}`)
@@ -278,8 +277,8 @@ function drawDataLines(mapCountryContinent, update) {
         })
         .on("mouseout", function(event, d) {
             hoveredCountry = "";
-            chartsHighlighting();
             tooltip.style("opacity", 0);
+            chartsHighlighting();
         })
         .on("click", function(event, d) {
             const countryName = d.Name;

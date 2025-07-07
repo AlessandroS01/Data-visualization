@@ -106,6 +106,80 @@ const highlightHandlers = [
             continentHighlighting();
         }
     },
+    {   // only brushing is applied -> highlight all countries in the brushing intervals
+        condition: { selected: false, brushed: true, continent: false, hoveredCountry: false, hoveredTimeline: false },
+        action: () => {
+            resetChartsHighlighting();
+            removeHighlighting();
+            brushingEffect();
+        }
+    },
+    {   // brushing and country hovering -> highlight all countries in the brushing intervals and hovered country
+        condition: { selected: false, brushed: true, continent: false, hoveredCountry: true, hoveredTimeline: false },
+        action: () => {
+            resetChartsHighlighting();
+            removeHighlighting();
+            brushingEffect();
+            parallelChartHighlighting();
+        }
+    },
+    {   // brushing and country selection -> highlight all countries in the brushing intervals and selected countries
+        condition: { selected: true, brushed: true, continent: false, hoveredCountry: false, hoveredTimeline: false },
+        action: () => {
+            resetChartsHighlighting();
+            removeHighlighting();
+            brushingEffect();
+            countrySelectionHighlight();
+        }
+    },
+    {   // brushing, country selection and hovering -> highlight all countries in the brushing intervals, selected and hovered countries
+        condition: { selected: true, brushed: true, continent: false, hoveredCountry: true, hoveredTimeline: false },
+        action: () => {
+            resetChartsHighlighting();
+            removeHighlighting();
+            brushingEffect();
+            countrySelectionHighlight();
+            parallelChartHighlighting();
+        }
+    },
+    {   // brushing, timeline -> highlight all countries in the brushing intervals and all those belonging to the hovered timeline
+        condition: { selected: false, brushed: true, continent: false, hoveredCountry: false, hoveredTimeline: true },
+        action: () => {
+            resetChartsHighlighting();
+            removeHighlighting();
+            brushingEffect();
+            timelineHighlighting();
+        }
+    },
+    {   // brushing, continent -> highlight all countries in the brushing intervals and all those belonging to the hovered continent
+        condition: { selected: false, brushed: true, continent: true, hoveredCountry: false, hoveredTimeline: false },
+        action: () => {
+            resetChartsHighlighting();
+            removeHighlighting();
+            brushingEffect();
+            continentHighlighting();
+        }
+    },
+    {   // brushing, continent, selection -> highlight all countries in the brushing intervals, all those belonging to the hovered continent and the selected countries
+        condition: { selected: true, brushed: true, continent: true, hoveredCountry: false, hoveredTimeline: false },
+        action: () => {
+            resetChartsHighlighting();
+            removeHighlighting();
+            brushingEffect();
+            countrySelectionHighlight();
+            continentHighlighting();
+        }
+    },
+    {   // brushing, timeline, selection -> highlight all countries in the brushing intervals, all those belonging to the hovered timeline and the selected countries
+        condition: { selected: true, brushed: true, continent: false, hoveredCountry: false, hoveredTimeline: true },
+        action: () => {
+            resetChartsHighlighting();
+            removeHighlighting();
+            brushingEffect();
+            countrySelectionHighlight();
+            timelineHighlighting();
+        }
+    }
 ];
 
 /**
@@ -117,128 +191,6 @@ const highlightHandlers = [
 function matchesCondition(state, condition) {
     return Object.keys(condition).every(key => state[key] === condition[key]);
 }
-
-/*
-function chartsHighlighting(node, name) {
-    const selectedCountryEmpty = selectedCountries.length === 0;
-    const brushingIntervalsEmpty = brushingAppliedIntervals.size === 0;
-    const continentHoveringEmpty = continentHovered.length === 0;
-    const hoveredCountryEmpty = hoveredCountry.length === 0;
-    const hoveredTimelineEmpty = hoveredTimelineInterval.length === 0;
-
-    // ONE VALUE NOT EMPTY
-
-    // nothing is selected, so reset everything to normal opacity
-    if (
-        selectedCountryEmpty &&
-        brushingIntervalsEmpty &&
-        continentHoveringEmpty &&
-        hoveredCountryEmpty &&
-        hoveredTimelineEmpty
-    ) {
-        resetChartsHighlighting();
-    }
-    // if a country is selected, highlight it
-    if (
-        selectedCountryEmpty &&
-        brushingIntervalsEmpty &&
-        continentHoveringEmpty &&
-        !hoveredCountryEmpty &&
-        hoveredTimelineEmpty
-    ) {
-        parallelChartHighlighting();
-    }
-
-    // if timeline legend is hovered, highlight all countries in that interval
-    if (
-        selectedCountryEmpty &&
-        brushingIntervalsEmpty &&
-        continentHoveringEmpty &&
-        hoveredCountryEmpty &&
-        !hoveredTimelineEmpty
-    ) {
-        timelineHighlighting();
-    }
-
-    // if continent legend is hovered, highlight all countries in that continent
-    if (
-        selectedCountryEmpty &&
-        brushingIntervalsEmpty &&
-        !continentHoveringEmpty &&
-        hoveredCountryEmpty &&
-        hoveredTimelineEmpty
-    ) {
-        continentHighlighting();
-    }
-
-    // SELECTED COUNTRY NOT EMPTY
-    if (
-        !selectedCountryEmpty &&
-        brushingIntervalsEmpty &&
-        continentHoveringEmpty &&
-        hoveredCountryEmpty &&
-        hoveredTimelineEmpty
-    ) {
-        d3.selectAll('path.country')
-            .style('opacity', 1);
-
-        d3.selectAll(".data-line")
-            .style("display", "none");
-
-        countrySelectionHighlight(hoveredCountryEmpty);
-    }
-    if (
-        !selectedCountryEmpty &&
-        brushingIntervalsEmpty &&
-        continentHoveringEmpty &&
-        !hoveredCountryEmpty &&
-        hoveredTimelineEmpty
-    ) {
-        parallelChartHighlighting();
-
-        countrySelectionHighlight(hoveredCountryEmpty);
-    }
-    if (
-        !selectedCountryEmpty &&
-        brushingIntervalsEmpty &&
-        continentHoveringEmpty &&
-        hoveredCountryEmpty &&
-        !hoveredTimelineEmpty
-    ) {
-        countrySelectionHighlight(hoveredCountryEmpty);
-
-        timelineHighlighting();
-    }
-
-    // BRUSHING INTERVALS NOT EMPTY
-    if (
-        selectedCountryEmpty &&
-        !brushingIntervalsEmpty &&
-        continentHoveringEmpty &&
-        hoveredCountryEmpty &&
-        hoveredTimelineEmpty
-    ) {
-        brushingEffect();
-    }
-    if (
-        !selectedCountryEmpty &&
-        !brushingIntervalsEmpty &&
-        continentHoveringEmpty &&
-        hoveredCountryEmpty &&
-        hoveredTimelineEmpty
-    ) {
-        brushingEffect();
-        selectedCountries.forEach(country => {
-            d3.select(`path#${country.replace(/[\s.]/g, '_')}`)
-                .style("opacity", 1);
-            d3.select(`.data-line#line-${country.replace(/[\s.]/g, '_')}`)
-                .style("stroke", colorCountryMap.get(country.replace(/[\s.]/g, '_')))
-                .style("stroke-width", 1.5)
-                .style("display", "inline");
-        });
-    }
-}
-*/
 
 /**
  * Resets the highlighting of all countries and parallel lines
@@ -351,10 +303,10 @@ function continentHighlighting() {
  */
 function countrySelectionHighlight() {
     // Retrieves all countries IDs from the map legend
-    const legendIds = d3.selectAll('.map-legend')
+    const countryIDs = d3.selectAll('.map-legend')
         .nodes()
         .map(node => node.id);
-    legendIds.forEach(id => {
+    countryIDs.forEach(id => {
         d3.select('.data-line#line-' + id)
             .style("opacity", 1)
             .style('stroke', colorCountryMap.get(id))
@@ -382,8 +334,7 @@ function brushingEffect() {
                 }
             }
 
-            d3.select(this).style("display", visible ? "inline" : "none");
-            d3.select(this).style("stroke-width", "0.3");
+            d3.select(this).style("opacity", visible ? 1 : parallelLineOpacity);
             d3.select(this).style("stroke", colorCountryMap.get(countryId));
             if (visible) {
                 idList.push(countryId); // only push if line is visible
@@ -396,7 +347,7 @@ function brushingEffect() {
         .each(function(d) {
             const countryId = d.properties.name.replace(/[\s.]/g, '_');
 
-            d3.select(this).style("opacity", idSet.has(countryId) ? 1 : 0.2);
+            d3.select(this).style("opacity", idSet.has(countryId) ? 1 : countryMapOpacity);
         })
 }
 

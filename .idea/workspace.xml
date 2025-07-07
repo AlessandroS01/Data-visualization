@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Colors changed for the charts and highlight">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Solved highlighting for selection. Still needing for brushing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/parallel.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/parallel.js" afterDir="false" />
@@ -159,15 +159,7 @@
       <workItem from="1751472900318" duration="167000" />
       <workItem from="1751522174239" duration="6556000" />
       <workItem from="1751870370064" duration="6548000" />
-      <workItem from="1751895438466" duration="7437000" />
-    </task>
-    <task id="LOCAL-00010" summary="Creating gitignore">
-      <option name="closed" value="true" />
-      <created>1748859453575</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1748859453575</updated>
+      <workItem from="1751895438466" duration="9446000" />
     </task>
     <task id="LOCAL-00011" summary="Definition color list">
       <option name="closed" value="true" />
@@ -553,7 +545,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751899528080</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="Solved highlighting for selection. Still needing for brushing">
+      <option name="closed" value="true" />
+      <created>1751903097466</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1751903097466</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -571,7 +571,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Corrected timeline ranges and data linking" />
     <MESSAGE value="Corrected timeline ranges and data linking. Added hovering effect for timeline" />
     <MESSAGE value="Added point in the radar chart" />
     <MESSAGE value="Finished country legend" />
@@ -596,6 +595,7 @@
     <MESSAGE value="Color scheme changed. Added dataset without outlier" />
     <MESSAGE value="Changed highlighting.js method." />
     <MESSAGE value="Colors changed for the charts and highlight" />
-    <option name="LAST_COMMIT_MESSAGE" value="Colors changed for the charts and highlight" />
+    <MESSAGE value="Solved highlighting for selection. Still needing for brushing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Solved highlighting for selection. Still needing for brushing" />
   </component>
 </project>
