@@ -4,9 +4,79 @@ let selectedCountries = [];
 let hoveredCountry = "";
 let hoveredTimelineInterval = "";
 
+
 /**
  * Handles the highlighting complete logic
  */
+function chartsHighlighting() {
+    const currentState = getHighlightStateKey();
+
+    for (const handler of highlightHandlers) {
+        if (matchesCondition(currentState, handler.condition)) {
+            handler.action();
+            break;
+        }
+    }
+}
+
+/**
+ * Returns the highlight state key for the current highlighting state
+ * @returns {
+ * {selected: boolean, brushed: boolean, continent: boolean, hoveredCountry: boolean, hoveredTimeline: boolean}
+ * }
+ */
+function getHighlightStateKey() {
+    return {
+        selected: selectedCountries.length > 0,
+        brushed: brushingAppliedIntervals.size > 0,
+        continent: continentHovered.length > 0,
+        hoveredCountry: hoveredCountry.length > 0,
+        hoveredTimeline: hoveredTimelineInterval.length > 0,
+    };
+}
+
+/**
+ * Handles the highlighting actions based on the current state of the charts.
+ * @type {[{condition: {selected: boolean, brushed: boolean, continent: boolean, hoveredCountry: boolean, hoveredTimeline: boolean}, action: (function(): void)},{condition: {selected: boolean, brushed: boolean, continent: boolean, hoveredCountry: boolean, hoveredTimeline: boolean}, action: (function(): void)},{condition: {selected: boolean, brushed: boolean, continent: boolean, hoveredCountry: boolean, hoveredTimeline: boolean}, action: (function(): void)},{condition: {selected: boolean, brushed: boolean, continent: boolean, hoveredCountry: boolean, hoveredTimeline: boolean}, action: (function(): void)},{condition: {selected: boolean, brushed: boolean, continent: boolean, hoveredCountry: boolean, hoveredTimeline: boolean}, action: *}]}
+ */
+const highlightHandlers = [
+    {   // nothing is selected or hovered -> reset everything to normal
+        condition: { selected: false, brushed: false, continent: false, hoveredCountry: false, hoveredTimeline: false },
+        action: () => resetHighlighting(),
+    },
+    {   // only a country is hovered -> highlight it in all charts
+        condition: { selected: false, brushed: false, continent: false, hoveredCountry: true, hoveredTimeline: false },
+        action: () => highCountryParallel(),
+    },
+    {   // only timeline legend is hovered -> highlight all countries in that interval
+        condition: { selected: false, brushed: false, continent: false, hoveredCountry: false, hoveredTimeline: true },
+        action: () => timelineHighlighting(),
+    },
+    {   // only continent legend is hovered -> highlight all countries in that continent
+        condition: { selected: false, brushed: false, continent: true, hoveredCountry: false, hoveredTimeline: false },
+        action: () => continentHighlighting(),
+    },
+    {   // only country selection is applied -> make it pop up in all charts
+        condition: { selected: true, brushed: false, continent: false, hoveredCountry: false, hoveredTimeline: false },
+        action: () => {
+            d3.selectAll('path.country').style('opacity', 1);
+            d3.selectAll(".data-line").style("display", "none");
+            colorParallelLines(true);
+        }
+    },
+];
+
+/**
+ * Checks if the current state matches the given condition.
+ * @param state
+ * @param condition
+ * @returns {this is string[]}
+ */
+function matchesCondition(state, condition) {
+    return Object.keys(condition).every(key => state[key] === condition[key]);
+}
+
+/*
 function chartsHighlighting(node, name) {
     const selectedCountryEmpty = selectedCountries.length === 0;
     const brushingIntervalsEmpty = brushingAppliedIntervals.size === 0;
@@ -126,7 +196,11 @@ function chartsHighlighting(node, name) {
         });
     }
 }
+*/
 
+/**
+ * Resets the highlighting of all countries and parallel lines
+ */
 function resetHighlighting() {
     d3.selectAll('path.country')
         .style('opacity', 1);
