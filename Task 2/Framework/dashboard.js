@@ -36,12 +36,12 @@ let domainScales = new Map();
 
 /* data for visualization interaction */
 const colorListWorld = [
-    "#fdb863",
-    "#fee0b6",
-    "#d8daeb",
-    "#b2abd2",
-    "#8073ac",
-    "#542788"
+    "#d6604d",
+    "#f4a582",
+    "#fddbc7",
+    "#92c5de",
+    "#4393c3",
+    "#2166ac"
 ];
 let colorCountryMap = new Map();
 let mapCountryContinent = new Map();
@@ -124,23 +124,24 @@ function addSelectedCountry(countryName, geoFeature) {
     }
 
     const countryCentroid = getMainlandCentroid(geoFeature);
-    const textId = `label-${replaceCountryName}`;
-    const matchedEntry = fertilityData.find(value =>
-        +value.Year === +currentYear && value.Name === countryName
-    );
-    const fertilityValue = matchedEntry ? matchedEntry.FertilityR : "NaN";
-    gMap.append("text")
-        .attr("id", textId)
-        .attr("x", countryCentroid[0])
-        .attr("y", countryCentroid[1])
-        .attr("text-anchor", "middle")
-        .attr("alignment-baseline", "middle")
-        .attr("font-size", "10px")
-        .attr("font-weight", "bold")
-        .attr("fill", "#333")
-        .style("pointer-events", "none")
-        .text(fertilityValue);
-
+    if (countryCentroid !== null) {
+        const textId = `label-${replaceCountryName}`;
+        const matchedEntry = fertilityData.find(value =>
+            +value.Year === +currentYear && value.Name === countryName
+        );
+        const fertilityValue = matchedEntry ? matchedEntry.FertilityR : "NaN";
+        gMap.append("text")
+            .attr("id", textId)
+            .attr("x", countryCentroid[0])
+            .attr("y", countryCentroid[1])
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "middle")
+            .attr("font-size", "10px")
+            .attr("font-weight", "bold")
+            .attr("fill", "#333")
+            .style("pointer-events", "none")
+            .text(fertilityValue);
+    }
     updateCountryList();
 }
 
@@ -150,8 +151,9 @@ function addSelectedCountry(countryName, geoFeature) {
  * @returns {[number, number]|number[]} centroid x and y coordinates of the mainland of the country
  */
 function getMainlandCentroid(feature) {
-    if (!feature.geometry) {
-        console.log(feature);
+    if (!feature || !feature.geometry) {
+        console.log("Missing geometry:", feature);
+        return null;
     }
     const geometry = feature.geometry;
 
