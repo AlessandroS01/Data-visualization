@@ -12,13 +12,15 @@ let svg,
     brush,
     isBrushing = false; // NEW: State flag to track brushing/zooming action
 
+const xAxisFormatter = d3.format("$.2s"); // to avoid overlapping labels in the x axis 
+
 // --- 3. SCATTERPLOT INITIALIZATION AND UPDATES ---
 
 /**
  * Initializes the dashboard scatterplot.
  */
 function initDashboardScatterplot(config) {
-    console.log("Initializing scatterplot module with config:", config);
+    // console.log("Initializing scatterplot module with config:", config);
 
     fullData = config.data;
     xAccessor = config.xCol;
@@ -28,7 +30,12 @@ function initDashboardScatterplot(config) {
     const container = d3.select(config.container);
     container.html("");
 
-    const width = 1000, height = 800, marginTop = 30, marginRight = 30, marginBottom = 60, marginLeft = 70;
+    console.log(container.node().clientWidth, container.node().clientHeight);
+
+    const width = 1000;
+    const height = 800;
+
+    const marginTop = 30, marginRight = 30, marginBottom = 60, marginLeft = 70;
 
     x = d3.scaleLinear()
         .domain(d3.extent(fullData, d => +d[xAccessor])).nice()
@@ -42,7 +49,7 @@ function initDashboardScatterplot(config) {
 
     radiusScale = d3.scaleSqrt()
         .domain(d3.extent(fullData, d => +d[sizeAccessor])).nice()
-        .range([2, 18]);
+        .range([10, 20]);
 
     svg = d3.create("svg")
         .attr("width", width)
@@ -62,14 +69,31 @@ function initDashboardScatterplot(config) {
     svg.append("g")
         .attr("class", "x-axis")
         .attr("transform", `translate(0, ${height - marginBottom})`)
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x)
+            .tickFormat(xAxisFormatter));
 
     svg.append("g")
         .attr("class", "y-axis")
         .attr("transform", `translate(${marginLeft}, 0)`)
         .call(d3.axisLeft(y));
 
-    // MODIFIED: Added .on("start", ...) to manage the isBrushing state
+    svg.append("text")
+        .attr("class", "x-axis-label") 
+        .attr("x", width / 2)
+        .attr("y", height - marginBottom / 2 + 15)
+        .attr("text-anchor", "middle")
+        .attr("fill", "#333")
+        .text("GDP");
+    
+    svg.append("text")
+        .attr("class", "y-axis-label") 
+        .attr("x", -height / 2) 
+        .attr("y", marginLeft / 2 - 15) 
+        .attr("transform", "rotate(-90)")
+        .attr("text-anchor", "middle")
+        .attr("fill", "#333")
+        .text("Birth Rates"); 
+
     brush = d3.brush()
         .extent([[marginLeft, marginTop], [width - marginRight, height - marginBottom]])
         .on("start", brushStarted)
@@ -112,12 +136,21 @@ function updateDashboardScatterplot(currentYear) {
                 .attr("cx", d => x(+d[xAccessor]))
                 .attr("cy", d => y(+d[yAccessor]))
                 .style("opacity", d => isPointInBounds(d) ? 1 : 0)
+                .attr("fill", d => {
+                    const continent = mapCountryContinent.get(d.Name);
+                    return continentColors[continent] || "#ccc"; // Default to gray if continent not found
+                })
                 .call(enter => enter.transition().duration(300)
                     .attr("r", d => radiusScale(+d[sizeAccessor]))),
             update => update
                 .call(update => update.transition().duration(300)
                     .attr("cx", d => x(+d[xAccessor]))
-                    .attr("cy", d => y(+d[yAccessor]))),
+                    .attr("cy", d => y(+d[yAccessor]))
+                    .attr("fill", d => {
+                        const continent = mapCountryContinent.get(d.Name);
+                        return continentColors[continent] || "#ccc"; // Default to gray if continent not found
+                    })
+                ),
             exit => exit
                 .call(exit => exit.transition().duration(300)
                     .attr("r", 0)
@@ -176,14 +209,15 @@ function isPointInBounds(d) {
  * This function handles VIEW changes (i.e., after a zoom or reset).
  */
 function updateView() {
-    svg.select(".x-axis").transition().duration(750).call(d3.axisBottom(x));
+    svg.select(".x-axis").transition().duration(750).call(d3.axisBottom(x)
+        .tickFormat(xAxisFormatter));
     svg.select(".y-axis").transition().duration(750).call(d3.axisLeft(y));
 
     svg.select(".scatterplot-dots").selectAll("circle")
         .transition().duration(750)
         .attr("cx", d => x(+d[xAccessor]))
         .attr("cy", d => y(+d[yAccessor]))
-        .style("opacity", d => isPointInBounds(d) ? 1.0 : 0.1);
+        .style("opacity", d => isPointInBounds(d) ? 1 : 0.1);
 }
 
 /**
@@ -227,7 +261,8 @@ function updateScatterplotSelection() {
             if (selectedCountries.includes(countryName)) {
                 circle.classed("selected", true)
                     .attr("stroke", "red")
-                    .attr("stroke-width", 2);
+                    .attr("stroke-width", 3)
+                    .raise();   // render the selected point above all other points
             } else {
                 circle.classed("selected", false)
                     .attr("stroke", null)
