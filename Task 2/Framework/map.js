@@ -9,6 +9,9 @@ const path = d3.geoPath(projection); // generate paths according to the projecti
 let xScale, yFertilityScale, yPopulationScale;
 const chartHeight = 110;
 
+/* geofeatures so that other classes can trigger dashboard.addSelectedCountry */
+let countriesGeoJsonFeatures; 
+
 /**
  * Creates the map of the world with countries
  */
@@ -25,6 +28,8 @@ function createMap() {
 
     d3.json('../data/worldMap.geojson')
         .then(worldData => {
+            countriesGeoJsonFeatures = worldData.features; // update global variable for other functions to access
+
             const countriesFeature = worldData.features;
             countriesFeature.find(feature => {
                 geoFeatureList.push(feature);
