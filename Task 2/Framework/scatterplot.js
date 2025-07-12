@@ -52,10 +52,9 @@ function initDashboardScatterplot(config) {
         .range([10, 20]);
 
     svg = d3.create("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("viewBox", [0, 0, width, height])
-        .attr("style", "max-width: 100%; height: auto;");
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .style("width", "100%")
+        .style("height", "100%");
 
     const clipId = "scatterplot-clip-path";
     svg.append("defs").append("clipPath")
