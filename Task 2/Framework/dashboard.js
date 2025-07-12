@@ -144,6 +144,9 @@ function addSelectedCountry(countryName, geoFeature) {
     }
     updateCountryList();
     updateScatterplotSelection(); 
+
+    // scary
+    chartsHighlighting()
 }
 
 /**
@@ -201,6 +204,9 @@ function removeSelectedCountry(countryName) {
 
     updateCountryList();
     updateScatterplotSelection(); 
+    
+    // scary
+    chartsHighlighting()
 }
 
 /**
