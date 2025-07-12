@@ -90,7 +90,7 @@ function initDashboardTask2(retrievedData) {
  * @param countryName of the country to be added
  * @param geoFeature the geo feature of the country to add the center label
  */
-function addSelectedCountry(countryName, geoFeature) {
+function addSelectedCountry(countryName, geoFeature) {    
     selectedCountry.push(countryName);
     if(colorCountryMap.size === 0) { // no other element selected
         // TODO: add here how to handle addition of new selected country from the charts (look comment below)

@@ -12,6 +12,9 @@ const chartHeight = 110;
 /* variables for map tooltip */
 let hoveredCountry = "";
 
+/* geofeatures so that other classes can trigger dashboard.addSelectedCountry */
+let countriesGeoJsonFeatures; 
+
 /**
  * Creates the map of the world with countries
  */
@@ -28,6 +31,8 @@ function createMap() {
 
     d3.json('../data/worldMap.geojson')
         .then(worldData => {
+            countriesGeoJsonFeatures = worldData.features; // update global variable for other functions to access
+
             const countriesFeature = worldData.features;
 
             gMap.selectAll('path')

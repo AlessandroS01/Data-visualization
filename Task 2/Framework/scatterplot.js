@@ -124,25 +124,56 @@ function updateDashboardScatterplot(currentYear) {
                     .remove())
         );
 
-    // --- NEW: EVENT LISTENER LOGIC ---
     circles
-      .on("mouseover", (event, d) => {
-          // Only show tooltip if we are NOT in the middle of a brush/zoom
-          if (isBrushing) return;
+        .on("mouseover", (event, d) => {
+            // Only show tooltip if we are NOT in the middle of a brush/zoom
+            if (isBrushing) return;
 
-          // Call your function to create the tooltip
-          createPopulationLineChart(d.Name);
+            // Call your function to create the tooltip
+            createPopulationLineChart(d.Name);
 
-          // Position the tooltip near the cursor
-          d3.select(".map-tooltip")
+            // Position the tooltip near the cursor
+            d3.select(".map-tooltip")
             .style("left", (event.pageX + 15) + "px")
             .style("top", (event.pageY - 28) + "px");
-      })
-      .on("mouseout", () => {
-          // Only remove tooltip if we are NOT in the middle of a brush/zoom
-          if (isBrushing) return;
-          d3.select(".map-tooltip").remove();
-      });
+        })
+        .on("mouseout", () => {
+            // Only remove tooltip if we are NOT in the middle of a brush/zoom
+            if (isBrushing) return;
+            d3.select(".map-tooltip").remove();
+        })
+        .on("click", function(event, d) {
+        const circle = d3.select(this);
+        const currentlySelected = circle.classed("selected");
+
+        const countryName = d.Name;
+
+        // Find the corresponding geoFeature from the globally accessible map features
+        const geoFeatureForCountry = countriesGeoJsonFeatures.find(feature =>
+            feature.properties.name === countryName
+        );
+
+        if (currentlySelected) {
+            // Deselect: remove red stroke and remove from dashboard
+            circle.classed("selected", false)
+                .attr("stroke", null)
+                .attr("stroke-width", null);
+            removeSelectedCountry(countryName);
+        } else {
+            // Select: add red stroke and add to dashboard
+            circle.classed("selected", true)
+                .attr("stroke", "red")
+                .attr("stroke-width", 2);
+
+            if (geoFeatureForCountry) {
+                addSelectedCountry(countryName, geoFeatureForCountry);
+            } else {
+                console.warn(`GeoFeature not found for country: ${countryName}. Cannot add label to map.`);
+                // Optionally, call addSelectedCountry with null or a default if map labeling isn't critical
+                // addSelectedCountry(countryName, null);
+            }
+        }
+    });
 }
 
 
