@@ -107,6 +107,7 @@ function updateDashboardScatterplot(currentYear) {
         .data(chartData, d => d.Name)
         .join(
             enter => enter.append("circle")
+                .attr("class", "scatter-circle")
                 .attr("r", 0)
                 .attr("cx", d => x(+d[xAccessor]))
                 .attr("cy", d => y(+d[yAccessor]))
@@ -143,36 +144,16 @@ function updateDashboardScatterplot(currentYear) {
             d3.select(".map-tooltip").remove();
         })
         .on("click", function(event, d) {
-        const circle = d3.select(this);
-        const currentlySelected = circle.classed("selected");
+            const countryName = d.Name;
+            const geoFeatureForCountry = countriesGeoJsonFeatures.find(feature =>
+                feature.properties.name === countryName
+            );
 
-        const countryName = d.Name;
-
-        // Find the corresponding geoFeature from the globally accessible map features
-        const geoFeatureForCountry = countriesGeoJsonFeatures.find(feature =>
-            feature.properties.name === countryName
-        );
-
-        if (currentlySelected) {
-            // Deselect: remove red stroke and remove from dashboard
-            circle.classed("selected", false)
-                .attr("stroke", null)
-                .attr("stroke-width", null);
-            removeSelectedCountry(countryName);
-        } else {
-            // Select: add red stroke and add to dashboard
-            circle.classed("selected", true)
-                .attr("stroke", "red")
-                .attr("stroke-width", 2);
-
-            if (geoFeatureForCountry) {
-                addSelectedCountry(countryName, geoFeatureForCountry);
+            if (selectedCountry.includes(countryName)) { // Check against the central state
+                removeSelectedCountry(countryName);
             } else {
-                console.warn(`GeoFeature not found for country: ${countryName}. Cannot add label to map.`);
-                // Optionally, call addSelectedCountry with null or a default if map labeling isn't critical
-                // addSelectedCountry(countryName, null);
+                addSelectedCountry(countryName, geoFeatureForCountry);
             }
-        }
     });
 }
 
@@ -235,4 +216,22 @@ function brushed({selection}) {
         svg.select(".brush").call(brush.move, null);
         updateView();
     }
+}
+
+function updateScatterplotSelection() {
+    d3.select(".scatterplot").selectAll(".scatter-circle")
+        .each(function(d) {
+            const circle = d3.select(this);
+            const countryName = d.Name; // Assuming 'd.Name' is the country name in scatterplot data
+
+            if (selectedCountry.includes(countryName)) {
+                circle.classed("selected", true)
+                    .attr("stroke", "red")
+                    .attr("stroke-width", 2);
+            } else {
+                circle.classed("selected", false)
+                    .attr("stroke", null)
+                    .attr("stroke-width", null);
+            }
+        });
 }

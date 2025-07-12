@@ -140,6 +140,7 @@ function addSelectedCountry(countryName, geoFeature) {
         .text(fertilityValue);
 
     updateCountryList();
+    updateScatterplotSelection(); 
 }
 
 /**
@@ -194,6 +195,7 @@ function removeSelectedCountry(countryName) {
     d3.select(`#label-${countryName.replace(/[\s.]/g, '_')}`).remove();
 
     updateCountryList();
+    updateScatterplotSelection(); 
 }
 
 /**
