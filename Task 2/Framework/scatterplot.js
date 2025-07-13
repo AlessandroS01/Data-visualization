@@ -270,9 +270,13 @@ function updateScatterplotSelection() {
             if (selectedCountries.includes(countryName)) {
                 circle.classed("selected", true)
                     .style("opacity", 1)
+                    .attr("stroke", "red")
+                    .attr("stroke-width", 3)
                     .raise();   // render the selected point above all other points
             } else {
-                circle.classed("selected", false);
+                circle.classed("selected", false)
+                    .attr("stroke", null)
+                    .attr("stroke-width", null);
             }
         });
 }
