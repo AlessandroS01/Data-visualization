@@ -91,7 +91,7 @@ function initDashboardScatterplot(config) {
         .attr("transform", "rotate(-90)")
         .attr("text-anchor", "middle")
         .attr("fill", "#333")
-        .text("Birth Rates"); 
+        .text("GINI Coefficient"); 
 
     brush = d3.brush()
         .extent([[marginLeft, marginTop], [width - marginRight, height - marginBottom]])
@@ -148,6 +148,7 @@ function updateDashboardScatterplot(currentYear) {
                     .attr("r", d => radiusScale(+d[sizeAccessor]))),
             update => update
                 .call(update => update.transition().duration(300)
+                    .attr("r", d => radiusScale(+d[sizeAccessor]))
                     .attr("cx", d => x(+d[xAccessor]))
                     .attr("cy", d => y(+d[yAccessor]))
                     .attr("fill", d => {
