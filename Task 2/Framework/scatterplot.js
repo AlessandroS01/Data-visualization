@@ -130,7 +130,12 @@ function updateDashboardScatterplot(currentYear) {
         .data(chartData, d => d.Name)
         .join(
             enter => enter.append("circle")
-                .attr("class", "scatter-circle")
+                .attr("class", d => {
+                    const continent = mapCountryContinent.get(d.Name);
+                    const continentClass = continent ? `continent-${continent.replace(/[\s.]/g, '_')}` : '';
+                    return `scatter-circle ${continentClass}`;
+                })
+                .attr("id", d => `scatter-${d.Name.replace(/[\s.]/g, '_')}`)
                 .attr("r", 0)
                 .attr("cx", d => x(+d[xAccessor]))
                 .attr("cy", d => y(+d[yAccessor]))
@@ -159,8 +164,10 @@ function updateDashboardScatterplot(currentYear) {
 
     circles
         .on("mouseover", (event, d) => {
-            // Only show tooltip if we are NOT in the middle of a brush/zoom
             if (isBrushing) return;
+
+            hoveredCountry = d.Name;
+            chartsHighlighting();
 
             // Call your function to create the tooltip
             createPopulationLineChart(d.Name);
@@ -171,8 +178,11 @@ function updateDashboardScatterplot(currentYear) {
             .style("top", (event.pageY - 28) + "px");
         })
         .on("mouseout", () => {
-            // Only remove tooltip if we are NOT in the middle of a brush/zoom
             if (isBrushing) return;
+
+            hoveredCountry = "";
+            chartsHighlighting();
+
             d3.select(".map-tooltip").remove();
         })
         .on("click", function(event, d) {
@@ -259,13 +269,10 @@ function updateScatterplotSelection() {
 
             if (selectedCountries.includes(countryName)) {
                 circle.classed("selected", true)
-                    .attr("stroke", "red")
-                    .attr("stroke-width", 3)
+                    .style("opacity", 1)
                     .raise();   // render the selected point above all other points
             } else {
-                circle.classed("selected", false)
-                    .attr("stroke", null)
-                    .attr("stroke-width", null);
+                circle.classed("selected", false);
             }
         });
 }

@@ -7,6 +7,7 @@ let hoveredTimelineInterval = "";
 
 const parallelLineOpacity = 0.02;
 const countryMapOpacity = 0.2;
+const scatterPlotOpacity = 0.1;
 
 /**
  * Handles the highlighting complete logic
@@ -206,6 +207,9 @@ function resetChartsHighlighting() {
         )
         .style("stroke-width", 0.5);
 
+    d3.selectAll('.scatter-circle')
+        .style('opacity', 1);
+
     d3.selectAll('.legend-item')
         .style('opacity', 1);
 }
@@ -216,6 +220,7 @@ function resetChartsHighlighting() {
 function parallelChartHighlighting() {
     const countryID = hoveredCountry.replace(/[\s.]/g, '_');
     const parallelLine = `line-${countryID}`;
+    const scatterPoint = `scatter-${countryID}`;
 
     d3.select(`path#${countryID}`)
         .style('opacity', 1);
@@ -223,6 +228,9 @@ function parallelChartHighlighting() {
     d3.select(`#${parallelLine}`)
         .style("opacity", 1)
         .style('stroke', getColorByContinent(mapCountryContinent.get(hoveredCountry)));
+
+    d3.select(`#${scatterPoint}`)
+        .style('opacity', 1);
 }
 
 /**
@@ -288,6 +296,9 @@ function continentHighlighting() {
     d3.selectAll(`.data-line.${continentName}`)
         .style("opacity", 1);
 
+    d3.selectAll(`.scatter-circle.continent-${continentName}`)
+        .style("opacity", 1);
+
     const legendID = `legend-${continentName}`
 
     // Dim all legend items
@@ -311,6 +322,9 @@ function countrySelectionHighlight() {
             .style("opacity", 1)
             .style('stroke', colorCountryMap.get(id))
             .style('stroke-width', 1);
+
+        d3.select('.scatter-circle#scatter-' + id)
+            .style('opacity', 1);
     })
 }
 
@@ -348,7 +362,14 @@ function brushingEffect() {
             const countryId = d.properties.name.replace(/[\s.]/g, '_');
 
             d3.select(this).style("opacity", idSet.has(countryId) ? 1 : countryMapOpacity);
-        })
+        });
+
+    d3.selectAll('.scatter-circle')
+        .each(function(d) {
+            const countryId = this.id.split('-')[1];
+
+            d3.select(this).style('opacity', idSet.has(countryId) ? 1 : scatterPlotOpacity);
+        });
 }
 
 function removeHighlighting() {
@@ -357,4 +378,7 @@ function removeHighlighting() {
 
     d3.selectAll(".data-line")
         .style("opacity", parallelLineOpacity);
+
+    d3.selectAll('.scatter-circle')
+        .style('opacity', scatterPlotOpacity);
 }
