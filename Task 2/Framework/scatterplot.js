@@ -198,6 +198,8 @@ function updateDashboardScatterplot(currentYear) {
                 addSelectedCountry(countryName, geoFeatureForCountry);
             }
     });
+
+    updateScatterplotSelection();
 }
 
 
