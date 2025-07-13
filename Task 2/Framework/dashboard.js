@@ -83,7 +83,7 @@ async function initDashboardTask2(retrievedData) {
         container: ".scatterplot",
         data: retrievedData,
         xCol: "GDP",
-        yCol: "FertilityR",
+        yCol: "GiniC",
         sizeCol: "GiniC"
     });
     updateDashboardScatterplot(startYear);

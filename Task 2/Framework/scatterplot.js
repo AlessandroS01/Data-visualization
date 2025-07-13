@@ -123,7 +123,7 @@ function initDashboardScatterplot(config) {
 function updateDashboardScatterplot(currentYear) {
     if (!svg) { return; }
 
-    const chartData = fullData.filter(d => +d.Year === +currentYear);
+    const chartData = fullData.filter(d => +d.Year === +currentYear && +d[xAccessor] !== 0 && +d[yAccessor] !== 0);
 
     const circles = svg.select(".scatterplot-dots")
         .selectAll("circle")
