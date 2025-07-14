@@ -388,6 +388,9 @@ div.tooltip {
     font-weight: bold;
     fill: #555; 
 }
+.scatter-circle {
+    cursor: pointer;
+}
 
 
 
