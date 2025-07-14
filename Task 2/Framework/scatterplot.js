@@ -12,8 +12,22 @@ let svg,
     brush,
     isBrushing = false; // NEW: State flag to track brushing/zooming action
 
-const xAxisFormatter = d3.format("$.2s"); // to avoid overlapping labels in the x axis 
+// const xAxisFormatter = d3.format("$.2s"); // to avoid overlapping labels in the x axis 
+const xAxisFormatter = (d) => {
+    const absD = Math.abs(d);
 
+    if (absD >= 1e12) { // Trillions
+        return `$${(d / 1e12).toFixed(0)}T`;
+    } else if (absD >= 1e9) { // Billions
+        return `$${(d / 1e9).toFixed(0)}B`; // Changed G to B here
+    } else if (absD >= 1e6) { // Millions
+        return `$${(d / 1e6).toFixed(0)}M`;
+    } else if (absD >= 1e3) { // Thousands
+        return `$${(d / 1e3).toFixed(0)}k`;
+    } else {
+        return `$${d.toFixed(2)}`; // For values less than 1000
+    }
+};
 // --- 3. SCATTERPLOT INITIALIZATION AND UPDATES ---
 
 /**

@@ -208,7 +208,10 @@ function resetChartsHighlighting() {
         .style("stroke-width", 0.5);
 
     d3.selectAll('.scatter-circle')
-        .style('opacity', 1);
+        .style('opacity', 1)
+        .style('fill', 
+            (d) => getColorByContinent(mapCountryContinent.get(d.Name))
+        );
 
     d3.selectAll('.legend-item')
         .style('opacity', 1);
@@ -324,7 +327,8 @@ function countrySelectionHighlight() {
             .style('stroke-width', 1);
 
         d3.select('.scatter-circle#scatter-' + id)
-            .style('opacity', 1);
+            .style('opacity', 1)
+            .style('fill', colorCountryMap.get(id));
     })
 }
 

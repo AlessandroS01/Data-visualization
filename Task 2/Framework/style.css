@@ -364,8 +364,11 @@ div.tooltip {
     width: 50%;
     height: 100%;
     align-self: stretch;
-    background-color: lightgray;
+    background-color: whitesmoke;
+    border: 1px solid #bbbbbb;
+    box-shadow: 2px 2px 2px #bbbbbb;
 }
+
 /* scatterplot x axis ticks */
 .x-axis text {
     font-size: 20px; 
