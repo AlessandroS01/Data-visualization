@@ -520,11 +520,11 @@ function updateTooltipData() {
  */
 function getFertilityColor(value) {
     if (value <= 1.0) return "#ffffe5";
-    if (value <= 2.0) return "#f7fcb9";
-    if (value <= 3.0) return "#d9f0a3";
-    if (value <= 4.0) return "#addd8e";
-    if (value <= 5.0) return "#78c679";
-    if (value <= 6.0) return "#41ab5d";
-    if (value <= 7.0) return "#238443";
-    return "#005a32";
+    if (value <= 2.0) return "#d9f0a3";
+    if (value <= 3.0) return "#addd8e";
+    if (value <= 4.0) return "#78c679";
+    if (value <= 5.0) return "#41ab5d";
+    if (value <= 6.0) return "#238443";
+    if (value <= 7.0) return "#006837";
+    return "004529";
 }

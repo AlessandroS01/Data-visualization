@@ -292,25 +292,25 @@ div.tooltip {
     fill: #ffffe5;
 }
 .second-interval {
-    fill: #f7fcb9;
-}
-.third-interval {
     fill: #d9f0a3;
 }
-.fourth-interval {
+.third-interval {
     fill: #addd8e;
 }
-.fifth-interval {
+.fourth-interval {
     fill: #78c679;
 }
-.sixth-interval {
+.fifth-interval {
     fill: #41ab5d;
 }
-.seventh-interval {
+.sixth-interval {
     fill: #238443;
 }
+.seventh-interval {
+    fill: #006837;
+}
 .eighth-interval {
-    fill: #005a32;
+    fill: #004529
 }
 
 /* TIMELINE SLIDER */
