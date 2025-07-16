@@ -1,9 +1,8 @@
 /*
 * Data Visualization - Dashboard Scatterplot Module
-* This file contains all logic for creating, updating, and interacting with the dashboard scatterplot.
 */
 
-// --- 1. DEFINE MODULE-LEVEL VARIABLES ---
+// --- MODULE-LEVEL VARIABLES ---
 let svg,
     x, y, radiusScale,
     originalX, originalY,
@@ -12,7 +11,10 @@ let svg,
     brush,
     isBrushing = false; // NEW: State flag to track brushing/zooming action
 
-// const xAxisFormatter = d3.format("$.2s"); // to avoid overlapping labels in the x axis 
+// the formatter we used to use - had a problem of outputting billions as G
+// const xAxisFormatter = d3.format("$.2s"); 
+
+// custom formattter - outputs billions as B, makes more sense for money
 const xAxisFormatter = (d) => {
     const absD = Math.abs(d);
 
@@ -28,14 +30,12 @@ const xAxisFormatter = (d) => {
         return `$${d.toFixed(2)}`; // For values less than 1000
     }
 };
-// --- 3. SCATTERPLOT INITIALIZATION AND UPDATES ---
+// --- SCATTERPLOT INITIALIZATION ---
 
 /**
  * Initializes the dashboard scatterplot.
  */
 function initDashboardScatterplot(config) {
-    // console.log("Initializing scatterplot module with config:", config);
-
     fullData = config.data;
     xAccessor = config.xCol;
     yAccessor = config.yCol;
@@ -44,8 +44,9 @@ function initDashboardScatterplot(config) {
     const container = d3.select(config.container);
     container.html("");
 
-    console.log(container.node().clientWidth, container.node().clientHeight);
+    // console.log(container.node().clientWidth, container.node().clientHeight);
 
+    // fixed height and width for internal usage
     const width = 1000;
     const height = 800;
 
@@ -132,7 +133,8 @@ function initDashboardScatterplot(config) {
 }
 
 /**
- * Main update function. Handles DATA changes (i.e., when the year changes).
+ * Handles data changes according to the year
+ * this function is also called to reflect color changes according to the selectedCountries from other charts
  */
 function updateDashboardScatterplot(currentYear) {
     if (!svg) { return; }
@@ -153,9 +155,9 @@ function updateDashboardScatterplot(currentYear) {
                 .attr("r", 0)
                 .attr("cx", d => x(+d[xAccessor]))
                 .attr("cy", d => y(+d[yAccessor]))
-                .style("opacity", d => isPointInBounds(d) ? 1 : 0)
+                .style("opacity", d => isPointInBounds(d) ? 1 : 0) // make points that are out of bounds invisible
                 .attr("fill", d => {
-                    const continent = mapCountryContinent.get(d.Name);
+                    const continent = mapCountryContinent.get(d.Name); // color countries according to its continent
                     return continentColors[continent] || "#ccc"; // Default to gray if continent not found
                 })
                 .call(enter => enter.transition().duration(300)
@@ -167,7 +169,7 @@ function updateDashboardScatterplot(currentYear) {
                     .attr("cy", d => y(+d[yAccessor]))
                     .attr("fill", d => {
                         const continent = mapCountryContinent.get(d.Name);
-                        return continentColors[continent] || "#ccc"; // Default to gray if continent not found
+                        return continentColors[continent] || "#ccc";
                     })
                 ),
             exit => exit
@@ -177,21 +179,22 @@ function updateDashboardScatterplot(currentYear) {
                     .remove())
         );
 
+    // add events to circles
     circles
+        // bring up the line chart when its being hovered
         .on("mouseover", (event, d) => {
             if (isBrushing) return;
 
             hoveredCountry = d.Name;
             chartsHighlighting();
 
-            // Call your function to create the tooltip
             createPopulationLineChart(d.Name);
 
-            // Position the tooltip near the cursor
             d3.select(".map-tooltip")
             .style("left", (event.pageX + 15) + "px")
             .style("top", (event.pageY - 28) + "px");
         })
+        // remove the line chart
         .on("mouseout", () => {
             if (isBrushing) return;
 
@@ -200,6 +203,7 @@ function updateDashboardScatterplot(currentYear) {
 
             d3.select(".map-tooltip").remove();
         })
+        // add to dashboard when its clicked
         .on("click", function(event, d) {
             const countryName = d.Name;
             const geoFeatureForCountry = countriesGeoJsonFeatures.find(feature =>
@@ -213,12 +217,50 @@ function updateDashboardScatterplot(currentYear) {
             }
     });
 
+    // draw outlines for selected(clicked) countries
     updateScatterplotSelection();
 }
 
 
+
+// Brushing - zooming in and out(resetting)
+// ---------------------------------------------------------------------------------------------
+
+
 /**
- * (NEW HELPER) Checks if a data point is within the current domains of the x and y scales.
+ * marks the start of a brush gesture
+*/
+function brushStarted() {
+    isBrushing = true;
+    // Remove any tooltip that might be active when the brush starts
+    d3.select(".map-tooltip").remove();
+}
+
+/**
+ * marks the end of a brush gesture
+*/
+function brushed({selection}) {
+    isBrushing = false;
+    
+    if (selection) {
+        // new ranges to zoom in on
+        const xValues = [selection[0][0], selection[1][0]].map(d => x.invert(d));
+        const yValues = [selection[0][1], selection[1][1]].map(d => y.invert(d));
+        
+        // new domain - new scale for the x and y axis
+        const newXDomain = d3.extent(xValues);
+        const newYDomain = d3.extent(yValues);
+        
+        x.domain(newXDomain).nice();
+        y.domain(newYDomain).nice();
+        
+        svg.select(".brush").call(brush.move, null);
+        updateView();
+    }
+}
+
+/**
+ * returns whether a data point is within the current domains of the x and y scales
  */
 function isPointInBounds(d) {
     const xVal = +d[xAccessor];
@@ -230,15 +272,16 @@ function isPointInBounds(d) {
            yVal >= yDomain[0] && yVal <= yDomain[1];
 }
 
-
 /**
- * This function handles VIEW changes (i.e., after a zoom or reset).
+ * handles view change (i.e., after a zoom or reset).
  */
 function updateView() {
+    // update the axis with the new scale
     svg.select(".x-axis").transition().duration(750).call(d3.axisBottom(x)
         .tickFormat(xAxisFormatter));
     svg.select(".y-axis").transition().duration(750).call(d3.axisLeft(y));
 
+    // update the circles and if they are out of bounds, lower their opacity
     svg.select(".scatterplot-dots").selectAll("circle")
         .transition().duration(750)
         .attr("cx", d => x(+d[xAccessor]))
@@ -246,50 +289,21 @@ function updateView() {
         .style("opacity", d => isPointInBounds(d) ? 1 : 0.1);
 }
 
-/**
- * (NEW) This function is called when a brush gesture STARTS.
- */
-function brushStarted() {
-    isBrushing = true;
-    // Remove any tooltip that might be active when the brush starts
-    d3.select(".map-tooltip").remove();
-}
-
-/**
- * This function is called at the end of a brush gesture.
- * (MODIFIED to update the isBrushing state)
- */
-function brushed({selection}) {
-    // Brushing is now complete
-    isBrushing = false;
-
-    if (selection) {
-        const xValues = [selection[0][0], selection[1][0]].map(d => x.invert(d));
-        const yValues = [selection[0][1], selection[1][1]].map(d => y.invert(d));
-
-        const newXDomain = d3.extent(xValues);
-        const newYDomain = d3.extent(yValues);
-
-        x.domain(newXDomain).nice();
-        y.domain(newYDomain).nice();
-
-        svg.select(".brush").call(brush.move, null);
-        updateView();
-    }
-}
+// Clicking - outlining points that are added to the dashboard(selectedCountries) with red
+// ---------------------------------------------------------------------------------------------
 
 function updateScatterplotSelection() {
     d3.select(".scatterplot").selectAll(".scatter-circle")
-        .each(function(d) {
-            const circle = d3.select(this);
-            const countryName = d.Name; // Assuming 'd.Name' is the country name in scatterplot data
-
-            if (selectedCountries.includes(countryName)) {
-                circle.classed("selected", true)
+    .each(function(d) {
+        const circle = d3.select(this);
+        const countryName = d.Name;
+        
+        if (selectedCountries.includes(countryName)) {
+            circle.classed("selected", true)
                     .style("opacity", 1)
                     .attr("stroke", "red")
                     .attr("stroke-width", 3)
-                    .raise();   // render the selected point above all other points
+                    .raise();
             } else {
                 circle.classed("selected", false)
                     .attr("stroke", null)
