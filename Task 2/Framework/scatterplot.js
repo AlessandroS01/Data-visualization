@@ -209,11 +209,17 @@ function updateDashboardScatterplot(currentYear) {
             const geoFeatureForCountry = countriesGeoJsonFeatures.find(feature =>
                 feature.properties.name === countryName
             );
-            console.log(countryName);
-            if (selectedCountries.includes(countryName)) { // Check against the central state
-                removeSelectedCountry(countryName);
+
+            // Optional: prevent duplicates
+            if (!selectedCountries.includes(countryName)) {
+                if (selectedCountries.length === colorListWorld.length) {
+                    window.confirm("You've selected the maximum number of countries. \n " +
+                        "To continue the selection remove at least one of them.");
+                } else {
+                    addSelectedCountry(countryName, geoFeatureForCountry);
+                }
             } else {
-                addSelectedCountry(countryName, geoFeatureForCountry);
+                removeSelectedCountry(countryName);
             }
     });
 

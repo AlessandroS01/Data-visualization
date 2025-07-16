@@ -388,8 +388,8 @@ function dragged(event, d) {
 
     // Current translate X + delta dx, parse current transform:
     const currentTransform = d3.select(this).attr("transform");
-    const match = currentTransform.match(/translate\(([^,]+),/);
-    let currentX = match ? parseFloat(match[1]) : 0;
+    const match = currentTransform.match(/translate\(([^,]+),/); // capture x value
+    let currentX = match ? parseFloat(match[1]) : 0; // with translate(120,50) returns [120]
     let newX = currentX + dx;
 
     // Limit newX to SVG width bounds (optional)

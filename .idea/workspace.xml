@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Solved highlighting for selection. Still needing for brushing">
+    <list default="true" id="a44b7484-64c9-4d13-b6ea-2c132a2eb9e8" name="Changes" comment="Done all possible highlights situations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/highlighting.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Task 2/Framework/parallel.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/parallel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Task 2/Framework/scatterplot.js" beforeDir="false" afterPath="$PROJECT_DIR$/Task 2/Framework/scatterplot.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +25,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="feature" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -50,30 +50,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JavaScript Debug.Task 1.executor": "Run",
-    "JavaScript Debug.Task 2.executor": "Run",
-    "JavaScript Debug.index.html (1).executor": "Run",
-    "JavaScript Debug.index.html.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Node.js.dataVis.js.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "bug/highlight",
-    "grid.search.filter.rows": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Users/Lenovo/Desktop/University/Master University/Passau University/Studies/Sommersemester 2025/Data Visualization/Uebung/Project",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JavaScript Debug.Task 1.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.Task 2.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.index.html (1).executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.index.html.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Node.js.dataVis.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;grid.search.filter.rows&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lenovo/Desktop/University/Master University/Passau University/Studies/Sommersemester 2025/Data Visualization/Uebung/Project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2025.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Lenovo\Desktop\University\Master University\Passau University\Studies\Sommersemester 2025\Data Visualization\Uebung\Project\Task 2" />
@@ -100,7 +100,7 @@
         <item itemvalue="JavaScript Debug.Task 1" />
         <item itemvalue="JavaScript Debug.Task 2" />
         <item itemvalue="JavaScript Debug.Task 1" />
-        <item itemvalue="JavaScript Debug.Task 1" />
+        <item itemvalue="JavaScript Debug.Task 2" />
       </list>
     </recent_temporary>
   </component>
@@ -160,6 +160,10 @@
       <workItem from="1751522174239" duration="6556000" />
       <workItem from="1751870370064" duration="6548000" />
       <workItem from="1751895438466" duration="9446000" />
+      <workItem from="1752220935209" duration="70000" />
+      <workItem from="1752345918487" duration="318000" />
+      <workItem from="1752488278322" duration="3250000" />
+      <workItem from="1752668090136" duration="5474000" />
     </task>
     <task id="LOCAL-00011" summary="Definition color list">
       <option name="closed" value="true" />
