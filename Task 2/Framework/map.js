@@ -526,5 +526,5 @@ function getFertilityColor(value) {
     if (value <= 5.0) return "#41ab5d";
     if (value <= 6.0) return "#238443";
     if (value <= 7.0) return "#006837";
-    return "004529";
+    return "#004529";
 }
